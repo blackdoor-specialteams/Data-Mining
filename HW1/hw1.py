@@ -11,42 +11,46 @@
 """
 import csv
 
-def readDataset(filename):
-	file = open(filename,"rb")
-	reader = csv.reader(file)
+def read_dataset(file_name):
+	with open(file_name,"rb") as input_file:
+		reader = csv.DictReader(input_file)
 
 	return []
 
-def countInstances():
+def count_instances(file_name):
+	with open(file_name) as f:
+		return sum(1 for _ in f)
+	
+def check_for_duplicates(dataset):
+	return []
+	
+def print_dataset_info():
 	return 0
-	
-def checkForDuplicates():
-	return []
-	
-def printDatasetInfo():
 
-def combineTwoDatasets(data1,data2):
+def combine_two_datasets(data1,data2):
+	return None
 
-
-def stepTwo(filename):
-	dataset = readDataset(filename)
+def step_two(filename):
+	dataset = read_dataset(filename)
 	
 	print("--------------------------------------------------")
 	print(filename)
 	print("--------------------------------------------------")
 	
-	duplicates = checkForDuplicates(dataset)
-	instcount = countInstances(dataset)
+	duplicates = check_for_duplicates(dataset)
+	inst_count = count_instances(filename)
 	
-	print("No. of instances: ", instcount)
+	print("No. of instances: ", inst_count)
 	print("Duplicates: ", duplicates )
 	
-def stepThree():
+def step_three():
+	return None
 
-def stepFour():
+def step_four():
+	return None
 
 def main():
-	stepTwo("auto-mpg.txt")
+	step_two("auto-mpg.txt")
 	
-	raw_input("Hit Enter to EXIT")
+	input("Hit Enter to EXIT")
 main()
