@@ -11,15 +11,15 @@
 """
 import csv
 
-#fundamentally broken
-def get_dataset_reader(file_name):
-	with open(file_name,"r") as input_file:
-		reader = csv.DictReader(input_file)
-	return reader
-
-def count_instances(file_name):
-	with open(file_name, "r") as f:
-		return sum(1 for _ in f)
+def get_dataset(file_name):
+	""" Reads a csv file and returns a table as a list of lists"""
+	the_file = open(file_name)
+	the_reader = csv.reader(the_file, dialect = 'excel')
+	table = []
+	for row in reader:
+		if len(row) > 0:
+			table.append(row)
+	return table
 	
 #returns a list of duplicates	
 #keys are attributes to be considered part of the key
@@ -36,6 +36,13 @@ def check_for_duplicates(file_name, keys = ('model_year', 'car_name')):
 				instances.append(key)
 	return dupes
 	
+def print_csv(table):
+	"""Prints a table in csv format"""
+	for row in table:
+		for i in range(len(row)-1):
+			sys.stdout.write(str(row[i])+ ',')
+		print row[-1]
+
 def print_dataset_info():
 	return 0
 
