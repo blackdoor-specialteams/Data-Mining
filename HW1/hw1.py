@@ -36,6 +36,10 @@ def check_for_duplicates(file_name, keys = ('model_year', 'car_name')):
 				instances.append(key)
 	return dupes
 	
+def count_instances(file_name):
+	with open(file_name, "r") as f:
+		return sum(1 for _ in f)
+	
 def print_csv(table):
 	"""Prints a table in csv format"""
 	for row in table:
