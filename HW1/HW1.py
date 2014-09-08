@@ -53,6 +53,53 @@ def print_csv(table):
 def print_dataset_info():
 	return 0
 
+def print_summary_stats(file_name):
+	print "Summary Stats:"
+	print "============ ===== ===== ======= ====== ======"
+	print " attribute    min   max    mid    avg    med"
+	print "============ ===== ===== ======= ====== ======"
+
+def delete_dups_from_csv(filename_in,filename_out):
+	""" Takes a CSV file, writes a second file that omits all duplicates"""
+	f1 = csv.reader(open(filename_in, 'rb'))
+	writer = csv.writer(open(filename_out, "wb"))
+	
+	unique_rows = []
+	for row in f1:
+		if row not in unique_rows:
+			writer.writerow(row)
+			unique_rows.append(row)
+
+def attribute_stats(attlist):
+	statlist = []
+
+	lmin = min(attlist)
+	lmax = max(attlist)
+	lmid = midpoint(lmin,lmax)
+	lavg = avg_list(attlist)
+	lmed = median(attlist)
+
+	statlist.append(lmin)
+	statlist.append(lmax)
+	statlist.append(lmid)
+	statlist.append(lavg)
+	statlist.append(lmed)
+	return statlist
+
+def median(alist):
+        srtd = sorted(alist) 
+        mid = len(alist)/2   
+        if len(alist) % 2 == 0:  
+                return (srtd[mid-1] + srtd[mid]) / 2.0
+        else:
+                return srtd[mid]
+
+def average(numbers):  
+        return float(sum(numbers))/len(numbers)
+
+def midpoint(a,b):  
+        return (a + b) / 2.0
+
 def get_key_from_attribs(instance, attribs = ('model_year', 'car_name')):
 	key = ''
 	for attrib in attribs:
@@ -173,7 +220,9 @@ def main():
 	step_two("auto-prices.txt")
 	step_two("auto-mpg-nodups.txt")
 	step_two("auto-prices-nodups.txt")
-	#raw_input("Hit Enter to EXIT")
+	delete_dups_from_csv()
+	
+	raw_input("Hit Enter to EXIT")
 
 
 main()
