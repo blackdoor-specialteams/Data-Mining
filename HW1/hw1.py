@@ -53,19 +53,43 @@ def get_key_from_attribs(instance, attribs = ('model_year', 'car_name')):
 	key = key[0:-1] # trim trailing space
 	return key
 
-def join_into_file(in_files = ('auto-prices.txt', 'auto-mpg.txt') , out = "", keys = ('model_year', 'car_name')):
-	joined = dict()
-	for input_file in in_files:
-		with open(input_file, 'r') as f:
-			reader = csv.DictReader(input_file)
-			for instance in reader:
-				print(instance)
-				key = get_key_from_attribs(instance, keys)
-				if key in joined:
-					joined[key].update(instance)
-				else:
-					joined[key] = instance
-	print(joined)
+def join_into_dict_list(in_files = ('auto-prices.txt', 'auto-mpg.txt') , out = "", keys = ('model_year', 'car_name')):
+#	joined = dict()
+#	for input_file in in_files:
+#		with open(input_file, 'r') as f:
+#			reader = csv.DictReader(input_file)
+#			for instance in reader:
+#				print(instance)
+#				key = get_key_from_attribs(instance, keys)
+#				if key in joined:
+#					joined[key].update(instance)
+#				else:
+#					joined[key] = instance
+	joined = []
+	for left_file in in_files:
+		with open(left_file, 'r') as f:
+			l_reader = csv.DictReader(f)
+			for l_instance in l_reader:
+				joined_inst = dict()
+				for right_file in in_files:
+					if right_file != left_file:
+						with open(right_file, 'r') as rf:
+							r_reader = csv.DictReader(rf)
+							for r_instance in r_reader:
+								match = True
+								for key in keys:
+									if not (r_instance[key] == l_instance[key]):
+										match = False
+										break
+								if match:
+									joined_inst.update(r_instance)
+									joined_inst.update(l_instance)
+				
+
+
+
+
+	return joined
 
 def combine_two_datasets(data1,data2):
 	return None
