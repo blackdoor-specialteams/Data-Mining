@@ -127,12 +127,9 @@ def write_csv_header(fileinst, keyset):
 	fileinst.write(line[0:-1] + '\n')
 
 def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
-	joined = []
-	compound = ''
 	l_keyset = []
 	r_keyset = []
 	keyset = []
-	r_unmatched = dict()
 	with open(out, 'wb') as of:
 		with open(l_file, 'r') as lf:
 			l_reader = csv.DictReader(lf)
@@ -153,44 +150,18 @@ def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
 						match = True
 						for key in keys:
 							match &= l_inst[key] == r_inst[key]
-							compound += r_inst[key]
 						if match:
 							r_inst.update(l_inst)
 							#print 'match\n'
 							#print 'join' + str(r_inst) + '\n'
 							write_csv_line(of, r_inst, keyset)#joined.append(r_inst)
 						else:
-							print 'nomatch\n'
+							#print 'nomatch\n'
 							#print 'join' + str(l_inst) + '\n' #joined.append(l_inst)
-							#write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
-							#write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
+							write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
+							write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
 							#print 'unmatched' + str(r_inst) + '\n'#r_unmatched[compound] = add_na(r_inst, l_inst.keys())
-	joined += r_unmatched.items()
 
-#	for left_file in in_files:
-#		with open(left_file, 'r') as f:
-#			l_reader = csv.DictReader(f)
-#			for l_instance in l_reader:
-#				joined_inst = dict()
-#				for right_file in in_files:
-#					if right_file != left_file:
-#						with open(right_file, 'r') as rf:
-#							r_reader = csv.DictReader(rf)
-#							for r_instance in r_reader:
-#								match = True
-#								for key in keys:
-#									if not (r_instance[key] == l_instance[key]):
-#										match = False
-#										break
-#								if match:
-#									joined_inst.update(r_instance)
-#									joined_inst.update(l_instance)
-				
-
-
-
-
-	return joined
 
 def combine_two_datasets(data1,data2):
 	return None
