@@ -125,7 +125,7 @@ def main():
 	step_two("auto-prices.txt")
 	step_two("auto-mpg-nodups.txt")
 	step_two("auto-prices-nodups.txt")
-	raw_input("Hit Enter to EXIT")
+	#raw_input("Hit Enter to EXIT")
 
 
 main()
