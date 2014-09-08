@@ -1,0 +1,584 @@
+car_name,model_year,msrp,acceleration,mpg,cylinders,weight,displacement,horsepower,origin
+amc ambassador dpl,70,3114,NA,NA,NA,NA,NA,NA,NA
+chevrolet chevelle malibu,70,NA,12.0,18.0,8,3504,307.0,130.0,1
+buick skylark 320,70,NA,11.5,15.0,8,3693,350.0,165.0,1
+plymouth satellite,70,NA,11.0,18.0,8,3436,318.0,150.0,1
+amc rebel sst,70,NA,12.0,16.0,8,3433,304.0,150.0,1
+ford torino,70,NA,10.5,17.0,8,3449,302.0,140.0,1
+ford galaxie 500,70,NA,10.0,15.0,8,4341,429.0,198.0,1
+chevrolet impala,70,NA,9.0,14.0,8,4354,454.0,220.0,1
+plymouth fury iii,70,NA,8.5,14.0,8,4312,440.0,215.0,1
+pontiac catalina,70,NA,10.0,14.0,8,4425,455.0,225.0,1
+citroen ds-21 pallas,70,NA,17.5,NA,4,3090,133.0,115.0,2
+chevrolet chevelle concours (sw),70,NA,11.5,NA,8,4142,350.0,165.0,1
+ford torino (sw),70,NA,11.0,NA,8,4034,351.0,153.0,1
+plymouth satellite (sw),70,NA,10.5,NA,8,4166,383.0,175.0,1
+amc rebel sst (sw),70,NA,11.0,NA,8,3850,360.0,175.0,1
+dodge challenger se,70,NA,10.0,15.0,8,3563,383.0,170.0,1
+plymouth 'cuda 340,70,NA,8.0,14.0,8,3609,340.0,160.0,1
+ford mustang boss 302,70,NA,8.0,NA,8,3353,302.0,140.0,1
+chevrolet monte carlo,70,NA,9.5,15.0,8,3761,400.0,150.0,1
+buick estate wagon (sw),70,NA,10.0,14.0,8,3086,455.0,225.0,1
+toyota corona mark ii,70,NA,15.0,24.0,4,2372,113.0,95.00,3
+plymouth duster,70,NA,15.5,22.0,6,2833,198.0,95.00,1
+amc hornet,70,NA,15.5,18.0,6,2774,199.0,97.00,1
+ford maverick,70,NA,16.0,21.0,6,2587,200.0,85.00,1
+datsun pl510,70,NA,14.5,27.0,4,2130,97.00,88.00,3
+volkswagen 1131 deluxe sedan,70,NA,20.5,26.0,4,1835,97.00,46.00,2
+peugeot 504,70,NA,17.5,25.0,4,2672,110.0,87.00,2
+audi 100 ls,70,NA,14.5,24.0,4,2430,107.0,90.00,2
+saab 99e,70,NA,17.5,25.0,4,2375,104.0,95.00,2
+bmw 2002,70,NA,12.5,26.0,4,2234,121.0,113.0,2
+amc gremlin,70,NA,15.0,21.0,6,2648,199.0,90.00,1
+ford f250,70,NA,14.0,10.0,8,4615,360.0,215.0,1
+chevy c20,70,NA,15.0,10.0,8,4376,307.0,200.0,1
+dodge d200,70,NA,13.5,11.0,8,4382,318.0,210.0,1
+hi 1200d,70,NA,18.5,9.0,8,4732,304.0,193.0,1
+datsun pl510,71,NA,14.5,27.0,4,2130,97.00,88.00,3
+chevrolet vega 2300,71,NA,15.5,28.0,4,2264,140.0,90.00,1
+toyota corona,71,NA,14.0,25.0,4,2228,113.0,95.00,3
+ford pinto,71,NA,19.0,25.0,4,2046,98.00,NA,1
+volkswagen super beetle 117,71,NA,20.0,NA,4,1978,97.00,48.00,2
+amc gremlin,71,NA,13.0,19.0,6,2634,232.0,100.0,1
+plymouth satellite custom,71,NA,15.5,16.0,6,3439,225.0,105.0,1
+chevrolet chevelle malibu,71,NA,15.5,17.0,6,3329,250.0,100.0,1
+ford torino 500,71,NA,15.5,19.0,6,3302,250.0,88.00,1
+amc matador,71,NA,15.5,18.0,6,3288,232.0,100.0,1
+chevrolet impala,71,NA,12.0,14.0,8,4209,350.0,165.0,1
+pontiac catalina brougham,71,NA,11.5,14.0,8,4464,400.0,175.0,1
+ford galaxie 500,71,NA,13.5,14.0,8,4154,351.0,153.0,1
+plymouth fury iii,71,NA,13.0,14.0,8,4096,318.0,150.0,1
+dodge monaco (sw),71,NA,11.5,12.0,8,4955,383.0,180.0,1
+ford country squire (sw),71,NA,12.0,13.0,8,4746,400.0,170.0,1
+pontiac safari (sw),71,NA,12.0,13.0,8,5140,400.0,175.0,1
+amc hornet sportabout (sw),71,NA,13.5,18.0,6,2962,258.0,110.0,1
+chevrolet vega (sw),71,NA,19.0,22.0,4,2408,140.0,72.00,1
+pontiac firebird,71,NA,15.0,19.0,6,3282,250.0,100.0,1
+ford mustang,71,NA,14.5,18.0,6,3139,250.0,88.00,1
+mercury capri 2000,71,NA,14.0,23.0,4,2220,122.0,86.00,1
+opel 1900,71,NA,14.0,28.0,4,2123,116.0,90.00,2
+peugeot 304,71,NA,19.5,30.0,4,2074,79.00,70.00,2
+fiat 124b,71,NA,14.5,30.0,4,2065,88.00,76.00,2
+toyota corolla 1200,71,NA,19.0,31.0,4,1773,71.00,65.00,3
+datsun 1200,71,NA,18.0,35.0,4,1613,72.00,69.00,3
+volkswagen model 111,71,NA,19.0,27.0,4,1834,97.00,60.00,2
+plymouth cricket,71,NA,20.5,26.0,4,1955,91.00,70.00,1
+toyota corona hardtop,72,NA,15.5,24.0,4,2278,113.0,95.00,3
+dodge colt hardtop,72,NA,17.0,25.0,4,2126,97.50,80.00,1
+volkswagen type 3,72,NA,23.5,23.0,4,2254,97.00,54.00,2
+chevrolet vega,72,NA,19.5,20.0,4,2408,140.0,90.00,1
+ford pinto runabout,72,NA,16.5,21.0,4,2226,122.0,86.00,1
+chevrolet impala,72,NA,12.0,13.0,8,4274,350.0,165.0,1
+pontiac catalina,72,NA,12.0,14.0,8,4385,400.0,175.0,1
+plymouth fury iii,72,NA,13.5,15.0,8,4135,318.0,150.0,1
+ford galaxie 500,72,NA,13.0,14.0,8,4129,351.0,153.0,1
+amc ambassador sst,72,NA,11.5,17.0,8,3672,304.0,150.0,1
+mercury marquis,72,NA,11.0,11.0,8,4633,429.0,208.0,1
+buick lesabre custom,72,NA,13.5,13.0,8,4502,350.0,155.0,1
+oldsmobile delta 88 royale,72,NA,13.5,12.0,8,4456,350.0,160.0,1
+chrysler newport royal,72,NA,12.5,13.0,8,4422,400.0,190.0,1
+mazda rx2 coupe,72,NA,13.5,19.0,3,2330,70.00,97.00,3
+amc matador (sw),72,NA,12.5,15.0,8,3892,304.0,150.0,1
+chevrolet chevelle concours (sw),72,NA,14.0,13.0,8,4098,307.0,130.0,1
+ford gran torino (sw),72,NA,16.0,13.0,8,4294,302.0,140.0,1
+plymouth satellite custom (sw),72,NA,14.0,14.0,8,4077,318.0,150.0,1
+volvo 145e (sw),72,NA,14.5,18.0,4,2933,121.0,112.0,2
+volkswagen 411 (sw),72,NA,18.0,22.0,4,2511,121.0,76.00,2
+peugeot 504 (sw),72,NA,19.5,21.0,4,2979,120.0,87.00,2
+renault 12 (sw),72,NA,18.0,26.0,4,2189,96.00,69.00,2
+ford pinto (sw),72,NA,16.0,22.0,4,2395,122.0,86.00,1
+datsun 510 (sw),72,NA,17.0,28.0,4,2288,97.00,92.00,3
+toyota corona mark ii (sw),72,NA,14.5,23.0,4,2506,120.0,97.00,3
+dodge colt (sw),72,NA,15.0,28.0,4,2164,98.00,80.00,1
+toyota corolla 1600 (sw),72,NA,16.5,27.0,4,2100,97.00,88.00,3
+buick century 350,73,NA,13.0,13.0,8,4100,350.0,175.0,1
+amc matador,73,NA,11.5,14.0,8,3672,304.0,150.0,1
+chevrolet malibu,73,NA,13.0,13.0,8,3988,350.0,145.0,1
+ford gran torino,73,NA,14.5,14.0,8,4042,302.0,137.0,1
+dodge coronet custom,73,NA,12.5,15.0,8,3777,318.0,150.0,1
+mercury marquis brougham,73,NA,11.5,12.0,8,4952,429.0,198.0,1
+chevrolet caprice classic,73,NA,12.0,13.0,8,4464,400.0,150.0,1
+ford ltd,73,NA,13.0,13.0,8,4363,351.0,158.0,1
+plymouth fury gran sedan,73,NA,14.5,14.0,8,4237,318.0,150.0,1
+chrysler new yorker brougham,73,NA,11.0,13.0,8,4735,440.0,215.0,1
+buick electra 225 custom,73,NA,11.0,12.0,8,4951,455.0,225.0,1
+amc ambassador brougham,73,NA,11.0,13.0,8,3821,360.0,175.0,1
+plymouth valiant,73,NA,16.5,18.0,6,3121,225.0,105.0,1
+chevrolet nova custom,73,NA,18.0,16.0,6,3278,250.0,100.0,1
+amc hornet,73,NA,16.0,18.0,6,2945,232.0,100.0,1
+ford maverick,73,NA,16.5,18.0,6,3021,250.0,88.00,1
+plymouth duster,73,NA,16.0,23.0,6,2904,198.0,95.00,1
+volkswagen super beetle,73,NA,21.0,26.0,4,1950,97.00,46.00,2
+chevrolet impala,73,NA,14.0,11.0,8,4997,400.0,150.0,1
+ford country,73,NA,12.5,12.0,8,4906,400.0,167.0,1
+plymouth custom suburb,73,NA,13.0,13.0,8,4654,360.0,170.0,1
+oldsmobile vista cruiser,73,NA,12.5,12.0,8,4499,350.0,180.0,1
+amc gremlin,73,NA,15.0,18.0,6,2789,232.0,100.0,1
+toyota carina,73,NA,19.0,20.0,4,2279,97.00,88.00,3
+chevrolet vega,73,NA,19.5,21.0,4,2401,140.0,72.00,1
+datsun 610,73,NA,16.5,22.0,4,2379,108.0,94.00,3
+maxda rx3,73,NA,13.5,18.0,3,2124,70.00,90.00,3
+ford pinto,73,NA,18.5,19.0,4,2310,122.0,85.00,1
+mercury capri v6,73,NA,14.0,21.0,6,2472,155.0,107.0,1
+fiat 124 sport coupe,73,NA,15.5,26.0,4,2265,98.00,90.00,2
+chevrolet monte carlo s,73,NA,13.0,15.0,8,4082,350.0,145.0,1
+pontiac grand prix,73,NA,9.50,16.0,8,4278,400.0,230.0,1
+fiat 128,73,NA,19.5,29.0,4,1867,68.00,49.00,2
+opel manta,73,NA,15.5,24.0,4,2158,116.0,75.00,2
+audi 100ls,73,NA,14.0,20.0,4,2582,114.0,91.00,2
+volvo 144ea,73,NA,15.5,19.0,4,2868,121.0,112.0,2
+dodge dart custom,73,NA,11.0,15.0,8,3399,318.0,150.0,1
+saab 99le,73,NA,14.0,24.0,4,2660,121.0,110.0,2
+toyota mark ii,73,NA,13.5,20.0,6,2807,156.0,122.0,3
+oldsmobile omega,73,NA,11.0,11.0,8,3664,350.0,180.0,1
+plymouth duster,74,NA,16.5,20.0,6,3102,198.0,95.00,1
+ford maverick,74,NA,17.0,21.0,6,2875,200.0,NA,1
+amc hornet,74,NA,16.0,19.0,6,2901,232.0,100.0,1
+chevrolet nova,74,NA,17.0,15.0,6,3336,250.0,100.0,1
+datsun b210,74,NA,19.0,31.0,4,1950,79.00,67.00,3
+ford pinto,74,NA,16.5,26.0,4,2451,122.0,80.00,1
+toyota corolla 1200,74,NA,21.0,32.0,4,1836,71.00,65.00,3
+chevrolet vega,74,NA,17.0,25.0,4,2542,140.0,75.00,1
+chevrolet chevelle malibu classic,74,NA,17.0,16.0,6,3781,250.0,100.0,1
+amc matador,74,NA,18.0,16.0,6,3632,258.0,110.0,1
+plymouth satellite sebring,74,NA,16.5,18.0,6,3613,225.0,105.0,1
+ford gran torino,74,NA,14.0,16.0,8,4141,302.0,140.0,1
+buick century luxus (sw),74,NA,14.5,13.0,8,4699,350.0,150.0,1
+dodge coronet custom (sw),74,NA,13.5,14.0,8,4457,318.0,150.0,1
+ford gran torino (sw),74,NA,16.0,14.0,8,4638,302.0,140.0,1
+amc matador (sw),74,NA,15.5,14.0,8,4257,304.0,150.0,1
+audi fox,74,NA,16.5,29.0,4,2219,98.00,83.00,2
+volkswagen dasher,74,NA,15.5,26.0,4,1963,79.00,67.00,2
+opel manta,74,NA,14.5,26.0,4,2300,97.00,78.00,2
+toyota corona,74,NA,16.5,31.0,4,1649,76.00,52.00,3
+datsun 710,74,NA,19.0,32.0,4,2003,83.00,61.00,3
+dodge colt,74,NA,14.5,28.0,4,2125,90.00,75.00,1
+fiat 128,74,NA,15.5,24.0,4,2108,90.00,75.00,2
+fiat 124 tc,74,NA,14.0,26.0,4,2246,116.0,75.00,2
+honda civic,74,NA,15.0,24.0,4,2489,120.0,97.00,3
+subaru,74,NA,15.5,26.0,4,2391,108.0,93.00,3
+fiat x1.9,74,NA,16.0,31.0,4,2000,79.00,67.00,2
+plymouth valiant custom,75,NA,16.0,19.0,6,3264,225.0,95.00,1
+chevrolet nova,75,NA,16.0,18.0,6,3459,250.0,105.0,1
+mercury monarch,75,NA,21.0,15.0,6,3432,250.0,72.00,1
+ford maverick,75,NA,19.5,15.0,6,3158,250.0,72.00,1
+pontiac catalina,75,NA,11.5,16.0,8,4668,400.0,170.0,1
+chevrolet bel air,75,NA,14.0,15.0,8,4440,350.0,145.0,1
+plymouth grand fury,75,NA,14.5,16.0,8,4498,318.0,150.0,1
+ford ltd,75,NA,13.5,14.0,8,4657,351.0,148.0,1
+buick century,75,NA,21.0,17.0,6,3907,231.0,110.0,1
+chevroelt chevelle malibu,75,NA,18.5,16.0,6,3897,250.0,105.0,1
+amc matador,75,NA,19.0,15.0,6,3730,258.0,110.0,1
+plymouth fury,75,NA,19.0,18.0,6,3785,225.0,95.00,1
+buick skyhawk,75,NA,15.0,21.0,6,3039,231.0,110.0,1
+chevrolet monza 2+2,75,NA,13.5,20.0,8,3221,262.0,110.0,1
+ford mustang ii,75,NA,12.0,13.0,8,3169,302.0,129.0,1
+toyota corolla,75,NA,16.0,29.0,4,2171,97.00,75.00,3
+amc gremlin,75,NA,16.0,20.0,6,2914,232.0,100.0,1
+pontiac astro,75,NA,18.5,23.0,4,2592,140.0,78.00,1
+toyota corona,75,NA,13.5,24.0,4,2702,134.0,96.00,3
+volkswagen dasher,75,NA,16.5,25.0,4,2223,90.00,71.00,2
+datsun 710,75,NA,17.0,24.0,4,2545,119.0,97.00,3
+ford pinto,75,NA,14.5,18.0,6,2984,171.0,97.00,1
+volkswagen rabbit,75,NA,14.0,29.0,4,1937,90.00,70.00,2
+amc pacer,75,NA,17.0,19.0,6,3211,232.0,90.00,1
+audi 100ls,75,NA,15.0,23.0,4,2694,115.0,95.00,2
+peugeot 504,75,NA,17.0,23.0,4,2957,120.0,88.00,2
+volvo 244dl,75,NA,14.5,22.0,4,2945,121.0,98.00,2
+saab 99le,75,NA,13.5,25.0,4,2671,121.0,115.0,2
+honda civic cvcc,75,NA,17.5,33.0,4,1795,91.00,53.00,3
+fiat 131,76,NA,15.5,28.0,4,2464,107.0,86.00,2
+opel 1900,76,NA,16.9,25.0,4,2220,116.0,81.00,2
+capri ii,76,NA,14.9,25.0,4,2572,140.0,92.00,1
+dodge colt,76,NA,17.7,26.0,4,2255,98.00,79.00,1
+renault 12tl,76,NA,15.3,27.0,4,2202,101.0,83.00,2
+chevrolet chevelle malibu classic,76,NA,13.0,17.5,8,4215,305.0,140.0,1
+dodge coronet brougham,76,NA,13.0,16.0,8,4190,318.0,150.0,1
+amc matador,76,NA,13.9,15.5,8,3962,304.0,120.0,1
+ford gran torino,76,NA,12.8,14.5,8,4215,351.0,152.0,1
+plymouth valiant,76,NA,15.4,22.0,6,3233,225.0,100.0,1
+chevrolet nova,76,NA,14.5,22.0,6,3353,250.0,105.0,1
+ford maverick,76,NA,17.6,24.0,6,3012,200.0,81.00,1
+amc hornet,76,NA,17.6,22.5,6,3085,232.0,90.00,1
+chevrolet chevette,76,NA,22.2,29.0,4,2035,85.00,52.00,1
+chevrolet woody,76,NA,22.1,24.5,4,2164,98.00,60.00,1
+vw rabbit,76,NA,14.2,29.0,4,1937,90.00,70.00,2
+honda civic,76,NA,17.4,33.0,4,1795,91.00,53.00,3
+dodge aspen se,76,NA,17.7,20.0,6,3651,225.0,100.0,1
+ford granada ghia,76,NA,21.0,18.0,6,3574,250.0,78.00,1
+pontiac ventura sj,76,NA,16.2,18.5,6,3645,250.0,110.0,1
+amc pacer d/l,76,NA,17.8,17.5,6,3193,258.0,95.00,1
+volkswagen rabbit,76,NA,12.2,29.5,4,1825,97.00,71.00,2
+datsun b-210,76,NA,17.0,32.0,4,1990,85.00,70.00,3
+toyota corolla,76,NA,16.4,28.0,4,2155,97.00,75.00,3
+ford pinto,76,NA,13.6,26.5,4,2565,140.0,72.00,1
+volvo 245,76,NA,15.7,20.0,4,3150,130.0,102.0,2
+plymouth volare premier v8,76,NA,13.2,13.0,8,3940,318.0,150.0,1
+peugeot 504,76,NA,21.9,19.0,4,3270,120.0,88.00,2
+toyota mark ii,76,NA,15.5,19.0,6,2930,156.0,108.0,3
+mercedes-benz 280s,76,NA,16.7,16.5,6,3820,168.0,120.0,2
+cadillac seville,76,NA,12.1,16.5,8,4380,350.0,180.0,1
+chevy c10,76,NA,12.0,13.0,8,4055,350.0,145.0,1
+ford f108,76,NA,15.0,13.0,8,3870,302.0,130.0,1
+dodge d100,76,NA,14.0,13.0,8,3755,318.0,150.0,1
+honda accord cvcc,77,NA,18.5,31.5,4,2045,98.00,68.00,3
+buick opel isuzu deluxe,77,NA,14.8,30.0,4,2155,111.0,80.00,1
+renault 5 gtl,77,NA,18.6,36.0,4,1825,79.00,58.00,2
+plymouth arrow gs,77,NA,15.5,25.5,4,2300,122.0,96.00,1
+datsun f-10 hatchback,77,NA,16.8,33.5,4,1945,85.00,70.00,3
+chevrolet caprice classic,77,NA,12.5,17.5,8,3880,305.0,145.0,1
+oldsmobile cutlass supreme,77,NA,19.0,17.0,8,4060,260.0,110.0,1
+dodge monaco brougham,77,NA,13.7,15.5,8,4140,318.0,145.0,1
+mercury cougar brougham,77,NA,14.9,15.0,8,4295,302.0,130.0,1
+chevrolet concours,77,NA,16.4,17.5,6,3520,250.0,110.0,1
+buick skylark,77,NA,16.9,20.5,6,3425,231.0,105.0,1
+plymouth volare custom,77,NA,17.7,19.0,6,3630,225.0,100.0,1
+ford granada,77,NA,19.0,18.5,6,3525,250.0,98.00,1
+pontiac grand prix lj,77,NA,11.1,16.0,8,4220,400.0,180.0,1
+chevrolet monte carlo landau,77,NA,11.4,15.5,8,4165,350.0,170.0,1
+chrysler cordoba,77,NA,12.2,15.5,8,4325,400.0,190.0,1
+ford thunderbird,77,NA,14.5,16.0,8,4335,351.0,149.0,1
+volkswagen rabbit custom,77,NA,14.5,29.0,4,1940,97.00,78.00,2
+pontiac sunbird coupe,77,NA,16.0,24.5,4,2740,151.0,88.00,1
+toyota corolla liftback,77,NA,18.2,26.0,4,2265,97.00,75.00,3
+ford mustang ii 2+2,77,NA,15.8,25.5,4,2755,140.0,89.00,1
+chevrolet chevette,77,NA,17.0,30.5,4,2051,98.00,63.00,1
+dodge colt m/m,77,NA,15.9,33.5,4,2075,98.00,83.00,1
+subaru dl,77,NA,16.4,30.0,4,1985,97.00,67.00,3
+volkswagen dasher,77,NA,14.1,30.5,4,2190,97.00,78.00,2
+datsun 810,77,NA,14.5,22.0,6,2815,146.0,97.00,3
+bmw 320i,77,NA,12.8,21.5,4,2600,121.0,110.0,2
+mazda rx-4,77,NA,13.5,21.5,3,2720,80.00,110.0,3
+volkswagen rabbit custom diesel,78,NA,21.5,43.1,4,1985,90.00,48.00,2
+ford fiesta,78,NA,14.4,36.1,4,1800,98.00,66.00,1
+mazda glc deluxe,78,NA,19.4,32.8,4,1985,78.00,52.00,3
+datsun b210 gx,78,NA,18.6,39.4,4,2070,85.00,70.00,3
+honda civic cvcc,78,NA,16.4,36.1,4,1800,91.00,60.00,3
+oldsmobile cutlass salon brougham,78,NA,15.5,19.9,8,3365,260.0,110.0,1
+dodge diplomat,78,NA,13.2,19.4,8,3735,318.0,140.0,1
+mercury monarch ghia,78,NA,12.8,20.2,8,3570,302.0,139.0,1
+pontiac phoenix lj,78,NA,19.2,19.2,6,3535,231.0,105.0,1
+chevrolet malibu,78,NA,18.2,20.5,6,3155,200.0,95.00,1
+ford fairmont (auto),78,NA,15.8,20.2,6,2965,200.0,85.00,1
+ford fairmont (man),78,NA,15.4,25.1,4,2720,140.0,88.00,1
+plymouth volare,78,NA,17.2,20.5,6,3430,225.0,100.0,1
+amc concord,78,NA,17.2,19.4,6,3210,232.0,90.00,1
+buick century special,78,NA,15.8,20.6,6,3380,231.0,105.0,1
+mercury zephyr,78,NA,16.7,20.8,6,3070,200.0,85.00,1
+dodge aspen,78,NA,18.7,18.6,6,3620,225.0,110.0,1
+amc concord d/l,78,NA,15.1,18.1,6,3410,258.0,120.0,1
+chevrolet monte carlo landau,78,NA,13.2,19.2,8,3425,305.0,145.0,1
+buick regal sport coupe (turbo),78,NA,13.4,17.7,6,3445,231.0,165.0,1
+ford futura,78,NA,11.2,18.1,8,3205,302.0,139.0,1
+dodge magnum xe,78,NA,13.7,17.5,8,4080,318.0,140.0,1
+chevrolet chevette,78,NA,16.5,30.0,4,2155,98.00,68.00,1
+toyota corona,78,NA,14.2,27.5,4,2560,134.0,95.00,3
+datsun 510,78,NA,14.7,27.2,4,2300,119.0,97.00,3
+dodge omni,78,NA,14.5,30.9,4,2230,105.0,75.00,1
+toyota celica gt liftback,78,NA,14.8,21.1,4,2515,134.0,95.00,3
+plymouth sapporo,78,NA,16.7,23.2,4,2745,156.0,105.0,1
+oldsmobile starfire sx,78,NA,17.6,23.8,4,2855,151.0,85.00,1
+datsun 200-sx,78,NA,14.9,23.9,4,2405,119.0,97.00,3
+audi 5000,78,NA,15.9,20.3,5,2830,131.0,103.0,2
+volvo 264gl,78,NA,13.6,17.0,6,3140,163.0,125.0,2
+saab 99gle,78,NA,15.7,21.6,4,2795,121.0,115.0,2
+peugeot 604sl,78,NA,15.8,16.2,6,3410,163.0,133.0,2
+volkswagen scirocco,78,NA,14.9,31.5,4,1990,89.00,71.00,2
+honda accord lx,78,NA,16.6,29.5,4,2135,98.00,68.00,3
+pontiac lemans v6,79,NA,15.4,21.5,6,3245,231.0,115.0,1
+mercury zephyr 6,79,NA,18.2,19.8,6,2990,200.0,85.00,1
+ford fairmont 4,79,NA,17.3,22.3,4,2890,140.0,88.00,1
+amc concord dl 6,79,NA,18.2,20.2,6,3265,232.0,90.00,1
+dodge aspen 6,79,NA,16.6,20.6,6,3360,225.0,110.0,1
+chevrolet caprice classic,79,NA,15.4,17.0,8,3840,305.0,130.0,1
+ford ltd landau,79,NA,13.4,17.6,8,3725,302.0,129.0,1
+mercury grand marquis,79,NA,13.2,16.5,8,3955,351.0,138.0,1
+dodge stregis,79,NA,15.2,18.2,8,3830,318.0,135.0,1
+buick estate wagon (sw),79,NA,14.9,16.9,8,4360,350.0,155.0,1
+ford country squire (sw),79,NA,14.3,15.5,8,4054,351.0,142.0,1
+chevrolet malibu classic (sw),79,NA,15.0,19.2,8,3605,267.0,125.0,1
+chrysler lebaron town @ country (sw),79,NA,13.0,18.5,8,3940,360.0,150.0,1
+vw rabbit custom,79,NA,14.0,31.9,4,1925,89.00,71.00,2
+maxda glc deluxe,79,NA,15.2,34.1,4,1975,86.00,65.00,3
+dodge colt hatchback custom,79,NA,14.4,35.7,4,1915,98.00,80.00,1
+amc spirit dl,79,NA,15.0,27.4,4,2670,121.0,80.00,1
+mercedes benz 300d,79,NA,20.1,25.4,5,3530,183.0,77.00,2
+cadillac eldorado,79,NA,17.4,23.0,8,3900,350.0,125.0,1
+peugeot 504,79,NA,24.8,27.2,4,3190,141.0,71.00,2
+oldsmobile cutlass salon brougham,79,NA,22.2,23.9,8,3420,260.0,90.00,1
+plymouth horizon,79,NA,13.2,34.2,4,2200,105.0,70.00,1
+plymouth horizon tc3,79,NA,14.9,34.5,4,2150,105.0,70.00,1
+datsun 210,79,NA,19.2,31.8,4,2020,85.00,65.00,3
+fiat strada custom,79,NA,14.7,37.3,4,2130,91.00,69.00,2
+buick skylark limited,79,NA,16.0,28.4,4,2670,151.0,90.00,1
+chevrolet citation,79,NA,11.3,28.8,6,2595,173.0,115.0,1
+oldsmobile omega brougham,79,NA,12.9,26.8,6,2700,173.0,115.0,1
+pontiac phoenix,79,NA,13.2,33.5,4,2556,151.0,90.00,1
+amc rebel sst (sw),70,2766,NA,NA,NA,NA,NA,NA,NA
+amc ambassador dpl,70,NA,8.5,15.0,8,3850,390.0,190.0,1
+buick estate wagon (sw),70,4226,NA,NA,NA,NA,NA,NA,NA
+buick skylark 320,70,2847,NA,NA,NA,NA,NA,NA,NA
+chevrolet chevelle concours (sw),70,3210,NA,NA,NA,NA,NA,NA,NA
+chevrolet chevelle malibu,70,2881,12.0,18.0,8,3504,307.0,130.0,1
+chevrolet chevelle malibu,70,2881,NA,NA,NA,NA,NA,NA,NA
+chevrolet impala,70,3132,NA,NA,NA,NA,NA,NA,NA
+chevrolet monte carlo,70,3123,NA,NA,NA,NA,NA,NA,NA
+dodge challenger se,70,3914,NA,NA,NA,NA,NA,NA,NA
+ford galaxie 500,70,3137,NA,NA,NA,NA,NA,NA,NA
+ford maverick,70,1995,NA,NA,NA,NA,NA,NA,NA
+ford mustang boss 302,70,3126,NA,NA,NA,NA,NA,NA,NA
+ford torino,70,2778,NA,NA,NA,NA,NA,NA,NA
+ford torino (sw),70,3164,NA,NA,NA,NA,NA,NA,NA
+plymouth duster,70,2547,NA,NA,NA,NA,NA,NA,NA
+plymouth fury iii,70,3174,NA,NA,NA,NA,NA,NA,NA
+plymouth satellite,70,2831,NA,NA,NA,NA,NA,NA,NA
+plymouth satellite (sw),70,3191,NA,NA,NA,NA,NA,NA,NA
+pontiac catalina,70,3164,NA,NA,NA,NA,NA,NA,NA
+toyota corona mark ii,70,2170,NA,NA,NA,NA,NA,NA,NA
+amc gremlin,71,1999,NA,NA,NA,NA,NA,NA,NA
+amc hornet sportabout (sw),71,2334,NA,NA,NA,NA,NA,NA,NA
+amc matador,71,3100,NA,NA,NA,NA,NA,NA,NA
+audi 100 ls,71,3595,NA,NA,NA,NA,NA,NA,NA
+bmw 2002,71,3275,NA,NA,NA,NA,NA,NA,NA
+chevrolet impala,71,3813,NA,NA,NA,NA,NA,NA,NA
+chevrolet vega (sw),71,2328,NA,NA,NA,NA,NA,NA,NA
+chevrolet vega 2300,71,2090,NA,NA,NA,NA,NA,NA,NA
+chevy c20,71,3870,NA,NA,NA,NA,NA,NA,NA
+dodge d200,71,3198,NA,NA,NA,NA,NA,NA,NA
+dodge monaco (sw),71,4689,NA,NA,NA,NA,NA,NA,NA
+fiat 124b,71,2081,NA,NA,NA,NA,NA,NA,NA
+ford country squire (sw),71,4074,NA,NA,NA,NA,NA,NA,NA
+ford f250,71,3214,NA,NA,NA,NA,NA,NA,NA
+ford mustang,71,3322,NA,NA,NA,NA,NA,NA,NA
+ford pinto,71,1919,NA,NA,NA,NA,NA,NA,NA
+ford torino 500,71,2950,NA,NA,NA,NA,NA,NA,NA
+peugeot 304,71,2479,NA,NA,NA,NA,NA,NA,NA
+peugeot 504,71,3478,NA,NA,NA,NA,NA,NA,NA
+plymouth cricket,71,1915,NA,NA,NA,NA,NA,NA,NA
+plymouth fury iii,71,3612,NA,NA,NA,NA,NA,NA,NA
+plymouth satellite custom,71,3003,NA,NA,NA,NA,NA,NA,NA
+pontiac catalina brougham,71,4154,NA,NA,NA,NA,NA,NA,NA
+pontiac firebird,71,3168,NA,NA,NA,NA,NA,NA,NA
+pontiac safari (sw),71,4643,NA,NA,NA,NA,NA,NA,NA
+saab 99e,71,3375,NA,NA,NA,NA,NA,NA,NA
+toyota corolla 1200,71,1798,NA,NA,NA,NA,NA,NA,NA
+toyota corona,71,2150,NA,NA,NA,NA,NA,NA,NA
+amc ambassador sst,72,3902,NA,NA,NA,NA,NA,NA,NA
+amc matador (sw),72,3239,NA,NA,NA,NA,NA,NA,NA
+buick lesabre custom,72,4291,NA,NA,NA,NA,NA,NA,NA
+chevrolet chevelle concours (sw),72,3244,NA,NA,NA,NA,NA,NA,NA
+chevrolet impala,72,3979,NA,NA,NA,NA,NA,NA,NA
+chevrolet vega,72,2160,NA,NA,NA,NA,NA,NA,NA
+chrysler newport royal,72,4124,NA,NA,NA,NA,NA,NA,NA
+dodge colt (sw),72,2451,NA,NA,NA,NA,NA,NA,NA
+dodge colt hardtop,72,2233,NA,NA,NA,NA,NA,NA,NA
+ford pinto (sw),72,2265,NA,NA,NA,NA,NA,NA,NA
+ford pinto runabout,72,2078,NA,NA,NA,NA,NA,NA,NA
+mazda rx2 coupe,72,2290,NA,NA,NA,NA,NA,NA,NA
+mercury marquis,72,4572,NA,NA,NA,NA,NA,NA,NA
+oldsmobile delta 88 royale,72,4387,NA,NA,NA,NA,NA,NA,NA
+peugeot 504 (sw),72,4095,NA,NA,NA,NA,NA,NA,NA
+plymouth fury iii,72,3785,NA,NA,NA,NA,NA,NA,NA
+plymouth satellite custom (sw),72,3340,NA,NA,NA,NA,NA,NA,NA
+pontiac catalina,72,4080,NA,NA,NA,NA,NA,NA,NA
+renault 12 (sw),72,2695,NA,NA,NA,NA,NA,NA,NA
+toyota corolla 1600 (sw),72,2301,NA,NA,NA,NA,NA,NA,NA
+toyota corona hardtop,72,2532,NA,NA,NA,NA,NA,NA,NA
+toyoto corona mark ii (sw),72,2837,NA,NA,NA,NA,NA,NA,NA
+volkswagen 411 (sw),72,3275,NA,NA,NA,NA,NA,NA,NA
+volkswagen type 3,72,2549,NA,NA,NA,NA,NA,NA,NA
+volvo 145e (sw),72,3890,NA,NA,NA,NA,NA,NA,NA
+amc ambassador brougham,73,4477,NA,NA,NA,NA,NA,NA,NA
+amc gremlin,73,2098,NA,NA,NA,NA,NA,NA,NA
+amc hornet,73,2449,NA,NA,NA,NA,NA,NA,NA
+amc matador,73,2986,NA,NA,NA,NA,NA,NA,NA
+audi 100ls,73,4275,NA,NA,NA,NA,NA,NA,NA
+buick century 350,73,3057,NA,NA,NA,NA,NA,NA,NA
+buick electra 225 custom,73,4993,NA,NA,NA,NA,NA,NA,NA
+chevrolet caprice classic,73,4345,NA,NA,NA,NA,NA,NA,NA
+chevrolet impala,73,3836,NA,NA,NA,NA,NA,NA,NA
+chevrolet malibu,73,3010,NA,NA,NA,NA,NA,NA,NA
+chevrolet monte carlo s,73,3562,NA,NA,NA,NA,NA,NA,NA
+chevrolet nova custom,73,2641,NA,NA,NA,NA,NA,NA,NA
+chevrolet vega,73,2192,NA,NA,NA,NA,NA,NA,NA
+chrysler new yorker brougham,73,5413,NA,NA,NA,NA,NA,NA,NA
+dodge coronet custom,73,3129,NA,NA,NA,NA,NA,NA,NA
+dodge dart custom,73,2658,NA,NA,NA,NA,NA,NA,NA
+fiat 124 sport coupe,73,3674,NA,NA,NA,NA,NA,NA,NA
+fiat 128,73,2195,NA,NA,NA,NA,NA,NA,NA
+ford gran torino,73,3015,NA,NA,NA,NA,NA,NA,NA
+ford ltd,73,3950,NA,NA,NA,NA,NA,NA,NA
+ford maverick,73,2248,NA,NA,NA,NA,NA,NA,NA
+ford pinto,73,2021,NA,NA,NA,NA,NA,NA,NA
+maxda rx3,73,3295,NA,NA,NA,NA,NA,NA,NA
+mercury marquis brougham,73,5151,NA,NA,NA,NA,NA,NA,NA
+oldsmobile omega,73,2777,NA,NA,NA,NA,NA,NA,NA
+oldsmobile vista cruiser,73,3789,NA,NA,NA,NA,NA,NA,NA
+plymouth fury gran sedan,73,4064,NA,NA,NA,NA,NA,NA,NA
+plymouth valiant,73,2447,NA,NA,NA,NA,NA,NA,NA
+pontiac grand prix,73,4583,NA,NA,NA,NA,NA,NA,NA
+saab 99le,73,4095,NA,NA,NA,NA,NA,NA,NA
+toyota carina,73,2589,NA,NA,NA,NA,NA,NA,NA
+volkswagen super beetle,73,2499,NA,NA,NA,NA,NA,NA,NA
+volvo 144ea,73,4340,NA,NA,NA,NA,NA,NA,NA
+amc hornet,74,2849,NA,NA,NA,NA,NA,NA,NA
+amc matador,74,3699,NA,NA,NA,NA,NA,NA,NA
+amc matador (sw),74,3477,NA,NA,NA,NA,NA,NA,NA
+audi fox,74,3975,NA,NA,NA,NA,NA,NA,NA
+buick century luxus (sw),74,4371,NA,NA,NA,NA,NA,NA,NA
+chevrolet nova,74,2919,NA,NA,NA,NA,NA,NA,NA
+chevrolet vega,74,2505,NA,NA,NA,NA,NA,NA,NA
+dodge colt,74,2585,NA,NA,NA,NA,NA,NA,NA
+dodge coronet custom (sw),74,3882,NA,NA,NA,NA,NA,NA,NA
+fiat 124 tc,74,4343,NA,NA,NA,NA,NA,NA,NA
+fiat 128,74,2684,NA,NA,NA,NA,NA,NA,NA
+fiat x1.9,74,4167,NA,NA,NA,NA,NA,NA,NA
+ford gran torino,74,3411,NA,NA,NA,NA,NA,NA,NA
+ford gran torino (sw),74,4017,NA,NA,NA,NA,NA,NA,NA
+ford maverick,74,2790,NA,NA,NA,NA,NA,NA,NA
+ford pinto,74,2527,NA,NA,NA,NA,NA,NA,NA
+honda civic,74,2545,NA,NA,NA,NA,NA,NA,NA
+opel manta,74,3275,NA,NA,NA,NA,NA,NA,NA
+plymouth duster,74,2829,NA,NA,NA,NA,NA,NA,NA
+plymouth satellite sebring,74,3468,NA,NA,NA,NA,NA,NA,NA
+subaru,74,2997,NA,NA,NA,NA,NA,NA,NA
+toyota corolla 1200,74,2199,NA,NA,NA,NA,NA,NA,NA
+toyota corona,74,3344,NA,NA,NA,NA,NA,NA,NA
+volkswagen dasher,74,4100,NA,NA,NA,NA,NA,NA,NA
+amc gremlin,75,2798,NA,NA,NA,NA,NA,NA,NA
+amc matador,75,3545,NA,NA,NA,NA,NA,NA,NA
+amc pacer,75,3299,NA,NA,NA,NA,NA,NA,NA
+audi 100ls,75,6002,NA,NA,NA,NA,NA,NA,NA
+buick century,75,4022,NA,NA,NA,NA,NA,NA,NA
+buick skyhawk,75,4173,NA,NA,NA,NA,NA,NA,NA
+chevrolet bel air,75,4345,NA,NA,NA,NA,NA,NA,NA
+chevrolet monza 2+2,75,3953,NA,NA,NA,NA,NA,NA,NA
+chevrolet nova,75,3280,NA,NA,NA,NA,NA,NA,NA
+ford ltd,75,4753,NA,NA,NA,NA,NA,NA,NA
+ford maverick,75,3025,NA,NA,NA,NA,NA,NA,NA
+ford mustang ii,75,3801,NA,NA,NA,NA,NA,NA,NA
+ford pinto,75,2769,NA,NA,NA,NA,NA,NA,NA
+honda civic cvcc,75,3009,NA,NA,NA,NA,NA,NA,NA
+mercury monarch,75,3892,NA,NA,NA,NA,NA,NA,NA
+peugeot 504,75,6330,NA,NA,NA,NA,NA,NA,NA
+plymouth fury,75,3672,NA,NA,NA,NA,NA,NA,NA
+plymouth grand fury,75,4565,NA,NA,NA,NA,NA,NA,NA
+plymouth valiant custom,75,3422,NA,NA,NA,NA,NA,NA,NA
+pontiac astro,75,3079,NA,NA,NA,NA,NA,NA,NA
+pontiac catalina,75,4700,NA,NA,NA,NA,NA,NA,NA
+saab 99le,75,5198,NA,NA,NA,NA,NA,NA,NA
+toyota corolla,75,2711,NA,NA,NA,NA,NA,NA,NA
+toyota corona,75,4379,NA,NA,NA,NA,NA,NA,NA
+volkswagen dasher,75,4700,NA,NA,NA,NA,NA,NA,NA
+volkswagen rabbit,75,3330,NA,NA,NA,NA,NA,NA,NA
+volvo 244dl,75,6595,NA,NA,NA,NA,NA,NA,NA
+amc hornet,76,3199,NA,NA,NA,NA,NA,NA,NA
+amc matador,76,3725,NA,NA,NA,NA,NA,NA,NA
+amc pacer d/l,76,3499,NA,NA,NA,NA,NA,NA,NA
+cadillac seville,76,12479,NA,NA,NA,NA,NA,NA,NA
+chevrolet chevelle malibu classic,76,4455,NA,NA,NA,NA,NA,NA,NA
+chevrolet chevette,76,2558,NA,NA,NA,NA,NA,NA,NA
+chevrolet nova,76,3413,NA,NA,NA,NA,NA,NA,NA
+chevy c10,76,5087,NA,NA,NA,NA,NA,NA,NA
+dodge aspen se,76,4413,NA,NA,NA,NA,NA,NA,NA
+dodge colt,76,3175,NA,NA,NA,NA,NA,NA,NA
+dodge coronet brougham,76,4297,NA,NA,NA,NA,NA,NA,NA
+dodge d100,76,3777,NA,NA,NA,NA,NA,NA,NA
+fiat 131,76,4286,NA,NA,NA,NA,NA,NA,NA
+ford granada ghia,76,4353,NA,NA,NA,NA,NA,NA,NA
+ford maverick,76,3117,NA,NA,NA,NA,NA,NA,NA
+ford pinto,76,3025,NA,NA,NA,NA,NA,NA,NA
+honda civic,76,2939,NA,NA,NA,NA,NA,NA,NA
+mercedes-benz 280s,76,17124,NA,NA,NA,NA,NA,NA,NA
+peugeot 504,76,7340,NA,NA,NA,NA,NA,NA,NA
+plymouth valiant,76,3276,NA,NA,NA,NA,NA,NA,NA
+plymouth volare premier v8,76,3324,NA,NA,NA,NA,NA,NA,NA
+pontiac ventura sj,76,3702,NA,NA,NA,NA,NA,NA,NA
+renault 12tl,76,3899,NA,NA,NA,NA,NA,NA,NA
+toyota corolla,76,2789,NA,NA,NA,NA,NA,NA,NA
+volkswagen rabbit,76,3499,NA,NA,NA,NA,NA,NA,NA
+volvo 245,76,7495,NA,NA,NA,NA,NA,NA,NA
+vw rabbit,76,3499,NA,NA,NA,NA,NA,NA,NA
+bmw 320i,77,7990,NA,NA,NA,NA,NA,NA,NA
+buick skylark,77,3865,NA,NA,NA,NA,NA,NA,NA
+chevrolet caprice classic,77,5307,NA,NA,NA,NA,NA,NA,NA
+chevrolet chevette,77,3225,NA,NA,NA,NA,NA,NA,NA
+chevrolet concours,77,4111,NA,NA,NA,NA,NA,NA,NA
+chevrolet monte carlo landau,77,4968,NA,NA,NA,NA,NA,NA,NA
+chrysler cordoba,77,5418,NA,NA,NA,NA,NA,NA,NA
+dodge colt m/m,77,2999,NA,NA,NA,NA,NA,NA,NA
+dodge monaco brougham,77,4408,NA,NA,NA,NA,NA,NA,NA
+ford granada,77,4209,NA,NA,NA,NA,NA,NA,NA
+ford mustang ii 2+2,77,4183,NA,NA,NA,NA,NA,NA,NA
+ford thunderbird,77,5063,NA,NA,NA,NA,NA,NA,NA
+honda accord cvcc,77,3299,NA,NA,NA,NA,NA,NA,NA
+mazda rx-4,77,5470,NA,NA,NA,NA,NA,NA,NA
+mercury cougar brougham,77,4990,NA,NA,NA,NA,NA,NA,NA
+oldsmobile cutlass supreme,77,4825,NA,NA,NA,NA,NA,NA,NA
+plymouth arrow gs,77,3654,NA,NA,NA,NA,NA,NA,NA
+plymouth volare custom,77,3752,NA,NA,NA,NA,NA,NA,NA
+pontiac grand prix lj,77,5483,NA,NA,NA,NA,NA,NA,NA
+pontiac sunbird coupe,77,3659,NA,NA,NA,NA,NA,NA,NA
+renault 5 gtl,77,4450,NA,NA,NA,NA,NA,NA,NA
+subaru dl,77,3499,NA,NA,NA,NA,NA,NA,NA
+toyota corolla liftback,77,3918,NA,NA,NA,NA,NA,NA,NA
+volkswagen dasher,77,5399,NA,NA,NA,NA,NA,NA,NA
+volkswagen rabbit custom,77,4079,NA,NA,NA,NA,NA,NA,NA
+amc concord,78,3849,NA,NA,NA,NA,NA,NA,NA
+amc concord d/l,78,3849,NA,NA,NA,NA,NA,NA,NA
+audi 5000,78,8780,NA,NA,NA,NA,NA,NA,NA
+buick century special,78,4633,NA,NA,NA,NA,NA,NA,NA
+buick regal sport coupe (turbo),78,5958,NA,NA,NA,NA,NA,NA,NA
+chevrolet chevette,78,3644,NA,NA,NA,NA,NA,NA,NA
+chevrolet malibu,78,4394,NA,NA,NA,NA,NA,NA,NA
+chevrolet monte carlo landau,78,4935,NA,NA,NA,NA,NA,NA,NA
+dodge aspen,78,3911,NA,NA,NA,NA,NA,NA,NA
+dodge diplomat,78,5207,NA,NA,NA,NA,NA,NA,NA
+dodge magnum xe,78,5509,NA,NA,NA,NA,NA,NA,NA
+dodge omni,78,3967,NA,NA,NA,NA,NA,NA,NA
+ford fairmont (auto),78,3744,NA,NA,NA,NA,NA,NA,NA
+ford fairmont (man),78,3744,NA,NA,NA,NA,NA,NA,NA
+honda accord lx,78,5965,NA,NA,NA,NA,NA,NA,NA
+honda civic cvcc,78,3975,NA,NA,NA,NA,NA,NA,NA
+mazda glc deluxe,78,3145,NA,NA,NA,NA,NA,NA,NA
+mercury monarch ghia,78,4571,NA,NA,NA,NA,NA,NA,NA
+mercury zephyr,78,3897,NA,NA,NA,NA,NA,NA,NA
+oldsmobile cutlass salon brougham,78,4877,NA,NA,NA,NA,NA,NA,NA
+oldsmobile starfire sx,78,4306,NA,NA,NA,NA,NA,NA,NA
+peugeot 604sl,78,10990,NA,NA,NA,NA,NA,NA,NA
+plymouth sapporo,78,6087,NA,NA,NA,NA,NA,NA,NA
+plymouth volare,78,3771,NA,NA,NA,NA,NA,NA,NA
+pontiac phoenix lj,78,4399,NA,NA,NA,NA,NA,NA,NA
+saab 99gle,78,6298,NA,NA,NA,NA,NA,NA,NA
+toyota celica gt liftback,78,5889,NA,NA,NA,NA,NA,NA,NA
+toyota corona,78,4574,NA,NA,NA,NA,NA,NA,NA
+volkswagen rabbit custom diesel,78,4699,NA,NA,NA,NA,NA,NA,NA
+volkswagen scirocco,78,6095,NA,NA,NA,NA,NA,NA,NA
+volvo 264gl,78,10245,NA,NA,NA,NA,NA,NA,NA
+amc concord dl 6,79,4324,NA,NA,NA,NA,NA,NA,NA
+amc spirit dl,79,4133,NA,NA,NA,NA,NA,NA,NA
+buick estate wagon (sw),79,7169,NA,NA,NA,NA,NA,NA,NA
+buick skylark limited,79,4462,NA,NA,NA,NA,NA,NA,NA
+cadillac eldorado,79,14668,NA,NA,NA,NA,NA,NA,NA
+chevrolet caprice classic,79,6508,NA,NA,NA,NA,NA,NA,NA
+chevrolet malibu classic (sw),79,5480,NA,NA,NA,NA,NA,NA,NA
+chrysler lebaron town @ country (sw),79,6642,NA,NA,NA,NA,NA,NA,NA
+dodge aspen 6,79,4399,NA,NA,NA,NA,NA,NA,NA
+dodge colt hatchback custom,79,4425,NA,NA,NA,NA,NA,NA,NA
+dodge stregis,79,6847,NA,NA,NA,NA,NA,NA,NA
+fiat strada custom,79,4496,NA,NA,NA,NA,NA,NA,NA
+ford country squire (sw),79,7006,NA,NA,NA,NA,NA,NA,NA
+ford fairmont 4,79,4383,NA,NA,NA,NA,NA,NA,NA
+ford ltd landau,79,6686,NA,NA,NA,NA,NA,NA,NA
+maxda glc deluxe,79,3995,NA,NA,NA,NA,NA,NA,NA
+mercedes benz 300d,79,21497,NA,NA,NA,NA,NA,NA,NA
+mercury grand marquis,79,7721,NA,NA,NA,NA,NA,NA,NA
+mercury zephyr 6,79,4888,NA,NA,NA,NA,NA,NA,NA
+oldsmobile cutlass salon brougham,79,5442,NA,NA,NA,NA,NA,NA,NA
+oldsmobile omega brougham,79,4582,NA,NA,NA,NA,NA,NA,NA
+peugeot 504,79,8040,NA,NA,NA,NA,NA,NA,NA
+plymouth horizon,79,4469,NA,NA,NA,NA,NA,NA,NA
+plymouth horizon tc3,79,4864,NA,NA,NA,NA,NA,NA,NA
+pontiac lemans v6,79,5301,NA,NA,NA,NA,NA,NA,NA
+pontiac phoenix,79,4089,NA,NA,NA,NA,NA,NA,NA
+vw rabbit custom,79,4799,NA,NA,NA,NA,NA,NA,NA

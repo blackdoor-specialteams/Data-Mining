@@ -126,7 +126,7 @@ def write_csv_header(fileinst, keyset):
 		line += str(key) + ','
 	fileinst.write(line[0:-1] + '\n')
 
-def join_into_dict_list( l_file, r_file, out, keys = ('model_year', 'car_name')):
+def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
 	joined = []
 	compound = ''
 	l_keyset = []
@@ -156,14 +156,14 @@ def join_into_dict_list( l_file, r_file, out, keys = ('model_year', 'car_name'))
 							compound += r_inst[key]
 						if match:
 							r_inst.update(l_inst)
-							print 'match\n'
-							print 'join' + str(r_inst) + '\n'
+							#print 'match\n'
+							#print 'join' + str(r_inst) + '\n'
 							write_csv_line(of, r_inst, keyset)#joined.append(r_inst)
 						else:
-							#print 'nomatch\n'
+							print 'nomatch\n'
 							#print 'join' + str(l_inst) + '\n' #joined.append(l_inst)
-							write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
-							write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
+							#write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
+							#write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
 							#print 'unmatched' + str(r_inst) + '\n'#r_unmatched[compound] = add_na(r_inst, l_inst.keys())
 	joined += r_unmatched.items()
 
@@ -220,7 +220,7 @@ def main():
 	step_two("auto-prices.txt")
 	step_two("auto-mpg-nodups.txt")
 	step_two("auto-prices-nodups.txt")
-	delete_dups_from_csv()
+	#delete_dups_from_csv()
 	
 	raw_input("Hit Enter to EXIT")
 
