@@ -126,6 +126,8 @@ def write_csv_header(fileinst, keyset):
 		line += str(key) + ','
 	fileinst.write(line[0:-1] + '\n')
 
+def resolve_price_but_no_mpg_cases():
+
 def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
 	l_keyset = []
 	r_keyset = []
