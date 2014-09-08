@@ -122,6 +122,6 @@ def step_four():
 def main():
 	step_two("auto-mpg.txt")
 	step_two("auto-prices.txt")
-	input("Hit Enter to EXIT")
+	raw_input("Hit Enter to EXIT")
 
 main()
