@@ -101,15 +101,15 @@ def combine_two_datasets(data1,data2):
 def step_two(filename):
 	#dataset = read_dataset(filename)
 	
-	print("--------------------------------------------------")
-	print(filename)
-	print("--------------------------------------------------")
+	print"--------------------------------------------------"
+	print str(filename)
+	print"--------------------------------------------------"
 	
 	duplicates = check_for_duplicates(filename)
 	inst_count = count_instances(filename)
 	
-	print("No. of instances: ", inst_count)
-	print("Duplicates: ", duplicates )
+	print "No. of instances: " + inst_count
+	print "Duplicates: " + duplicates
 	
 def step_three():
 	return None
