@@ -126,7 +126,21 @@ def write_csv_header(fileinst, keyset):
 		line += str(key) + ','
 	fileinst.write(line[0:-1] + '\n')
 
-def resolve_price_but_no_mpg_cases():
+def resolve_price_but_no_mpg_cases(file_name, output):
+	keyset = []
+	with open(output, 'wb') as wf:
+		with open(file_name,'r') as f:
+			reader = csv.DictReader(f)
+			for inst in reader:
+				if not keyset:
+					keyset = inst.keys()
+					write_csv_header(wf, keyset)
+				if inst['msrp'] != 'NA' and inst['mpg'] == 'NA':
+					print inst['car_name'] + ' ' + inst['model_year'] + ' ' + inst['msrp'] + ' ' + inst['mpg']
+				else:
+					write_csv_line(wf, inst, keyset)
+
+
 
 def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
 	l_keyset = []
