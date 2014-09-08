@@ -1,4 +1,3 @@
-"car_name","model_year","msrp"
 "amc ambassador dpl",70,3114
 "amc rebel sst (sw)",70,2766
 "buick estate wagon (sw)",70,4226
@@ -19,7 +18,6 @@
 "plymouth satellite (sw)",70,3191
 "pontiac catalina",70,3164
 "toyota corona mark ii",70,2170
-"amc gremlin",71,1999
 "amc gremlin",71,1999
 "amc hornet sportabout (sw)",71,2334
 "amc matador",71,3100
@@ -142,6 +140,7 @@
 "ford ltd",75,4753
 "ford maverick",75,3025
 "ford mustang ii",75,3801
+"ford pinto",75,2769
 "honda civic cvcc",75,3009
 "mercury monarch",75,3892
 "peugeot 504",75,6330

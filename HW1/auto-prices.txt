@@ -1,4 +1,3 @@
-"car_name","model_year","msrp"
 "amc ambassador dpl",70,3114
 "amc rebel sst (sw)",70,2766
 "buick estate wagon (sw)",70,4226

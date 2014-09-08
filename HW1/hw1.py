@@ -120,8 +120,8 @@ def step_four():
 	return None
 
 def main():
-	step_two("auto-mpg.txt")
-	step_two("auto-prices.txt")
+	step_two("auto-mpg-nodups.txt")
+	step_two("auto-prices-nodups.txt")
 	input("Hit Enter to EXIT")
 
 main()
