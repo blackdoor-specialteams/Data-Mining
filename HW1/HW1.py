@@ -61,14 +61,14 @@ def print_summary_stats(file_name):
 
 def delete_dups_from_csv(filename_in,filename_out):
 	""" Takes a CSV file, writes a second file that omits all duplicates"""
-	f1 = csv.reader(open(filename_in, 'rb'))
-	writer = csv.writer(open(filename_out, "wb"))
-	
-	unique_rows = []
-	for row in f1:
-		if row not in unique_rows:
-			writer.writerow(row)
-			unique_rows.append(row)
+	with open(filename_in, 'rb') as _in, open(filename_out, "wb") as out:
+		f1 = csv.reader(_in)
+		writer = csv.writer(out)
+		unique_rows = []
+		for row in f1:
+			if row not in unique_rows:
+				writer.writerow(row)
+				unique_rows.append(row)
 
 def attribute_stats(attlist):
 	statlist = []
@@ -114,11 +114,14 @@ def add_na(d, keys):
 			d[key] = na
 	return d
 
-def write_csv_line(fileinst, d, keyset):
+def get_csv_line(d, keyset):
 	line = ''
 	for key in keyset:
 		line += str(d[key]) + ','
-	fileinst.write(line[0:-1] + '\n')
+	return line[0:-1] + '\n'
+
+def write_csv_line(fileinst, d, keyset):
+	fileinst.write(get_csv_line(d, keyset))
 
 def write_csv_header(fileinst, keyset):
 	line = ''
@@ -143,41 +146,42 @@ def resolve_price_but_no_mpg_cases(file_name, output):
 
 
 def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
+	temp_file = 'soManyDups.tmp'
 	l_keyset = []
 	r_keyset = []
 	keyset = []
-	with open(out, 'wb') as of:
-		with open(l_file, 'r') as lf:
-			l_reader = csv.DictReader(lf)
-			for l_inst in l_reader:
-				if not l_keyset: l_keyset = l_inst.keys()
-				#print l_inst
-				with open(r_file, 'r') as rf:
-					r_reader = csv.DictReader(rf)
-					for r_inst in r_reader:
-						if not r_keyset: 
-							r_keyset = r_inst.keys()
-							keyset += l_keyset
-							for key in r_keyset:
-								if key not in keyset:
-									keyset.append(key)
-							write_csv_header(of, keyset)
-						#print r_inst
-						match = True
-						for key in keys:
-							match &= l_inst[key] == r_inst[key]
-						if match:
-							r_inst.update(l_inst)
-							#print 'match\n'
-							#print 'join' + str(r_inst) + '\n'
-							write_csv_line(of, r_inst, keyset)#joined.append(r_inst)
-						else:
-							#print 'nomatch\n'
-							#print 'join' + str(l_inst) + '\n' #joined.append(l_inst)
-							write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
-							write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
-							#print 'unmatched' + str(r_inst) + '\n'#r_unmatched[compound] = add_na(r_inst, l_inst.keys())
-
+	with open(temp_file, 'wb') as of, open(l_file, 'r') as lf:
+		l_reader = csv.DictReader(lf)
+		for l_inst in l_reader:
+			if not l_keyset: l_keyset = l_inst.keys()
+			#print l_inst
+			with open(r_file, 'r') as rf:
+				r_reader = csv.DictReader(rf)
+				for r_inst in r_reader:
+					if not r_keyset: 
+						r_keyset = r_inst.keys()
+						keyset += l_keyset
+						for key in r_keyset:
+							if key not in keyset:
+								keyset.append(key)
+						write_csv_header(of, keyset)
+					#print r_inst
+					match = True
+					for key in keys:
+						match &= l_inst[key] == r_inst[key]
+					if match:
+						r_inst.update(l_inst)
+						#print 'match\n'
+						#print 'join' + str(r_inst) + '\n'
+						write_csv_line(of, r_inst, keyset)#joined.append(r_inst)
+					else:
+						#print 'nomatch\n'
+						#print 'join' + str(l_inst) + '\n' #joined.append(l_inst)
+						write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
+						write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
+						#print 'unmatched' + str(r_inst) + '\n'#r_unmatched[compound] = add_na(r_inst, l_inst.keys())
+	delete_dups_from_csv(temp_file,out)
+	os.remove(temp_file)
 
 def combine_two_datasets(data1,data2):
 	return None
