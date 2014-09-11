@@ -277,9 +277,9 @@ def main():
 
 	step_three("auto-mpg-nodups.txt","auto-prices-nodups.txt","auto-data.txt")
 
-	step_four("auto-data.txt","auto-data-cleaned.txt")
+	#step_four("auto-data.txt","auto-data-cleaned.txt")
 
-	step_five("auto-data-cleaned.txt")
+	#step_five("auto-data-cleaned.txt")
 
 	raw_input("Hit Enter to EXIT")
 
