@@ -40,7 +40,7 @@ def check_for_duplicates(file_name, keys = ()):
 	return dupes
 
 def clean_data(filename_in,filename_out):
-""" Takes a CSV file, removes any row that has no MPG value"""
+	""" Takes a CSV file, removes any row that has no MPG value"""
 	with open(filename_in, 'rb') as _in, open(filename_out, "wb") as out:
 		f1 = csv.reader(_in)
 		writer = csv.writer(out)
@@ -87,12 +87,12 @@ def print_summary_stats(file_name):
 def print_att_summary_row(attname,stat_list):
 	print str(attname),
 	for i in stat_list:
-		print(x, end = '    ')
+		print(x, '    ')
 	print()
 
 def get_att_list(filein,index):
 	att_list = []
-	with open(filename_in, 'rb') as _in:
+	with open(filein, 'rb') as _in:
 		f1 = csv.reader(_in)
 		for row in f1:
 			if row[index] != 'NA':
@@ -246,13 +246,13 @@ def step_four(filein,fileout):
 	print "combined table (saved as " + str(filein) + " ):"
 	print "--------------------------------------------------"
 
-	inst_count = count_instances(filename)
-	duplicates = check_for_duplicates(filename, ["model_year", "car_name"])
+	inst_count = count_instances(filein)
+	duplicates = check_for_duplicates(filein
+		, ["model_year", "car_name"])
 	
 	print "No. of instances: " + str(inst_count)
 	print "Duplicates: " + str(duplicates)
 	
-
 def step_five(filein):
 	print_summary_stats(filein)
 
