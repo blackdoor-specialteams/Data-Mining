@@ -10,6 +10,7 @@
 @Version: Python v2.7
 """
 import csv
+import re
 import os
 
 def get_dataset(file_name):
@@ -135,7 +136,7 @@ def average(numbers):
         return float(sum(numbers))/len(numbers)
 
 def midpoint(a,b):  
-        return (a + b) / 2.0
+       return (a + b) / 2.0
 
 def get_key_from_attribs(instance, attribs = ('model_year', 'car_name')):
 	key = ''
@@ -184,13 +185,16 @@ def resolve_price_but_no_mpg_cases(file_name, output):
 
 def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
 	temp_file = 'soManyDups.tmp'
+	match = True
 	l_keyset = []
 	r_keyset = []
 	keyset = []
-	with open(temp_file, 'wb') as of, open(l_file, 'r') as lf:
+	rejects = dict()
+	with open(out, 'wb') as of, open(l_file, 'r') as lf:
 		l_reader = csv.DictReader(lf)
 		for l_inst in l_reader:
 			if not l_keyset: l_keyset = l_inst.keys()
+			any_match = False
 			#print l_inst
 			with open(r_file, 'r') as rf:
 				r_reader = csv.DictReader(rf)
@@ -207,18 +211,28 @@ def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
 					for key in keys:
 						match &= l_inst[key] == r_inst[key]
 					if match:
+						any_match = True
 						r_inst.update(l_inst)
 						#print 'match\n'
 						#print 'join' + str(r_inst) + '\n'
 						write_csv_line(of, r_inst, keyset)#joined.append(r_inst)
 					else:
-						#print 'nomatch\n'
-						#print 'join' + str(l_inst) + '\n' #joined.append(l_inst)
-						write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
-						write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
-						#print 'unmatched' + str(r_inst) + '\n'#r_unmatched[compound] = add_na(r_inst, l_inst.keys())
-	delete_dups_from_csv(temp_file,out)
-	os.remove(temp_file)
+						#write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
+						#write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
+						rejects[r_inst['model_year']+r_inst['car_name']] = r_inst
+			if not any_match:
+				write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
+		with open(out, 'rb') as matches:
+			matches = matches.read()
+		for reject in rejects.itervalues():
+			rex = r"[^\n,]+,[^,]+," + reject['model_year'] + ',[^,]+,[^,]+,[^,]+,(' + reject['car_name'] + r"),[^,]+,[^,]+[^,]+,[^,]+\n"
+			x = re.match(rex, matches)
+			if not x:
+				write_csv_line(of, add_na(reject, l_inst.keys()), keyset)
+
+
+	#delete_dups_from_csv(temp_file,out)
+	#os.remove(temp_file)
 
 def combine_two_datasets(data1,data2):
 	return None
