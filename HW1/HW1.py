@@ -12,6 +12,7 @@
 import csv
 import re
 import os
+import string
 from tabulate import tabulate
 
 def get_dataset(file_name):
@@ -260,7 +261,11 @@ def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
 #for each non-match
 	with open(out, 'a') as of:
 		for reject in rejects.itervalues():
-			rex = reject['model_year'] + ',[^,]+,[^,]+,[^,]+,' + reject['car_name']
+			name = reject['car_name']
+			name = string.replace(name, '(', r'\(')
+			name = string.replace(name, ')', r'\)')
+			name = string.replace(name, '+', r'\+')
+			rex = reject['model_year'] + ',[^,]+,[^,]+,[^,]+,' + name
 			x = re.findall(rex, matches)
 #check if non-match is already in file
 #if not, then add it
