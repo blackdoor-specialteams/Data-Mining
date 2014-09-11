@@ -11,6 +11,8 @@
 """
 import csv
 import os
+from tabulate import tabulate
+
 
 def get_dataset(file_name):
 	""" Reads a csv file and returns a table as a list of lists"""
@@ -52,13 +54,6 @@ def clean_data(filename_in,filename_out):
 def count_instances(file_name):
 	with open(file_name, "r") as f:
 		return sum(1 for _ in f)
-	
-def print_csv(table):
-	"""Prints a table in csv format"""
-	for row in table:
-		for i in range(len(row)-1):
-			sys.stdout.write(str(row[i])+ ',')
-		print row[-1]
 
 def delete_dups_from_csv(filename_in,filename_out):
 	""" Takes a CSV file, writes a second file that omits all duplicates"""
@@ -72,31 +67,39 @@ def delete_dups_from_csv(filename_in,filename_out):
 				unique_rows.append(row)
 
 def print_summary_stats(file_name):
-	print "Summary Stats:"
-	print "============ ===== ===== ======= ====== ======"
-	print " attribute    min   max    mid    avg    med"
-	print "============ ===== ===== ======= ====== ======"
-	
-	summary_atts = [0,1,3,4,5,7,9]
 
-	for x in summary_atts:
-		att_list = get_att_list(file_name,x)
+	print "Summary Stats:"
+
+	headers = ["attribute","min","max","mid","avg","med"]
+	summary_atts = [0,1,3,4,5,7,9]
+	table = make_table(file_name,summary_atts)
+
+	print tabulate(table,headers,tablefmt="rst")
+
+def make_table(filein,summarylist):
+	table = []
+	for x in summarylist:
+		att_list = get_att_list(filein,x)
 		statlist = summerize_data(att_list)
-		print_att_summary_row(get_attribute_name(file_name,x),statlist)
+		t = (get_attribute_name(filein,x),statlist[0],statlist[1],statlist[2],statlist[3],statlist[4])
+		table.append(t)
+		#print_att_summary_row(get_attribute_name(file_name,x),statlist)
+	return table
 
 def print_att_summary_row(attname,stat_list):
 	print str(attname),
-	for i in stat_list:
-		print(x, '    ')
-	print()
+	for x in stat_list:
+		print str(round(x,2)),
+	print 
 
 def get_att_list(filein,index):
 	att_list = []
 	with open(filein, 'rb') as _in:
 		f1 = csv.reader(_in)
+		next(f1)
 		for row in f1:
 			if row[index] != 'NA':
-				att_list.append(row[index])
+				att_list.append(float(row[index]))
 	return att_list
 
 def get_attribute_name(filein,index):
@@ -105,14 +108,13 @@ def get_attribute_name(filein,index):
 		line1 = f1.next()
 	return line1[index]
 
-
 def summerize_data(attlist):
 	statlist = []
 
 	lmin = min(attlist)
 	lmax = max(attlist)
 	lmid = midpoint(lmin,lmax)
-	lavg = avg_list(attlist)
+	lavg = average(attlist)
 	lmed = median(attlist)
 
 	statlist.append(lmin)
