@@ -38,6 +38,16 @@ def check_for_duplicates(file_name, keys = ()):
 			else:
 				instances.append(key)
 	return dupes
+
+def clean_data(filename_in,filename_out):
+""" Takes a CSV file, removes any row that has no MPG value"""
+	with open(filename_in, 'rb') as _in, open(filename_out, "wb") as out:
+		f1 = csv.reader(_in)
+		writer = csv.writer(out)
+		valid = []
+		for row in f1:
+			if row[2] != 'NA':
+				writer.writerow(row)
 	
 def count_instances(file_name):
 	with open(file_name, "r") as f:
@@ -50,15 +60,6 @@ def print_csv(table):
 			sys.stdout.write(str(row[i])+ ',')
 		print row[-1]
 
-def print_dataset_info():
-	return 0
-
-def print_summary_stats(file_name):
-	print "Summary Stats:"
-	print "============ ===== ===== ======= ====== ======"
-	print " attribute    min   max    mid    avg    med"
-	print "============ ===== ===== ======= ====== ======"
-
 def delete_dups_from_csv(filename_in,filename_out):
 	""" Takes a CSV file, writes a second file that omits all duplicates"""
 	with open(filename_in, 'rb') as _in, open(filename_out, "wb") as out:
@@ -70,13 +71,19 @@ def delete_dups_from_csv(filename_in,filename_out):
 				writer.writerow(row)
 				unique_rows.append(row)
 
+def print_summary_stats(file_name):
+	print "Summary Stats:"
+	print "============ ===== ===== ======= ====== ======"
+	print " attribute    min   max    mid    avg    med"
+	print "============ ===== ===== ======= ====== ======"
+
 def attribute_stats(attlist):
 	statlist = []
 
 	lmin = min(attlist)
 	lmax = max(attlist)
 	lmid = midpoint(lmin,lmax)
-	lavg = avg_list(attlist)
+	lavg = avg_list(attlist)S
 	lmed = median(attlist)
 
 	statlist.append(lmin)
@@ -84,12 +91,13 @@ def attribute_stats(attlist):
 	statlist.append(lmid)
 	statlist.append(lavg)
 	statlist.append(lmed)
+
 	return statlist
 
 def median(alist):
         srtd = sorted(alist) 
         mid = len(alist)/2   
-        if len(alist) % 2 == 0:  
+        if (len(alist) % 2) == 0:  
                 return (srtd[mid-1] + srtd[mid]) / 2.0
         else:
                 return srtd[mid]
@@ -199,20 +207,36 @@ def step_two(filename):
 	print "No. of instances: " + str(inst_count)
 	print "Duplicates: " + str(duplicates)
 	
-def step_three():
-	return None
+def step_three(lfile,rfile,outfile):
+	join_into_file( lfile, rfile, outfile)
 
-def step_four():
-	return None
+def step_four(filein,fileout):
+	clean_data(filein,fileout)
+
+	print "--------------------------------------------------"
+	print "combined table (saved as " + str(filein) + " ):"
+	print "--------------------------------------------------"
+
+	inst_count = count_instances(filename)
+	duplicates = check_for_duplicates(filename, ["model_year", "car_name"])
+	
+	print "No. of instances: " + str(inst_count)
+	print "Duplicates: " + str(duplicates)
+	
+
+def step_five(filein):
+	print_summary_stats(filein)
 
 def main():
 
 	step_two("auto-mpg.txt")
 	step_two("auto-prices.txt")
-	step_two("auto-mpg-nodups.txt")
-	step_two("auto-prices-nodups.txt")
-	#delete_dups_from_csv()
-	
+
+	step_three("auto-mpg-nodups.txt","auto-prices-nodups.txt","auto-data.txt")
+	step_four("auto-data.txt","auto-data-cleaned.txt")
+	step_two("auto-data-cleaned.txt")
+	step_five("auto-data-cleaned.txt")
+
 	raw_input("Hit Enter to EXIT")
 
 
