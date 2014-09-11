@@ -316,9 +316,9 @@ def main():
 
 	step_three("auto-mpg-nodups.txt","auto-prices-nodups.txt","auto-data.txt")
 
-	#step_four("auto-data.txt","auto-data-cleaned.txt")
+	step_four("auto-data.txt","auto-data-cleaned.txt")
 
-	#step_five("auto-data-cleaned.txt")
+	step_five("auto-data-cleaned.txt")
 
 	step_six("auto-data-cleaned.txt")
 
