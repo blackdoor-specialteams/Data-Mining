@@ -290,12 +290,12 @@ def step_four(filein,fileout):
 	clean_data(filein,fileout)
 
 	print "--------------------------------------------------"
-	print "combined table (saved as " + str(fileout) + "):"
+	print "combined table (saved as " + str(fileout) + " ):"
 	print "--------------------------------------------------"
 
 	inst_count = count_instances(fileout)
 	duplicates = check_for_duplicates(fileout
-		, ["model_year", "car_name"])
+		, ["model_year", "car_name","msrp","mpg","horsepower","weight"])
 	
 	print "No. of instances: " + str(inst_count)
 	print "Duplicates: " + str(duplicates)
@@ -321,7 +321,5 @@ def main():
 	step_five("auto-data-cleaned.txt")
 
 	step_six("auto-data-cleaned.txt")
-
-	raw_input("Hit Enter to EXIT")
 
 main()
