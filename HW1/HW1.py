@@ -10,6 +10,7 @@
 @Version: Python v2.7
 """
 import csv
+import re
 import os
 from tabulate import tabulate
 
@@ -210,17 +211,21 @@ def resolve_price_but_no_mpg_cases(file_name, output):
 					write_csv_line(wf, inst, keyset)
 
 def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
-	temp_file = 'soManyDups.tmp'
+	match = True
 	l_keyset = []
 	r_keyset = []
 	keyset = []
-	with open(temp_file, 'wb') as of, open(l_file, 'r') as lf:
+	rejects = dict()
+	with open(out, 'wb') as of, open(l_file, 'r') as lf:
 		l_reader = csv.DictReader(lf)
+#for each instance in the left table
 		for l_inst in l_reader:
 			if not l_keyset: l_keyset = l_inst.keys()
+			any_match = False
 			#print l_inst
 			with open(r_file, 'r') as rf:
 				r_reader = csv.DictReader(rf)
+#for each instance in the right table
 				for r_inst in r_reader:
 					if not r_keyset: 
 						r_keyset = r_inst.keys()
@@ -228,24 +233,39 @@ def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
 						for key in r_keyset:
 							if key not in keyset:
 								keyset.append(key)
+#write column labels for file
 						write_csv_header(of, keyset)
 					#print r_inst
 					match = True
+#for each key to join on, check if it is a match
 					for key in keys:
 						match &= l_inst[key] == r_inst[key]
+#if instances should be joined, write them to the file
 					if match:
+						any_match = True
 						r_inst.update(l_inst)
 						#print 'match\n'
 						#print 'join' + str(r_inst) + '\n'
 						write_csv_line(of, r_inst, keyset)#joined.append(r_inst)
+#else add the right instance to a set of non-matches
 					else:
-						#print 'nomatch\n'
-						#print 'join' + str(l_inst) + '\n' #joined.append(l_inst)
-						write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
-						write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
-						#print 'unmatched' + str(r_inst) + '\n'#r_unmatched[compound] = add_na(r_inst, l_inst.keys())
-	delete_dups_from_csv(temp_file,out)
-	os.remove(temp_file)
+						#write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
+						#write_csv_line(of, add_na(r_inst, l_inst.keys()), keyset)
+						rejects[r_inst['model_year']+r_inst['car_name']] = r_inst
+#if there were no matches for the left instance, write it to the file with NA params
+			if not any_match:
+				write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
+		with open(out, 'rb') as matches:
+			matches = matches.read()
+#for each non-match
+		for reject in rejects.itervalues():
+			rex = r"[^\n,]+,[^,]+," + reject['model_year'] + ',[^,]+,[^,]+,[^,]+,(' + reject['car_name'] + r"),[^,]+,[^,]+[^,]+,[^,]+\n"
+			x = re.match(rex, matches)
+#check if non-match is already in file
+#if not, then add it
+			if not x:
+				write_csv_line(of, add_na(reject, l_inst.keys()), keyset)
+
 
 def step_two(filename):
 	#dataset = read_dataset(filename)
@@ -296,9 +316,9 @@ def main():
 
 	step_three("auto-mpg-nodups.txt","auto-prices-nodups.txt","auto-data.txt")
 
-	step_four("auto-data.txt","auto-data-cleaned.txt")
+	#step_four("auto-data.txt","auto-data-cleaned.txt")
 
-	step_five("auto-data-cleaned.txt")
+	#step_five("auto-data-cleaned.txt")
 
 	step_six("auto-data-cleaned.txt")
 
