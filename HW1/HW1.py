@@ -76,14 +76,43 @@ def print_summary_stats(file_name):
 	print "============ ===== ===== ======= ====== ======"
 	print " attribute    min   max    mid    avg    med"
 	print "============ ===== ===== ======= ====== ======"
+	
+	summary_atts = [0,1,3,4,5,7,9]
 
-def attribute_stats(attlist):
+	for x in summary_atts:
+		att_list = get_att_list(file_name,x)
+		statlist = summerize_data(att_list)
+		print_att_summary_row(get_attribute_name(file_name,x),statlist)
+
+def print_att_summary_row(attname,stat_list):
+	print str(attname),
+	for i in stat_list:
+		print(x, end = '    ')
+	print()
+
+def get_att_list(filein,index):
+	att_list = []
+	with open(filename_in, 'rb') as _in:
+		f1 = csv.reader(_in)
+		for row in f1:
+			if row[index] != 'NA':
+				att_list.append(row[index])
+	return att_list
+
+def get_attribute_name(filein,index):
+	with open(filein, 'rb') as _in:
+		f1 = csv.reader(_in)
+		line1 = f1.next()
+	return line1[index]
+
+
+def summerize_data(attlist):
 	statlist = []
 
 	lmin = min(attlist)
 	lmax = max(attlist)
 	lmid = midpoint(lmin,lmax)
-	lavg = avg_list(attlist)S
+	lavg = avg_list(attlist)
 	lmed = median(attlist)
 
 	statlist.append(lmin)
@@ -233,8 +262,9 @@ def main():
 	step_two("auto-prices.txt")
 
 	step_three("auto-mpg-nodups.txt","auto-prices-nodups.txt","auto-data.txt")
+
 	step_four("auto-data.txt","auto-data-cleaned.txt")
-	step_two("auto-data-cleaned.txt")
+
 	step_five("auto-data-cleaned.txt")
 
 	raw_input("Hit Enter to EXIT")
