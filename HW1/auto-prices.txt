@@ -20,7 +20,6 @@
 "pontiac catalina",70,3164
 "toyota corona mark ii",70,2170
 "amc gremlin",71,1999
-"amc gremlin",71,1999
 "amc hornet sportabout (sw)",71,2334
 "amc matador",71,3100
 "audi 100 ls",71,3595

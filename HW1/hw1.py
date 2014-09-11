@@ -286,15 +286,15 @@ def step_three(lfile,rfile,outfile):
 
 def step_four(filein,fileout):
 	""" Cleans data of intances that are missing mpg information. Prints new data
-		information."""
-	final_data = "auto-data-final.txt"
+		information"""
 	clean_data(filein,fileout)
+
 	print "--------------------------------------------------"
-	print "combined table (saved as " + str(fileout) + " ):"
+	print "combined table (saved as " + str(filein) + " ):"
 	print "--------------------------------------------------"
 
-	inst_count = count_instances(fileout)
-	duplicates = check_for_duplicates(fileout
+	inst_count = count_instances(filein)
+	duplicates = check_for_duplicates(filein
 		, ["model_year", "car_name"])
 	
 	print "No. of instances: " + str(inst_count)
@@ -318,9 +318,9 @@ def main():
 
 	step_four("auto-data.txt","auto-data-cleaned.txt")
 
-	step_five("auto-data-final.txt")
+	step_five("auto-data-cleaned.txt")
 
-	step_six("auto-data-final.txt")
+	step_six("auto-data-cleaned.txt")
 
 	raw_input("Hit Enter to EXIT")
 
