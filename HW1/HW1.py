@@ -255,17 +255,17 @@ def join_into_file( l_file, r_file, out, keys = ('model_year', 'car_name')):
 #if there were no matches for the left instance, write it to the file with NA params
 			if not any_match:
 				write_csv_line(of, add_na(l_inst, r_inst.keys()), keyset)
-		with open(out, 'rb') as matches:
-			matches = matches.read()
+	with open(out, 'rb') as matches:
+		matches = matches.read()
 #for each non-match
+	with open(out, 'a') as of:
 		for reject in rejects.itervalues():
-			rex = r"[^\n,]+,[^,]+," + reject['model_year'] + ',[^,]+,[^,]+,[^,]+,(' + reject['car_name'] + r"),[^,]+,[^,]+[^,]+,[^,]+\n"
-			x = re.match(rex, matches)
+			rex = reject['model_year'] + ',[^,]+,[^,]+,[^,]+,' + reject['car_name']
+			x = re.findall(rex, matches)
 #check if non-match is already in file
 #if not, then add it
 			if not x:
 				write_csv_line(of, add_na(reject, l_inst.keys()), keyset)
-
 
 def step_two(filename):
 	#dataset = read_dataset(filename)
