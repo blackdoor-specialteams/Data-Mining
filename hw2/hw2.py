@@ -6,9 +6,11 @@
 	
 @Version: Python v2.7
 """
-import matplotlib
-matplotlib.use('pdf')
+#import matplotlib
+#matplotlib.use('pdf')
+import csv
 import matplotlib.pyplot as pyplot
+import numpy
 
 def create_freq_diagram(filein,attlist):
 	"""Create a Frequency diagram for each catagorical attribute in the prepared dataset"""
@@ -41,16 +43,22 @@ def create_freq_diagram(filein,attlist):
 		pyplot.savefig('fig1.pdf')
 
 def create_pie_chart(filein,attlist):
+	return None
 
 def create_a_dot_plot(filein,attlist):
+	return None
 
 def create_histogram(filein,attlist):
+	return None
 
 def create_scatter_plot(filein,attlist):
+	return None
 
 def calculate_linear_regressions(filein,attlist):
+	return None
 
 def scatter_plot_with_regression(filein,attlist):
+	return None
 
 def get_att_names(filein):
 	with open(filein, 'rb') as _in:
@@ -64,9 +72,9 @@ def get_frequencies(xs):
 	for y in ys:
 		if y not in values:
 			values.append(y)
-			count.append(1)
+			counts.append(1)
 		else:
-			count[-1] += 1
+			counts[y] += 1
 		return values, counts
 
 def get_all_att_values(filein,index):
