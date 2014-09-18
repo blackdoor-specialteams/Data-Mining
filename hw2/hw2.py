@@ -9,6 +9,8 @@
 #import matplotlib
 #matplotlib.use('pdf')
 import csv
+import matplotlib
+matplotlib.use('pdf')
 import matplotlib.pyplot as pyplot
 import numpy
 
@@ -36,13 +38,26 @@ def create_freq_diagram(filein,attlist):
 		pyplot.bar(xs,ys,.45,align ='center')
 		#define x and y ranges (and value labels)
 		pyplot.xticks(xrng,['foo','bar','baz','quz'])
-		pylot.yticks(yrng)
+		pyplot.yticks(yrng)
 		# turn on the backround grid
 		pyplot.grid(True)
 		# save the result to a pdf file
 		pyplot.savefig('fig1.pdf')
 
-def create_pie_chart(filein,attlist):
+def create_pie_chart(filein, attlist = ['model_year', 'cylinders', 'origin']):
+	#categorical_attribs = ['model_year', 'cylinders', 'origin']
+	sets = dict()
+	with open(filein, 'r') as f:
+		reader = csv.DictReader(f)
+		for inst in reader:
+			for attrib in attlist:
+				if attrib in sets:
+					sets[attrib] = sets[attrib].append(inst[attrib])
+				else:
+					sets[attrib] = [inst[attrib]]
+	for attrib in attlist:
+		pyplot.pie(sets[attrib], autopct='%1.1f%%')
+		pyplot.savefig('step-2-pie.pdf')
 	return None
 
 def create_a_dot_plot(filein,attlist):
