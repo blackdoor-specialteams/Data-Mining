@@ -9,62 +9,61 @@
 #import matplotlib
 #matplotlib.use('pdf')
 import csv
-import matplotlib.pyplot as pyplot
+import matplotlib.pyplot as plot
 import numpy
 
-def create_freq_diagram(filein,attlist):
+def create_freq_diagram(attributes,table,exelist):
 	"""Create a Frequency diagram for each catagorical attribute in the prepared dataset"""
-	pyplot.figure()
-	
-	att_names = get_att_names(filein)
+	plot.figure()
 
-	for att in attlist:
+	for att in exelist:
 		#set graph title form attribute names
-		pyplot.title(att_names[att])
+		plot.title(attributes[att])
 		#define x and y values
 		xs = []
 		ys = []
 
 		#get a list of all of the values from a column
 		#get the count of frequienes from that list, for each value
-		xs, ys = get_frequencies(get_all_att_values(filein,att))
+		xs, ys = get_frequencies(get_all_col_values(table,att))
 
 		#calculate a range (make y bigger)
 		xrng = numpy.arange(len(xs))
 		yrng = numpy.arange(0,max(ys)+ 100,50)
 		#create the bar chart
-		pyplot.bar(xs,ys,.45,align ='center')
+		plot.bar(xs,ys,.45,align ='center')
 		#define x and y ranges (and value labels)
-		pyplot.xticks(xrng,['foo','bar','baz','quz'])
-		pylot.yticks(yrng)
+		plot.xticks(xrng,['foo','bar','baz','quz'])
+		plot.yticks(yrng)
 		# turn on the backround grid
-		pyplot.grid(True)
+		plot.grid(True)
 		# save the result to a pdf file
-		pyplot.savefig('fig1.pdf')
+		plot.savefig(str(attributes[att]) +'_freq.pdf')
 
-def create_pie_chart(filein,attlist):
+def create_pie_chart(filein,exelist):
 	return None
 
-def create_a_dot_plot(filein,attlist):
+def create_a_dot_plot(filein,exelist):
 	return None
 
-def create_histogram(filein,attlist):
+def create_histogram(filein,exelist):
 	return None
 
-def create_scatter_plot(filein,attlist):
+def create_scatter_plot(filein,exelist):
 	return None
 
-def calculate_linear_regressions(filein,attlist):
+def calculate_linear_regressions(filein,exelist):
 	return None
 
-def scatter_plot_with_regression(filein,attlist):
+def scatter_plot_with_regression(filein,exelist):
 	return None
 
-def get_att_names(filein):
-	with open(filein, 'rb') as _in:
-		f1 = csv.reader(_in)
-		names = f1.next()
-		return names
+def get_all_col_values(table,index):
+	result = []
+	for row in table:
+		if row[index] != 'NA':
+			result.append(float(row[index]))
+	return result
 
 def get_frequencies(xs):
 	ys = sorted(xs)
@@ -77,21 +76,28 @@ def get_frequencies(xs):
 			counts[y] += 1
 		return values, counts
 
-def get_all_att_values(filein,index):
-	""" Collects all attribute data from a csv file for a single attribute"""
-	att_list = []
-	with open(filein, 'rb') as _in:
+def group_By(inputTable):
+	return None
+
+def get_table_from_CSV(filename):
+	table =[]
+	atts = []
+	with open(filename, 'rb') as _in:
 		f1 = csv.reader(_in)
-		next(f1)
+		atts = f1.next()
 		for row in f1:
-			if row[index] != 'NA':
-				att_list.append(float(row[index]))
-	return att_list
+			if len(row) > 0:
+				table.append(row)
+	return atts, table
+
 
 def main():
+	#Relevant Attributes to graph
 	catagorical_att_list = [2,3,8]
-	data = "auto-data-cleaned.txt"
+	inputdata = "auto-data-cleaned.txt"
+	#Get list of attributes, and the table from the input data
+	attributes,dataset = get_table_from_CSV(inputdata)
 
-	create_freq_diagram(data,catagorical_att_list)
+	create_freq_diagram(attributes,dataset,catagorical_att_list)
 
 main()
