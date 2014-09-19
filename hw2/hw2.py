@@ -15,13 +15,13 @@ import matplotlib.pyplot as pyplot
 import numpy
 
 def create_freq_diagram(filein,attlist):
-	"""Create a Frequency diagram for each catagorical attribute in the prepared dataset"""
+	"""Create a Frequency diagram for each catagorical attributeute in the prepared dataset"""
 	pyplot.figure()
 	
 	att_names = get_att_names(filein)
 
 	for att in attlist:
-		#set graph title form attribute names
+		#set graph title form attributeute names
 		pyplot.title(att_names[att])
 		#define x and y values
 		xs = []
@@ -43,22 +43,28 @@ def create_freq_diagram(filein,attlist):
 		pyplot.grid(True)
 		# save the result to a pdf file
 		pyplot.savefig('fig1.pdf')
+		pyplot.clf()
 
-def create_pie_chart(filein, attlist = ['model_year', 'cylinders', 'origin']):
-	#categorical_attribs = ['model_year', 'cylinders', 'origin']
-	sets = dict()
-	with open(filein, 'r') as f:
+def create_pie_charts(filein, attlist = ['model_year', 'cylinders', 'origin']):
+	for attribute in attlist:
+		graph_pie_chart(filein, attribute, 'step-2-pie-'+ attribute +'.pdf')
+	return None
+
+def graph_pie_chart(file_in, attribute, file_out):
+	labels = []
+	data = []
+	with open(file_in, 'r') as f:
 		reader = csv.DictReader(f)
 		for inst in reader:
-			for attrib in attlist:
-				if attrib in sets:
-					sets[attrib] = sets[attrib].append(inst[attrib])
-				else:
-					sets[attrib] = [inst[attrib]]
-	for attrib in attlist:
-		pyplot.pie(sets[attrib], autopct='%1.1f%%')
-		pyplot.savefig('step-2-pie.pdf')
-	return None
+			if str(inst[attribute]) in labels:
+				data[labels.index(str(inst[attribute]))] += 1
+			else:
+				labels.append(str(inst[attribute]))
+				data.append(1)
+	pyplot.title(attribute)
+	pyplot.pie(data, labels = labels, autopct='%1.1f%%', colors=('b', 'g', 'r', 'c', 'm', 'y', 'w'))
+	pyplot.savefig(file_out)
+	pyplot.clf()
 
 def create_a_dot_plot(filein,attlist):
 	return None
@@ -93,7 +99,7 @@ def get_frequencies(xs):
 		return values, counts
 
 def get_all_att_values(filein,index):
-	""" Collects all attribute data from a csv file for a single attribute"""
+	""" Collects all attributeute data from a csv file for a single attributeute"""
 	att_list = []
 	with open(filein, 'rb') as _in:
 		f1 = csv.reader(_in)
