@@ -22,7 +22,6 @@ def create_freq_diagram(attributes,table,exelist):
 		#define x and y values
 		xs = []
 		ys = []
-
 		#get a list of all of the values from a column
 		#get the count of frequienes from that list, for each value
 		xs, ys = get_frequencies(get_all_col_values(table,att))
@@ -33,7 +32,7 @@ def create_freq_diagram(attributes,table,exelist):
 		#create the bar chart
 		plot.bar(xs,ys,.45,align ='center')
 		#define x and y ranges (and value labels)
-		plot.xticks(xrng,['foo','bar','baz','quz'])
+		plot.xticks(xrng,xs)
 		plot.yticks(yrng)
 		# turn on the backround grid
 		plot.grid(True)
@@ -90,6 +89,9 @@ def get_table_from_CSV(filename):
 				table.append(row)
 	return atts, table
 
+def print_table(table):
+	for row in table:
+		print row
 
 def main():
 	#Relevant Attributes to graph
@@ -97,6 +99,8 @@ def main():
 	inputdata = "auto-data-cleaned.txt"
 	#Get list of attributes, and the table from the input data
 	attributes,dataset = get_table_from_CSV(inputdata)
+
+	#print_table(dataset)
 
 	create_freq_diagram(attributes,dataset,catagorical_att_list)
 
