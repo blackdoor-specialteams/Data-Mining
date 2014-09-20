@@ -6,19 +6,20 @@
 	
 @Version: Python v2.7
 """
-#import matplotlib
-#matplotlib.use('pdf')
+
 import csv
-import matplotlib.pyplot as plot
+import matplotlib
+matplotlib.use('pdf')
+import matplotlib.pyplot as pyplot
 import numpy
 
 def create_freq_diagram(attributes,table,exelist):
 	"""Create a Frequency diagram for each catagorical attribute in the prepared dataset"""
-	plot.figure()
+	pyplot.figure()
 
 	for att in exelist:
 		#set graph title form attribute names
-		plot.title(attributes[att])
+		pyplot.title(attributes[att])
 		#define x and y values
 		xs = []
 		ys = []
@@ -30,13 +31,43 @@ def create_freq_diagram(attributes,table,exelist):
 		xrng = numpy.arange(len(xs))
 		yrng = numpy.arange(0,max(ys)+ 100,50)
 		#create the bar chart
-		plot.bar(xs,ys,.45,align ='center')
+		pyplot.bar(xs,ys,.45,align ='center')
 		#define x and y ranges (and value labels)
-		plot.xticks(xrng,xs)
-		plot.yticks(yrng)
+		pyplot.xticks(xrng,['foo','bar','baz','quz'])
+		pyplot.yticks(yrng)
+
 		# turn on the backround grid
-		plot.grid(True)
+		pyplot.grid(True)
 		# save the result to a pdf file
+
+		pyplot.savefig('fig1.pdf')
+		pyplot.clf()
+
+def graph_freq_diagram(table):
+
+
+def create_pie_charts(filein, attlist = ['model_year', 'cylinders', 'origin']):
+	for attribute in attlist:
+		graph_pie_chart(filein, attribute, 'step-2-pie-'+ attribute +'.pdf')
+	return None
+
+def graph_pie_chart(file_in, attribute, file_out):
+	labels = []
+	data = []
+	with open(file_in, 'r') as f:
+		reader = csv.DictReader(f)
+		for inst in reader:
+			if str(inst[attribute]) in labels:
+				data[labels.index(str(inst[attribute]))] += 1
+			else:
+				labels.append(str(inst[attribute]))
+				data.append(1)
+	pyplot.title(attribute)
+	pyplot.pie(data, labels = labels, autopct='%1.1f%%', colors=('b', 'g', 'r', 'c', 'm', 'y', 'w'))
+	pyplot.savefig(file_out)
+	pyplot.clf()
+
+def create_a_dot_plot(filein,attlist):
 		plot.savefig(str(attributes[att]) +'_freq.pdf')
 
 def create_pie_chart(filein,exelist):
@@ -75,6 +106,11 @@ def get_frequencies(xs):
 			counts[y] += 1
 		return values, counts
 
+def get_all_att_values(filein,index):
+	""" Collects all attributeute data from a csv file for a single attributeute"""
+	att_list = []
+	with open(filein, 'rb') as _in:
+
 def group_By(inputTable):
 	return None
 
@@ -89,6 +125,7 @@ def get_table_from_CSV(filename):
 				table.append(row)
 	return atts, table
 
+
 def print_table(table):
 	for row in table:
 		print row
@@ -99,8 +136,6 @@ def main():
 	inputdata = "auto-data-cleaned.txt"
 	#Get list of attributes, and the table from the input data
 	attributes,dataset = get_table_from_CSV(inputdata)
-
-	#print_table(dataset)
 
 	create_freq_diagram(attributes,dataset,catagorical_att_list)
 
