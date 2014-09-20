@@ -45,6 +45,8 @@ def create_freq_diagram(filein,attlist):
 		pyplot.savefig('fig1.pdf')
 		pyplot.clf()
 
+def graph_freq_diagram(table)
+
 def create_pie_charts(filein, attlist = ['model_year', 'cylinders', 'origin']):
 	for attribute in attlist:
 		graph_pie_chart(filein, attribute, 'step-2-pie-'+ attribute +'.pdf')
