@@ -36,7 +36,7 @@ def create_freq_diagram(filein,attlist):
 		pyplot.bar(xs,ys,.45,align ='center')
 		#define x and y ranges (and value labels)
 		pyplot.xticks(xrng,['foo','bar','baz','quz'])
-		pylot.yticks(yrng)
+		pyplot.yticks(yrng)
 		# turn on the backround grid
 		pyplot.grid(True)
 		# save the result to a pdf file
