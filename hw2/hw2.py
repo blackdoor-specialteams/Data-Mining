@@ -168,37 +168,68 @@ def run_step_8(attributes,table):
 
 def create_multi_freq_diagram(table):
 	pyplot.figure()
-	pyplot.title("Totatl Number of Cars by Year and Country of Origin")
-	# two simple frequencies
-	xs1 = [10, 20, 30, 40]
-	xs2 = [30, 20, 20, 30]
-
-	years_list = get_all_model_years(table)
-
-	for year in years_list:
-		#group data by year and get Origin info
-		x1 = group_By(table,2,8)
-
-	# note that pyplot.subplots() doesn't work on ada
-	# instead, do this:
-	# pyplot.figure()
-	# ax = pyplot.gca()
 	fig, ax = pyplot.subplots()
-	# create two bars, one for each distribution
-	# spacing can be a bit tricky
-	r1 = ax.bar([1, 2, 3, 4], xs1, 0.3, color='r')
-	r2 = ax.bar([1.3, 2.3, 3.3, 4.3], xs2, 0.3, color='b')
-	# set the tick locations
-	ax.set_xticks([1.3, 2.3, 3.3, 4.3])
-	ax.set_yticks([10, 20, 30, 40, 50])
-	# set the x value labels
-	ax.set_xticklabels(['Val1', 'Val2', 'Val3', 'Val4'])
-	# create a legend
-	ax.legend((r1[0], r2[0]), ('Bar1', 'Bar2'), loc=2)
+	
+	years_list = get_all_model_years(table)
+	#group data by year and get Origin info for that year
+	grouped_by_year_list = group_By(table,2,8)
+	list_of_freqs_by_year = []
+
+	for xs in grouped_by_year_list:
+		values , counts = get_frequencies(xs)
+		list_of_freqs_by_year.append((values,counts))
+	#Graph Settings 
+	count_max = 0
+	bar_width = 0.3
+	locations = range(1,11)
+
+	plot_counts = get_counts_for_origin_by_year(list_of_freqs_by_year,0)
+	count_max = check_max(plot_counts,count_max)
+	r1 = ax.bar(locations, plot_counts, bar_width, color='b')
+	
+	locations = increment_values_list(locations,bar_width)
+	plot_counts = get_counts_for_origin_by_year(list_of_freqs_by_year,1)
+	count_max = check_max(plot_counts,count_max)
+	r2 = ax.bar(locations, plot_counts, bar_width, color='r')
+	
+	locations = increment_values_list(locations,bar_width)
+	plot_counts = get_counts_for_origin_by_year(list_of_freqs_by_year,2)
+	count_max = check_max(plot_counts,count_max)
+	r3 = ax.bar(locations, plot_counts, bar_width, color='y')
+	
+	xrng = numpy.arange(1.5,len(list_of_freqs_by_year)+1)
+	yrng = numpy.arange(0,count_max+ 25,5)
+
+	ax.legend((r1[0], r2[0],r3[0]), ('USA', 'Europe','Japan'), loc=2)
+	pyplot.xticks(xrng,years_list)
+	pyplot.yticks(yrng)
+	pyplot.xlabel("Model Year")
+	pyplot.ylabel("Count")
+	pyplot.title("Total Number of Cars by Year and Country of Origin")
 	pyplot.grid(True)
 
 	pyplot.savefig('step-8-Multiple-Freq.pdf')
 	pyplot.clf()
+
+def get_counts_for_origin_by_year(xs,index):
+	result = []
+	for x in xs:
+		values = x[0]
+		counts = x[1]
+		result.append(counts[index])
+	return result
+
+def increment_values_list(xs,inc):
+	result = []
+	for x in xs:
+		result.append(x + inc)
+	return result
+
+def check_max(xs,cmax):
+	if max(xs) > cmax:
+		return max(xs)
+	else:
+		return cmax                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
 
 def create_box_plot(table):
 	pyplot.figure()
