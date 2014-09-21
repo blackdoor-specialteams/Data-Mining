@@ -52,7 +52,7 @@ def create_pie_charts(filein, attlist = ['model_year', 'cylinders', 'origin']):
 		graph_pie_chart(filein, attribute, 'step-2-pie-'+ attribute +'.pdf')
 	return None
 
-def graph_pie_chart(file_in, attribute, file_out):
+def graph_pie_chart(file_in, attribute, file_out, title = None):
 	labels = []
 	data = []
 	with open(file_in, 'r') as f:
@@ -63,13 +63,31 @@ def graph_pie_chart(file_in, attribute, file_out):
 			else:
 				labels.append(str(inst[attribute]))
 				data.append(1)
-	pyplot.title(attribute)
+	if title == None:
+		title = attribute
+	pyplot.title(title)
 	pyplot.pie(data, labels = labels, autopct='%1.1f%%', colors=('b', 'g', 'r', 'c', 'm', 'y', 'w'))
 	pyplot.savefig(file_out)
 	pyplot.clf()
 
-def create_a_dot_plot(filein,attlist):
+def create_dot_plots(file_in, attlist = ['mpg', 'displacement', 'horsepower', 'weight', 'acceleration', 'msrp']):
+	for attribute in attlist:
+		graph_dot_plot(file_in, attribute, 'step-3-dot-'+ attribute +'.pdf')
 	return None
+
+def graph_dot_plot(file_in, attribute, file_out, title = None):
+	pyplot.clf()
+	pyplot.gca().get_yaxis().set_visible(False)
+	with open(file_in, 'r') as f:
+		reader = csv.DictReader(f)
+		for inst in reader:
+			pyplot.plot(float(inst[attribute]), 1, 'k.', alpha=.05, markersize=15)
+	if title == None:
+		title = attribute
+	pyplot.title(title)
+	pyplot.savefig(file_out)
+	pyplot.clf()
+
 
 def create_histogram(filein,attlist):
 	return None
