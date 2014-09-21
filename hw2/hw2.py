@@ -13,6 +13,7 @@ import matplotlib
 matplotlib.use('pdf')
 import matplotlib.pyplot as pyplot
 import numpy
+import math
 
 def create_freq_diagram(filein,attlist):
 	"""Create a Frequency diagram for each catagorical attributeute in the prepared dataset"""
@@ -73,10 +74,11 @@ def graph_pie_chart(file_in, attribute, file_out, title = None):
 
 def create_dot_plots(file_in, attlist = ['mpg', 'displacement', 'horsepower', 'weight', 'acceleration', 'msrp']):
 	for attribute in attlist:
-		graph_dot_plot(file_in, attribute, 'step-3-dot-'+ attribute +'.pdf', title = attribute + ' Dot Plot')
+		graph_dot_plot(file_in, attribute,  title = attribute + ' Dot Plot')
+		save_fig('step-3-dot-'+ attribute +'.pdf')
 	return None
 
-def graph_dot_plot(file_in, attribute, file_out, title = None):
+def graph_dot_plot(file_in, attribute, title = None):
 	pyplot.clf()
 	pyplot.gca().get_yaxis().set_visible(False)
 	with open(file_in, 'r') as f:
@@ -87,16 +89,14 @@ def graph_dot_plot(file_in, attribute, file_out, title = None):
 		title = attribute
 	pyplot.title(title)
 	pyplot.xlabel(attribute)
-	pyplot.savefig(file_out)
-	pyplot.clf()
-
-
+	
 def create_histograms(file_in, attlist = ['mpg', 'displacement', 'horsepower', 'weight', 'acceleration', 'msrp']):
 	for attribute in attlist:
-		graph_histogram(file_in, attribute, 'step-5-histo-'+ attribute +'.pdf', title = attribute + ' Histogram')
+		graph_histogram(file_in, attribute,  title = attribute + ' Histogram')
+		save_fig('step-5-histo-'+ attribute +'.pdf')
 	return None
 
-def graph_histogram(file_in, attribute, file_out, title = None):
+def graph_histogram(file_in, attribute, title = None):
 	pyplot.clf()
 	if title == None:
 		title = attribute
@@ -109,16 +109,66 @@ def graph_histogram(file_in, attribute, file_out, title = None):
 	pyplot.xlabel(attribute)
 	pyplot.ylabel('Instances')
 	pyplot.hist(xs)
+
+def save_fig(file_out):
 	pyplot.savefig(file_out)
 	pyplot.clf()
 
 def create_scatter_plot(filein,attlist):
 	return None
 
-def calculate_linear_regressions(filein,attlist):
+#returns a three-tuple for point slope form (x, y, slope)
+def calculate_best_fit_line(xs, ys):
+	if len(xs) != len(ys):
+		return None
+	_x = numpy.mean(xs)
+	_y = numpy.mean(ys)
+	num = 0
+	denom = 0
+	for x_point, y_point in zip(xs, ys):
+		num += (x_point-_x)*(y_point-_y)
+		denom += math.pow(x_point-_x, 2)
+	m = num/denom
+	return (_x, _y, m)
+
+def calculate_correlation_coefficient(xs, ys, m):
+	return m * numpy.std(xs) / numpy.std(ys)
+
+def calculate_covariance(m, xs, sig_x = None, _x = None):
+	#return m * math.pow(numpy.std(xs), 2)
+	return m * math.pow(sig_x if sig_x!=None else numpy.std(xs), 2) * 1.0
+
+def graph_line(x, y, m, min_x, max_x):
+	xs = [x1 for x1 in range(min_x, max_x)]
+	ys = [-1*m*(x-x1)+y for x1 in range(min_x, max_x)]
+	pyplot.plot(xs, ys)
+
+def create_linear_regressions_with_scatters(file_in, x_attribs = ['displacement', 'horsepower', 'weight', 'msrp', 'displacement'], y_attribs = ['mpg']*4+['weight']):
+	for x_attrib, y_attrib in zip(x_attribs, y_attribs):
+		graph_scatter_plot_with_regression(file_in, x_attrib, y_attrib)
+		save_fig('step-7-'+ x_attrib +'-vs-'+ y_attrib +'.pdf')
 	return None
 
-def scatter_plot_with_regression(filein,attlist):
+def graph_scatter_plot_with_regression(file_in, x_attrib, y_attrib, title = None):
+	pyplot.clf()
+	xs = []
+	ys = []
+	with open(file_in, 'r') as f:
+		reader = csv.DictReader(f)
+		for inst in reader:
+			xs.append(float(inst[x_attrib]))
+			ys.append(float(inst[y_attrib]))
+	ys = sorted(ys)
+	xs = sorted(xs)
+	x, y, m = calculate_best_fit_line(xs, ys)
+	graph_line(x, y, m, xs[0], xs[-1])
+	b = dict(facecolor='none', color='r')
+	s = 'r=' + str(calculate_correlation_coefficient(xs, ys, m))[0:8] + ' cov=' + str(calculate_covariance(m, xs))[0:8]
+	pyplot.text(xs[0], ys[0], s, bbox=b, fontsize=10, color='r')
+	pyplot.title(title if title!=None else str(x_attrib) + ' vs ' + str(y_attrib))
+	pyplot.xlabel(x_attrib)
+	pyplot.ylabel(y_attrib)
+	pyplot.plot(xs, ys, '.')
 	return None
 
 def get_att_names(filein):
