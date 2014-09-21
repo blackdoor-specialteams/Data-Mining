@@ -36,11 +36,13 @@ def graph_freq_diagram(title,values,counts):
 	#define x and y ranges (and value labels)
 	pyplot.xticks(xrng,values)
 	pyplot.yticks(yrng)
+	pyplot.xlabel(title)
+	pyplot.ylabel("Count")
 
 	# turn on the backround grid
 	pyplot.grid(True)
 	# save the result to a pdf file
-	pyplot.savefig(title + '_freq.pdf')
+	pyplot.savefig('step-1-' + title + '.pdf')
 	pyplot.clf()
 
 def create_cont_to_cat_graphs(table,index):
@@ -118,20 +120,41 @@ def graph_pie_chart(file_in, attribute, file_out):
 	pyplot.savefig(file_out)
 	pyplot.clf()
 
-def create_a_dot_plot(filein,attlist):
-	return None
-
-def create_pie_chart(filein,exelist):
-	return None
-
-def create_a_dot_plot(filein,exelist):
-	return None
-
 def create_histogram(filein,exelist):
 	return None
 
-def create_scatter_plot(filein,exelist):
-	return None
+def create_scatter_plot(attributes,table,exelist):
+	for x in exelist:
+		graph_scatter_plot(attributes[x],table,x)
+
+def graph_scatter_plot(attribute,table,index):	
+	# reset figure
+	pyplot.figure()
+	pyplot.title(attribute + " vs MPG Scatter Plot")
+	# create xs and ys
+	xs , ys = get_points_from_table(table,index,1)
+	# create the dot chart (with pcts)
+	pyplot.plot(xs, ys, 'b.')
+	# make axis a bit longer and wider
+	pyplot.xlim(0, int(max(xs) * 1.10))
+	pyplot.ylim(0, int(max(ys) * 1.10))
+	pyplot.xlabel(attribute)
+	pyplot.ylabel("MPG")
+
+	pyplot.grid(True)
+	pyplot.savefig('step-6-' +attribute + '.pdf')
+	pyplot.clf()
+
+def get_points_from_table(table,xindex,yindex):
+	xresult = []
+	yresult = []
+
+	for row in table:
+		if (row[xindex] != 'NA') and (row[yindex] != 'NA'):
+			xresult.append(float(row[xindex]))
+			yresult.append(float(row[yindex]))
+
+	return xresult,yresult
 
 def calculate_linear_regressions(filein,exelist):
 	return None
@@ -139,11 +162,74 @@ def calculate_linear_regressions(filein,exelist):
 def scatter_plot_with_regression(filein,exelist):
 	return None
 
+def run_step_8(attributes,table):
+	create_box_plot(table)
+	create_multi_freq_diagram(table)
+
+def create_multi_freq_diagram(table):
+	pyplot.figure()
+	pyplot.title("Totatl Number of Cars by Year and Country of Origin")
+	# two simple frequencies
+	xs1 = [10, 20, 30, 40]
+	xs2 = [30, 20, 20, 30]
+
+	years_list = get_all_model_years(table)
+
+	for year in years_list:
+		#group data by year and get Origin info
+		x1 = group_By(table,2,8)
+
+	# note that pyplot.subplots() doesn't work on ada
+	# instead, do this:
+	# pyplot.figure()
+	# ax = pyplot.gca()
+	fig, ax = pyplot.subplots()
+	# create two bars, one for each distribution
+	# spacing can be a bit tricky
+	r1 = ax.bar([1, 2, 3, 4], xs1, 0.3, color='r')
+	r2 = ax.bar([1.3, 2.3, 3.3, 4.3], xs2, 0.3, color='b')
+	# set the tick locations
+	ax.set_xticks([1.3, 2.3, 3.3, 4.3])
+	ax.set_yticks([10, 20, 30, 40, 50])
+	# set the x value labels
+	ax.set_xticklabels(['Val1', 'Val2', 'Val3', 'Val4'])
+	# create a legend
+	ax.legend((r1[0], r2[0]), ('Bar1', 'Bar2'), loc=2)
+	pyplot.grid(True)
+
+	pyplot.savefig('step-8-Multiple-Freq.pdf')
+	pyplot.clf()
+
+def create_box_plot(table):
+	pyplot.figure()
+	pyplot.title("MPG by Model Year")
+
+	xs = group_By(table,2,1)
+
+	pyplot.boxplot(xs)
+	# set x-axis value names
+	labels = get_all_model_years(table)
+	pyplot.xticks(range(1,len(labels) + 1),labels)
+
+	pyplot.xlabel("Model Year")
+	pyplot.ylabel("MPG")
+	pyplot.savefig('step-8-BoxPlot.pdf')
+	pyplot.clf()
+
 def get_all_col_values(table,index):
 	result = []
 	for row in table:
 		if row[index] != "NA":
 			result.append(int(float(row[index])))
+	return result
+
+def get_all_model_years(table):
+	result = []
+	for row in table:
+		if row[2] != "NA":
+				if int(float(row[2])) not in result:
+					result.append(int(float(row[2])))
+	result.sort()
 	return result
 
 def get_frequencies(xs):
@@ -157,10 +243,10 @@ def get_frequencies(xs):
 			counts[-1] += 1
 	return values, counts
 
-def group_By(table,index):
+def group_By(table,index,infoindex):
 	group_vals = []
 	for row in table:
-		value = row[index]
+		value = int(float(row[index]))
 		if value not in group_vals:
 			group_vals.append(value)
 	group_vals.sort()
@@ -168,8 +254,7 @@ def group_By(table,index):
 	result = [[] for _ in range(len(group_vals))]
 
 	for row in table:
-		result[group_vals.index(row[index])].append(row[:])
-
+		result[group_vals.index(int(float(row[index])))].append(int(float(row[infoindex])))
 	return result
 
 def frequencies_for_cutoffs(values, cutoff_points):
@@ -212,7 +297,12 @@ def main():
 	attributes,datatable = get_table_from_CSV(inputdata)
 
 	create_freq_diagram(attributes,datatable,catagorical_att_list)
-	create_cont_to_cat_graphs(datatable,1)
+	#create_cont_to_cat_graphs(datatable,1)
+
+	scatterlist = [0,4,5,7,9]
+	create_scatter_plot(attributes,datatable,scatterlist)
+
+	run_step_8(attributes,datatable)
 
 
 main()
