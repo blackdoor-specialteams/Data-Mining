@@ -45,11 +45,12 @@ def create_freq_diagram(filein,attlist):
 		pyplot.savefig('fig1.pdf')
 		pyplot.clf()
 
-def graph_freq_diagram(table)
+def graph_freq_diagram(table):
+	return None
 
 def create_pie_charts(filein, attlist = ['model_year', 'cylinders', 'origin']):
 	for attribute in attlist:
-		graph_pie_chart(filein, attribute, 'step-2-pie-'+ attribute +'.pdf')
+		graph_pie_chart(filein, attribute, 'step-2-pie-'+ attribute +'.pdf', title = attribute + ' Pie Chart')
 	return None
 
 def graph_pie_chart(file_in, attribute, file_out, title = None):
@@ -72,7 +73,7 @@ def graph_pie_chart(file_in, attribute, file_out, title = None):
 
 def create_dot_plots(file_in, attlist = ['mpg', 'displacement', 'horsepower', 'weight', 'acceleration', 'msrp']):
 	for attribute in attlist:
-		graph_dot_plot(file_in, attribute, 'step-3-dot-'+ attribute +'.pdf')
+		graph_dot_plot(file_in, attribute, 'step-3-dot-'+ attribute +'.pdf', title = attribute + ' Dot Plot')
 	return None
 
 def graph_dot_plot(file_in, attribute, file_out, title = None):
@@ -85,12 +86,31 @@ def graph_dot_plot(file_in, attribute, file_out, title = None):
 	if title == None:
 		title = attribute
 	pyplot.title(title)
+	pyplot.xlabel(attribute)
 	pyplot.savefig(file_out)
 	pyplot.clf()
 
 
-def create_histogram(filein,attlist):
+def create_histograms(file_in, attlist = ['mpg', 'displacement', 'horsepower', 'weight', 'acceleration', 'msrp']):
+	for attribute in attlist:
+		graph_histogram(file_in, attribute, 'step-5-histo-'+ attribute +'.pdf', title = attribute + ' Histogram')
 	return None
+
+def graph_histogram(file_in, attribute, file_out, title = None):
+	pyplot.clf()
+	if title == None:
+		title = attribute
+	xs = []
+	with open(file_in, 'r') as f:
+		reader = csv.DictReader(f)
+		for inst in reader:
+			xs.append(float(inst[attribute]))
+	pyplot.title(title)
+	pyplot.xlabel(attribute)
+	pyplot.ylabel('Instances')
+	pyplot.hist(xs)
+	pyplot.savefig(file_out)
+	pyplot.clf()
 
 def create_scatter_plot(filein,attlist):
 	return None
