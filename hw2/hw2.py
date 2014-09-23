@@ -97,11 +97,12 @@ def populate_range_label_list(xs):
 		#append last label
 	result.append(">" + str(xs[len(xs)-1]))
 	return result
-
+# Create and save graphs for each attribute in attlist
 def create_pie_charts(filein, attlist = ['Model Year', 'Cylinders', 'Origin']):
 	for attribute in attlist:
 		graph_pie_chart(filein, attribute, 'step-2-pie-'+ attribute +'.pdf', title = attribute + ' Pie Chart')
 
+# Graph data for attribute from file_in
 def graph_pie_chart(file_in, attribute, file_out, title = None):
 	labels = []
 	data = []
@@ -113,6 +114,7 @@ def graph_pie_chart(file_in, attribute, file_out, title = None):
 			else:
 				labels.append(str(inst[attribute]))
 				data.append(1)
+	# if title is not defined, use attribute name as title
 	if title == None:
 		title = attribute
 	pyplot.title(title)
@@ -149,11 +151,13 @@ def get_points_from_table(table,xindex,yindex):
 			yresult.append(float(row[yindex]))
 	return xresult,yresult
 
+# Create and save graphs for each attribute in attlist
 def create_dot_plots(file_in, attlist = ['MPG', 'Displacement', 'Horsepower', 'Weight', 'Acceleration', 'MSRP']):
 	for attribute in attlist:
 		graph_dot_plot(file_in, attribute,  title = attribute + ' Dot Plot')
 		save_fig('step-3-dot-'+ attribute +'.pdf')
 
+# Graph data for attribute from file_in
 def graph_dot_plot(file_in, attribute, title = None):
 	pyplot.clf()
 	pyplot.gca().get_yaxis().set_visible(False)
@@ -161,18 +165,22 @@ def graph_dot_plot(file_in, attribute, title = None):
 		reader = csv.DictReader(f)
 		for inst in reader:
 			pyplot.plot(float(inst[attribute]), 1, 'k.', alpha=.05, markersize=15)
+	# if title is not defined, use attribute name as title
 	if title == None:
 		title = attribute
 	pyplot.title(title)
 	pyplot.xlabel(attribute)
 	
+# Create and save graphs for each attribute in attlist
 def create_histograms(file_in, attlist = ['MPG', 'Displacement', 'Horsepower', 'Weight', 'Acceleration', 'MSRP']):
 	for attribute in attlist:
 		graph_histogram(file_in, attribute,  title = attribute + ' Histogram')
 		save_fig('step-5-histo-'+ attribute +'.pdf')
 
+# Graph data for attribute from file_in
 def graph_histogram(file_in, attribute, title = None):
 	pyplot.clf()
+	# if title is not defined, use attribute name as title
 	if title == None:
 		title = attribute
 	xs = []
@@ -185,6 +193,7 @@ def graph_histogram(file_in, attribute, title = None):
 	pyplot.ylabel('Instances')
 	pyplot.hist(xs)
 
+# Save the current pyplot figure and clear the figure so a new one can be created
 def save_fig(file_out):
 	pyplot.savefig(file_out)
 	pyplot.clf()
@@ -202,12 +211,15 @@ def calculate_best_fit_line(xs, ys):
 	m = num/denom
 	return (_x, _y, m)
 
+# Returns the correlation coefficient for dataset (xs[i], ys[i]) and slope m
 def calculate_correlation_coefficient(xs, ys, m):
 	return m * numpy.std(xs) / numpy.std(ys)
 
-def calculate_covariance(m, xs, sig_x = None, _x = None):
+# Return the covariance for points in xs and slope m
+# Passing stdev_x (the standard deviation of xs) will make this function return faster
+def calculate_covariance(m, xs, stdev_x = None):
 	#return m * math.pow(numpy.std(xs), 2)
-	return m * math.pow(sig_x if sig_x!=None else numpy.std(xs), 2) * 1.0
+	return m * math.pow(stdev_x if stdev_x!=None else numpy.std(xs), 2) * 1.0
 
 def graph_line(x, y, m, min_x, max_x):
 	min_x = int(min_x)
@@ -216,11 +228,13 @@ def graph_line(x, y, m, min_x, max_x):
 	ys = [-1*m*(x-x1)+y for x1 in range(min_x, max_x)]
 	pyplot.plot(xs, ys)
 
+# Create and save graphs for x_attribs[i] vs y_attribs[i]
 def create_linear_regressions_with_scatters(file_in, x_attribs = ['Displacement', 'Horsepower', 'Weight', 'MSRP', 'Displacement'], y_attribs = ['MPG']*4+['Weight']):
 	for x_attrib, y_attrib in zip(x_attribs, y_attribs):
 		graph_scatter_plot_with_regression(file_in, x_attrib, y_attrib)
 		save_fig('step-7-'+ x_attrib +'-vs-'+ y_attrib +'.pdf')
 
+# Graph data for x_attrib vs y_attrib from file_in
 def graph_scatter_plot_with_regression(file_in, x_attrib, y_attrib, title = None):
 	pyplot.clf()
 	xs = []
