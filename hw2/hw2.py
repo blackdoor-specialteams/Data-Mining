@@ -17,55 +17,51 @@ import math
 def create_freq_diagram(attributes,table,exelist):
 	"""Create a Frequency diagram for each catagorical attribute in the prepared dataset"""
 	for att in exelist:
-		#define x and y values
-		xs = []
-		ys = []
-
-		#get a list of all of the values from a column
-		#get the count of frequienes from that list, for each value
 		xs, ys = get_frequencies(get_all_col_values(table,att))
 		graph_freq_diagram(attributes[att],xs,ys,1)
 
 def graph_freq_diagram(title,values,counts,step):
+	"""Creates a Frequency diagram, saves the pdf using the entered step number"""
 	pyplot.figure()
 	pyplot.title(title + " Frequency Diagram")
-	# calculate a range (make y a bit bigger)
 	xrng = numpy.arange(len(values))
 	yrng = numpy.arange(0,max(counts)+ 50,20)
-	#create the bar chart
 	pyplot.bar(xrng,counts,.45,align ='center')
-	#define x and y ranges (and value labels)
 	pyplot.xticks(xrng,values)
 	pyplot.yticks(yrng)
 	pyplot.xlabel(title)
 	pyplot.ylabel("Count")
-
-	# turn on the backround grid
 	pyplot.grid(True)
-	# save the result to a pdf file
 	pyplot.savefig("step-"+str(step)+"-"+ title + '.pdf')
 	pyplot.clf()
 
-def create_cont_to_cat_graphs(table,index):
-	run_approach_one(table,index)
-	run_approach_two(table,index)
+def create_cont_to_cat_graphs(table):
+	"""Runs the two different approaches for the step, and creates the related graphs"""
+	run_approach_one(table)
+	run_approach_two(table)
 
-def run_approach_one(table,index):
-	mpg_values = get_all_col_values(table,index)
+def run_approach_one(table):
+	"""Creates a frequencey diagram of calculated mpg ratings in the dataset."""
+	mpg_values = get_all_col_values(table,1)
 	ratinglist = get_list_of_mpg_ratings(mpg_values)
 	xs, ys = get_frequencies(ratinglist)
 	graph_freq_diagram("Car MPG Rating",xs,ys,4)
 
-def run_approach_two(table,index):
-	mpg_values = get_all_col_values(table,index)
-
+def run_approach_two(table):
+	"""Creates a frequencey diagram of five equal bins of MPG from the dataset"""
+	mpg_values = get_all_col_values(table,1)
+	#List of cutoff values for the bins
 	cuttoffs = equal_width_cutoffs(mpg_values,4)
+	#List of values for each bin
 	bin_freq = frequencies_for_cutoffs(mpg_values,cuttoffs)
+	#seperate into the bins
 	xs, bin_freq = get_frequencies(bin_freq)
+	#create labels
 	xs = populate_range_label_list(cuttoffs)
 	graph_freq_diagram("Car MPG by Range",xs,bin_freq,4)
 
 def get_list_of_mpg_ratings(xs):
+	"""From a list of MPG values, return a list of ratings"""
 	result = []
 	for x in xs:
 		if x >= 45:
@@ -91,17 +87,20 @@ def get_list_of_mpg_ratings(xs):
 	return result
 
 def populate_range_label_list(xs):
+	"""Generates labels from a list of labels for the bins of a frequency diagram"""
 	result = []
+	#First label
 	result.append("<" + str(xs[0]))
 	for i in range(0,len(xs)-1):
+		#append the range of each bin that isnt first or last
 		result.append(str(xs[i] + 1) + "--" + str(xs[i+1]))
+		#append last label
 	result.append(">" + str(xs[len(xs)-1]))
 	return result
 
 def create_pie_charts(filein, attlist = ['Model Year', 'Cylinders', 'Origin']):
 	for attribute in attlist:
 		graph_pie_chart(filein, attribute, 'step-2-pie-'+ attribute +'.pdf', title = attribute + ' Pie Chart')
-	return None
 
 def graph_pie_chart(file_in, attribute, file_out, title = None):
 	labels = []
@@ -122,31 +121,28 @@ def graph_pie_chart(file_in, attribute, file_out, title = None):
 	pyplot.clf()
 
 def create_scatter_plot(attributes,table,exelist):
+	"""Creates a scatterplot for each attribute in the execution list"""
 	for x in exelist:
 		graph_scatter_plot(attributes[x],table,x)
 
-def graph_scatter_plot(attribute,table,index):	
-	# reset figure
+def graph_scatter_plot(attribute,table,index):
+	"""Creates a scatterplotusing MPG information against a chosen attribute"""
 	pyplot.figure()
 	pyplot.title(attribute + " vs MPG Scatter Plot")
-	# create xs and ys
 	xs , ys = get_points_from_table(table,index,1)
-	# create the dot chart (with pcts)
 	pyplot.plot(xs, ys, 'b.')
-	# make axis a bit longer and wider
 	pyplot.xlim(0, int(max(xs) * 1.10))
 	pyplot.ylim(0, int(max(ys) * 1.10))
 	pyplot.xlabel(attribute)
 	pyplot.ylabel("MPG")
-
 	pyplot.grid(True)
 	pyplot.savefig('step-6-' +attribute + '.pdf')
 	pyplot.clf()
 
 def get_points_from_table(table,xindex,yindex):
+	"""Grabs points of data from the table and returns them as two lists"""
 	xresult = []
 	yresult = []
-
 	for row in table:
 		if (row[xindex] != 'NA') and (row[yindex] != 'NA'):
 			xresult.append(float(row[xindex]))
@@ -157,7 +153,6 @@ def create_dot_plots(file_in, attlist = ['MPG', 'Displacement', 'Horsepower', 'W
 	for attribute in attlist:
 		graph_dot_plot(file_in, attribute,  title = attribute + ' Dot Plot')
 		save_fig('step-3-dot-'+ attribute +'.pdf')
-	return None
 
 def graph_dot_plot(file_in, attribute, title = None):
 	pyplot.clf()
@@ -175,7 +170,6 @@ def create_histograms(file_in, attlist = ['MPG', 'Displacement', 'Horsepower', '
 	for attribute in attlist:
 		graph_histogram(file_in, attribute,  title = attribute + ' Histogram')
 		save_fig('step-5-histo-'+ attribute +'.pdf')
-	return None
 
 def graph_histogram(file_in, attribute, title = None):
 	pyplot.clf()
@@ -195,7 +189,6 @@ def save_fig(file_out):
 	pyplot.savefig(file_out)
 	pyplot.clf()
 
-#returns a three-tuple for point slope form (x, y, slope)
 def calculate_best_fit_line(xs, ys):
 	if len(xs) != len(ys):
 		return None
@@ -250,22 +243,22 @@ def graph_scatter_plot_with_regression(file_in, x_attrib, y_attrib, title = None
 	pyplot.plot(xs, ys, '.')
 
 def run_step_8(attributes,table):
+	"""Create two graphs, a boxplot and a multi-frequency diagram for step8"""
 	create_box_plot(table)
 	create_multi_freq_diagram(table)
 
 def create_multi_freq_diagram(table):
+	"""Creates a multiple frequency diagram for the origin of a car, for every year"""
 	pyplot.figure()
 	fig, ax = pyplot.subplots()
-	
 	years_list = get_all_model_years(table)
-	#group data by year and get Origin info for that year
 	grouped_by_year_list = group_By(table,2,8)
 	list_of_freqs_by_year = []
 
 	for xs in grouped_by_year_list:
 		values , counts = get_frequencies(xs)
 		list_of_freqs_by_year.append((values,counts))
-	#Graph Settings 
+
 	count_max = 0
 	bar_width = 0.3
 	locations = range(1,11)
@@ -286,19 +279,19 @@ def create_multi_freq_diagram(table):
 	
 	xrng = numpy.arange(1.5,len(list_of_freqs_by_year)+1)
 	yrng = numpy.arange(0,count_max+ 25,5)
-
 	ax.legend((r1[0], r2[0],r3[0]), ('USA', 'Europe','Japan'), loc=2)
+
 	pyplot.xticks(xrng,years_list)
 	pyplot.yticks(yrng)
 	pyplot.xlabel("Model Year")
 	pyplot.ylabel("Count")
 	pyplot.title("Total Number of Cars by Year and Country of Origin")
 	pyplot.grid(True)
-
 	pyplot.savefig('step-8-Multiple-Freq.pdf')
 	pyplot.clf()
 
 def get_counts_for_origin_by_year(xs,index):
+	"""gets the frequency count from a given list by year"""
 	result = []
 	for x in xs:
 		values = x[0]
@@ -307,12 +300,14 @@ def get_counts_for_origin_by_year(xs,index):
 	return result
 
 def increment_values_list(xs,inc):
+	"""increment all values in a list by a specified increment value"""
 	result = []
 	for x in xs:
 		result.append(x + inc)
 	return result
 
 def check_max(xs,cmax):
+	"""compares the current max to the max in a list to find the new max"""
 	if max(xs) > cmax:
 		return max(xs)
 	else:
@@ -321,20 +316,17 @@ def check_max(xs,cmax):
 def create_box_plot(table):
 	pyplot.figure()
 	pyplot.title("MPG by Model Year")
-
 	xs = group_By(table,2,1)
-
 	pyplot.boxplot(xs)
-	# set x-axis value names
 	labels = get_all_model_years(table)
 	pyplot.xticks(range(1,len(labels) + 1),labels)
-
 	pyplot.xlabel("Model Year")
 	pyplot.ylabel("MPG")
 	pyplot.savefig('step-8-BoxPlot.pdf')
 	pyplot.clf()
 
 def get_all_col_values(table,index):
+	""" Gets all attribute values from a table"""
 	result = []
 	for row in table:
 		if row[index] != "NA":
@@ -342,6 +334,7 @@ def get_all_col_values(table,index):
 	return result
 
 def get_all_model_years(table):
+	"""Returns a list of all the model years of instances in a Dataset"""
 	result = []
 	for row in table:
 		if row[2] != "NA":
@@ -351,6 +344,7 @@ def get_all_model_years(table):
 	return result
 
 def get_frequencies(xs):
+	"""Returns a list of values and counts for those values in a list"""
 	ys = sorted(xs)
 	values, counts = [], []
 	for y in ys:
@@ -362,6 +356,7 @@ def get_frequencies(xs):
 	return values, counts
 
 def group_By(table,index,infoindex):
+	"""Returns a list of lists of values that have been grouped by a specific attribute value"""
 	group_vals = []
 	for row in table:
 		value = int(float(row[index]))
@@ -370,12 +365,12 @@ def group_By(table,index,infoindex):
 	group_vals.sort()
 
 	result = [[] for _ in range(len(group_vals))]
-
 	for row in table:
 		result[group_vals.index(int(float(row[index])))].append(int(float(row[infoindex])))
 	return result
 
 def frequencies_for_cutoffs(values, cutoff_points):
+	""" Finds the count of values that fall in the cutoffs and returns a list"""
 	new_values = []
 	for v in values:
 		found = False
@@ -388,11 +383,12 @@ def frequencies_for_cutoffs(values, cutoff_points):
 	return new_values
 
 def equal_width_cutoffs(values, num_of_bins):
-	# find the approximate width
+	"""Returns a list of cutoff values to create a number of equal bins"""
 	width = int(max(values) - min(values)) / num_of_bins
 	return list(range(min(values) + width, max(values), width))
 
 def get_table_from_CSV(filename):
+	"""Returns a table of strings from a CSV file"""
 	table =[]
 	atts = []
 	with open(filename, 'rb') as _in:
@@ -403,28 +399,20 @@ def get_table_from_CSV(filename):
 				table.append(row)
 	return atts, table
 
-
-def print_table(table):
-	for row in table:
-		print row
-
 def main():
-	#Relevant Attributes to graph
+	#Relevant attributes to graph
 	catagorical_att_list = [2,3,8]
 	inputdata = "auto-data-cleaned.txt"
 	#Get list of attributes, and the table from the input data
 	attributes,datatable = get_table_from_CSV(inputdata)
-	#Cj's Stuff
+	#step 1 - 8 (in order)
 	create_freq_diagram(attributes,datatable,catagorical_att_list)
-	create_scatter_plot(attributes,datatable,[0,4,5,7,9])
-	create_box_plot(datatable)
-	create_cont_to_cat_graphs(datatable,1)
-	run_step_8(attributes,datatable)
-	
-	#Nate's Stuff
 	create_pie_charts(inputdata)
-	create_histograms(inputdata)
 	create_dot_plots(inputdata)
+	create_cont_to_cat_graphs(datatable)
+	create_histograms(inputdata)
+	create_scatter_plot(attributes,datatable,[0,4,5,7,9])
 	create_linear_regressions_with_scatters(inputdata)
+	run_step_8(attributes,datatable)
 
 main()
