@@ -24,9 +24,9 @@ def create_freq_diagram(attributes,table,exelist):
 		#get a list of all of the values from a column
 		#get the count of frequienes from that list, for each value
 		xs, ys = get_frequencies(get_all_col_values(table,att))
-		graph_freq_diagram(attributes[att],xs,ys)
+		graph_freq_diagram(attributes[att],xs,ys,1)
 
-def graph_freq_diagram(title,values,counts):
+def graph_freq_diagram(title,values,counts,step):
 	pyplot.figure()
 	pyplot.title(title + " Frequency Diagram")
 	# calculate a range (make y a bit bigger)
@@ -43,7 +43,7 @@ def graph_freq_diagram(title,values,counts):
 	# turn on the backround grid
 	pyplot.grid(True)
 	# save the result to a pdf file
-	pyplot.savefig('step-1-' + title + '.pdf')
+	pyplot.savefig("step-"+str(step)+"-"+ title + '.pdf')
 	pyplot.clf()
 
 def create_cont_to_cat_graphs(table,index):
@@ -54,18 +54,16 @@ def run_approach_one(table,index):
 	mpg_values = get_all_col_values(table,index)
 	ratinglist = get_list_of_mpg_ratings(mpg_values)
 	xs, ys = get_frequencies(ratinglist)
-	xs = populate_rating_label_list(xs)
-	graph_freq_diagram("Car MPG Rating",xs,ys)
+	graph_freq_diagram("Car MPG Rating",xs,ys,4)
 
 def run_approach_two(table,index):
-	#generate initial values
 	mpg_values = get_all_col_values(table,index)
-	ratinglist = get_list_of_mpg_ratings(mpg_values)
-	#get graph cut off points from list
-	cuttoffs = equal_width_cutoffs(ratinglist,5)
-	bin_freq = frequencies_for_cutoffs(ratinglist,cuttoffs)
 
-	graph_freq_diagram("Car MPG Rating by Range",cuttoffs,bin_freq)
+	cuttoffs = equal_width_cutoffs(mpg_values,4)
+	bin_freq = frequencies_for_cutoffs(mpg_values,cuttoffs)
+	xs, bin_freq = get_frequencies(bin_freq)
+	xs = populate_range_label_list(cuttoffs)
+	graph_freq_diagram("Car MPG by Range",xs,bin_freq,4)
 
 def get_list_of_mpg_ratings(xs):
 	result = []
@@ -92,12 +90,12 @@ def get_list_of_mpg_ratings(xs):
 			result.append(1)
 	return result
 
-def populate_rating_label_list(xs):
-	labels = ["0-13","14","15-16","17-19","20-23","24-26","27-30","31-36","37-44",">45"]
+def populate_range_label_list(xs):
 	result = []
-	for x in xs:
-		if labels[x-1] not in result:
-			result.append(labels[x-1])
+	result.append("<" + str(xs[0]))
+	for i in range(0,len(xs)-1):
+		result.append(str(xs[i] + 1) + "--" + str(xs[i+1]))
+	result.append(">" + str(xs[len(xs)-1]))
 	return result
 
 def create_pie_charts(filein, attlist = ['Model Year', 'Cylinders', 'Origin']):
@@ -384,6 +382,7 @@ def frequencies_for_cutoffs(values, cutoff_points):
 		for i in range(len(cutoff_points)):
 			if not found and v <= cutoff_points[i]:
 				new_values.append(i + 1)
+				found = True
 		if not found:
 			new_values.append(len(cutoff_points) + 1)
 	return new_values
@@ -419,6 +418,7 @@ def main():
 	create_freq_diagram(attributes,datatable,catagorical_att_list)
 	create_scatter_plot(attributes,datatable,[0,4,5,7,9])
 	create_box_plot(datatable)
+	create_cont_to_cat_graphs(datatable,1)
 	run_step_8(attributes,datatable)
 	
 	#Nate's Stuff
@@ -426,9 +426,5 @@ def main():
 	create_histograms(inputdata)
 	create_dot_plots(inputdata)
 	create_linear_regressions_with_scatters(inputdata)
-
-
-	
-
 
 main()
