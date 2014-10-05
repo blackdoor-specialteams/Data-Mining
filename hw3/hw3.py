@@ -1,5 +1,11 @@
+# coding=utf-8
 from cj import *
 import hw2
+import csv
+import re
+import random
+import os
+from tabulate import tabulate
 
 #n: 1,2,6
 #CJ: 3,4,5
@@ -23,8 +29,43 @@ class: 5, actual: 5
 instance: 16.2, 6, 163.0, 133.0, 3410, 15.8, 78, 2, peugeot 604sl, 10990
 class: 5, actual: 4
 Note you should run your program enough times to check that the approach is working correctly'''
-def step1():
+def step1(file_in):
+# get lists of weights and mpgs
+	weights = []
+	mpgs = []
+	with open(file_in, 'r') as f:
+		reader = csv.DictReader(f)
+		for inst in reader:
+			weights.append(int(inst['Weight']))
+			mpgs.append(float(inst['MPG']))
+# get best fit line
+	_weight, _mpg, m = hw2.calculate_best_fit_line(weights, mpgs)
+# choose random instances from the dataset
+	random_instances = []
+	random_indexes = sorted([int(random.random()*len(weights)) for _ in range(0, 5)])
+	with open(file_in, 'r') as f:
+		reader = csv.DictReader(f)
+		i = 0
+		for inst in reader:
+			if i in random_indexes:
+				random_instances.append(inst)
+			i += 1
+# print results of predictions
+	print '===========================================\nSTEP 1: Linear Regression MPG Classifier\n==========================================='
+	for inst in random_instances:
+		print "instance: " + inst['MPG'] + " " + inst['Weight'] + ' ' + inst['Model Year'] + " " + inst['Car Name']
+		print 'predicted class: ' + str(hw2.get_mpg_rating(get_linear_prediction(_weight, _mpg, m, x = int(inst['Weight'])))) + ' actual: ' + str(hw2.get_mpg_rating(float(inst["MPG"])))
+
 	return None
+
+def get_linear_prediction(_x, _y, m, x = None, y = None):
+	if y == None and x == None:
+		return None
+	if(y == None): # solve for y
+		return m * (x - _x) + _y /1.0
+	else:# solve for x
+		return (y -_y)/m + _x /1.0
+
 
 '''Create a k = 5 nearest neighbor classifier for mpg that uses the number of cylinders, weight, and
 acceleration attributes to predict mpg. Be sure to normalize the MPG values and also use the Euclidean
@@ -47,15 +88,15 @@ class: 7, actual: 4
 def step2():
 	return None
 
-'''Create two versions of a Na¨ıve Bayes classifier to predict mpg based on the number of cylinders,
+'''Create two versions of a Naive Bayes classifier to predict mpg based on the number of cylinders,
 weight, and model year attributes. For the first one, create a categorical version of weight using the following
 classifications (based on NHTSA vehicle sizes).
 Ranking Range
-5 ≥ 3500
-4 3000–3499
-3 2500–2999
-2 2000–2499
-1 ≤ 1999
+5 >= 3500
+4 3000-3499
+3 2500-2999
+2 2000-2499
+1 <= 1999
 For the second, calculate the conditional probability for weight using the Gaussian distribution function from
 class. Similar to Step 1, test your classifier by selecting random instances from the dataset, predict their
 corresponding mpg ranking, and then show their actual mpg ranking:
@@ -67,19 +108,6 @@ def step3():
 and test sets. You should use two approaches for testing. The first approach should use random subsampling
 with k = 10. The second approach should use stratified k-fold cross validation with k = 10. Your output
 should look something like this (where the ??’s should be replaced by actual values):
-===========================================
-STEP 4: Predictive Accuracy
-===========================================
-Random Subsample (k=10, 2:1 Train/Test)
-Linear Regression: p = 0.?? +- 0.??
-2Naive Bayes I: p = 0.?? +- 0.??
-Naive Bayes II: p = 0.?? +- 0.??
-Top-K Nearest Neighbor: p = 0.?? +- 0.??
-Stratified 10-Fold Cross Validation
-Linear Regression: p = 0.?? +- 0.??
-Naive Bayes I: p = 0.?? +- 0.??
-Naive Bayes II: p = 0.?? +- 0.??
-Top-K Nearest Neighbor: p = 0.?? +- 0.??
 '''
 def step4():
 	return None
@@ -131,10 +159,7 @@ def step6():
 	return None
 
 
-import csv
-import re
-import os
-from tabulate import tabulate
+
 
 def main():
 	my_function()
