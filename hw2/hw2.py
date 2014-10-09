@@ -244,6 +244,7 @@ def graph_scatter_plot_with_regression(file_in, x_attrib, y_attrib, title = None
 		for inst in reader:
 			xs.append(float(inst[x_attrib]))
 			ys.append(float(inst[y_attrib]))
+	pyplot.plot(xs, ys, '.')
 	ys = sorted(ys)
 	xs = sorted(xs)
 	x, y, m = calculate_best_fit_line(xs, ys)
@@ -254,7 +255,7 @@ def graph_scatter_plot_with_regression(file_in, x_attrib, y_attrib, title = None
 	pyplot.title(title if title!=None else str(x_attrib) + ' vs ' + str(y_attrib))
 	pyplot.xlabel(x_attrib)
 	pyplot.ylabel(y_attrib)
-	pyplot.plot(xs, ys, '.')
+	
 
 def run_step_8(attributes,table):
 	"""Create two graphs, a boxplot and a multi-frequency diagram for step8"""
