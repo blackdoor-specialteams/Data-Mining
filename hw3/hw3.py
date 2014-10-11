@@ -5,6 +5,7 @@ import csv
 import re
 import random
 import os
+import heapq
 from tabulate import tabulate
 
 #n: 1,2,6
@@ -41,22 +42,29 @@ def step1(file_in):
 # get best fit line
 	_weight, _mpg, m = hw2.calculate_best_fit_line(weights, mpgs)
 # choose random instances from the dataset
+	random_indexes = get_random_indexes(5, len(weights))
+	random_instances = get_instances(file_in, random_indexes)
+# print results of predictions
+	print '===========================================\nSTEP 1: Linear Regression MPG Classifier\n==========================================='
+	for inst in random_instances:
+		print_instance(inst) #print "instance: " + inst['MPG'] + " " + inst['Weight'] + ' ' + inst['Model Year'] + " " + inst['Car Name']
+		print 'predicted: ' + str(hw2.get_mpg_rating(get_linear_prediction(_weight, _mpg, m, x = int(inst['Weight'])))) + ' actual: ' + str(hw2.get_mpg_rating(float(inst["MPG"])))
+
+	return None
+
+def get_random_indexes(n, size):
+	return sorted([int(random.random()*(size-1)) for _ in range(0, n)])
+
+def get_instances(file_in, indexes):
 	random_instances = []
-	random_indexes = sorted([int(random.random()*len(weights)) for _ in range(0, 5)])
 	with open(file_in, 'r') as f:
 		reader = csv.DictReader(f)
 		i = 0
 		for inst in reader:
-			if i in random_indexes:
+			if i in indexes:
 				random_instances.append(inst)
 			i += 1
-# print results of predictions
-	print '===========================================\nSTEP 1: Linear Regression MPG Classifier\n==========================================='
-	for inst in random_instances:
-		print "instance: " + inst['MPG'] + " " + inst['Weight'] + ' ' + inst['Model Year'] + " " + inst['Car Name']
-		print 'predicted class: ' + str(hw2.get_mpg_rating(get_linear_prediction(_weight, _mpg, m, x = int(inst['Weight'])))) + ' actual: ' + str(hw2.get_mpg_rating(float(inst["MPG"])))
-
-	return None
+	return random_instances
 
 def get_linear_prediction(_x, _y, m, x = None, y = None):
 	if y == None and x == None:
@@ -65,6 +73,12 @@ def get_linear_prediction(_x, _y, m, x = None, y = None):
 		return m * (x - _x) + _y /1.0
 	else:# solve for x
 		return (y -_y)/m + _x /1.0
+
+def print_instance(inst, attribs = ["MPG", 'Weight', 'Model Year', 'Car Name']):
+	out = "instance:"
+	for attrib in attribs:
+		out += ' ' + inst[attrib]
+	print out
 
 
 '''Create a k = 5 nearest neighbor classifier for mpg that uses the number of cylinders, weight, and
@@ -87,6 +101,9 @@ class: 7, actual: 4
 '''
 def step2():
 	return None
+
+def get_euclidean_d(i, i2):
+	return int(math.sqrt(pow((i-i2),2)))
 
 '''Create two versions of a Naive Bayes classifier to predict mpg based on the number of cylinders,
 weight, and model year attributes. For the first one, create a categorical version of weight using the following
