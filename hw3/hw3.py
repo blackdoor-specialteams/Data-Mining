@@ -112,10 +112,7 @@ def step2(file_in):
 def get_mpg_class_label(knn):
 	labels = []
 	for neighbor in knn:
-		print neighbor["MPG"]
-		print hw2.get_mpg_rating(neighbor["MPG"])
-		labels.append(hw2.get_mpg_rating(neighbor["MPG"]))
-	print "mode: " + str(get_mode(labels))+ "\n"
+		labels.append(hw2.get_mpg_rating(float(neighbor["MPG"])))
 	return get_mode(labels)
 
 
@@ -125,9 +122,8 @@ def get_knn(instance, k, training_file = "auto-data-cleaned.txt", attribs = ["Cy
 	with open(training_file, 'r') as f:
 			reader = csv.DictReader(f)
 			for inst in reader:
-				distances.append( (get_neighbor_d(instance, inst, ranges, attribs), inst) )
-	sorted(distances, key=itemgetter(0))
-	print distances[0:k]
+				distances.append( [get_neighbor_d(instance, inst, ranges, attribs), inst] )
+	distances = sorted(distances, key=itemgetter(0))
 	ret = [e[1] for e in distances[0:k]]
 	return ret
 
