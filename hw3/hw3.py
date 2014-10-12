@@ -5,6 +5,7 @@ import csv
 import re
 import random
 import os
+from operator import itemgetter
 import heapq
 from tabulate import tabulate
 
@@ -98,16 +99,76 @@ class: 1, actual: 5
 instance: 16.2, 6, 163.0, 133.0, 3410, 15.8, 78, 2, peugeot 604sl, 10990
 class: 7, actual: 4
 '''
-def step2():
+def step2(file_in):
+	print "===========================================\nSTEP 2: k=5 Nearest Neighbor MPG Classifier\n==========================================="
+	random_indexes = get_random_indexes(5, 315)
+	random_instances = get_instances(file_in, random_indexes)
+	for inst in random_instances:
+		print_instance(inst, attribs = ["MPG", "Cylinders", "Weight", "Acceleration", 'Model Year', 'Car Name']) #print "instance: " + inst['MPG'] + " " + inst['Weight'] + ' ' + inst['Model Year'] + " " + inst['Car Name']
+		print 'predicted: ' + str(get_mpg_class_label(get_knn(inst, 5))) + ' actual: ' + str(hw2.get_mpg_rating(float(inst["MPG"])))
+
 	return None
 
+def get_mpg_class_label(knn):
+	labels = []
+	for neighbor in knn:
+		print neighbor["MPG"]
+		print hw2.get_mpg_rating(neighbor["MPG"])
+		labels.append(hw2.get_mpg_rating(neighbor["MPG"]))
+	print "mode: " + str(get_mode(labels))+ "\n"
+	return get_mode(labels)
+
+
+def get_knn(instance, k, training_file = "auto-data-cleaned.txt", attribs = ["Cylinders", "Weight", "Acceleration"]):
+	ranges = get_ranges(training_file, attribs = attribs)
+	distances = []
+	with open(training_file, 'r') as f:
+			reader = csv.DictReader(f)
+			for inst in reader:
+				distances.append( (get_neighbor_d(instance, inst, ranges, attribs), inst) )
+	sorted(distances, key=itemgetter(0))
+	print distances[0:k]
+	ret = [e[1] for e in distances[0:k]]
+	return ret
+
+def get_neighbor_d(instance, neighbor, ranges, attribs = ["Cylinders", "Weight", "Acceleration"]):
+	d = 0
+	for attrib in attribs:
+		d += get_euclidean_d(float(instance[attrib])/float(ranges[attrib]), float(neighbor[attrib])/float(ranges[attrib]))
+	return d
+
+def get_ranges(in_file, attribs = ["Cylinders", "Weight", "Acceleration"]):
+	ranges = dict()
+	for attrib in attribs:
+		xs = []
+		with open(in_file, 'r') as f:
+			reader = csv.DictReader(f)	
+			for inst in reader:
+				xs.append(float(inst[attrib]))
+		ranges[attrib] = max(xs) - min(xs)
+	return ranges
+
+def get_mode(xs):
+	counts = dict()
+	for x in xs:
+		if x in counts:
+			counts[x] += 1
+		else:
+			counts[x] = 1
+	ret = xs[0]
+	for x in counts.keys():
+		if counts[x] > counts[ret]:
+			ret = x
+	return ret
+
 def get_euclidean_d(i, i2):
-	return int(math.sqrt(pow((i-i2),2)))
+	return float(math.sqrt(pow((i-i2),2)))
 
 def step6():
 	return None
 
 
 def main():
+	return None
 
 main()
