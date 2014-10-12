@@ -24,12 +24,17 @@ corresponding mpg ranking, and then show their actual mpg ranking:
 '''
 
 
-def step3():
+def step3(table):
+	nb_v1(table)
 	return None
 
 def nb_v1():
-	return None
+	training,test = holdout_partition(table)
+	learning_nb_v1()
 
+def learning_nb_v1():
+
+#///////////////////////////////////////////////////////
 def nb_v2():
 	return None
 
@@ -39,6 +44,15 @@ def guassian(x,mean,sdev):
 		first = 1 / (math.sprt(2*math.pi) * sdev)
 		second = math.e ** (-((x - mean) ** 2) / (2 *(sdev ** 2)))
 	return first * second
+
+def holdout_partition(table):
+	randomized = table [:]
+	n = len(table)
+	for i in range(n):
+		j = randint(0,n-1)
+		randomized[i], randomized[j] = randomized[j],randomized[i]
+	n0 = (n*2)/3
+	return randomized[0:n0],randomized[n0:]
 
 '''Compute the predictive accuracy (and standard error) of the four classifiers using separate training
 and test sets. You should use two approaches for testing. The first approach should use random subsampling
@@ -92,7 +106,65 @@ class. Be sure to write down any assumptions you make in creating the classifier
 of your classifier using stratified k-fold cross validation (with k = 10) and generate confusion matrices for
 the two classifiers.'''
 
+#//////////////////////////////////////////////////////////////////////////////
+def table_from_csv(filename):
+	"""Returns a table of strings from a CSV file"""
+	table =[]
+	atts = []
+	with open(filename, 'rb') as _in:
+		f1 = csv.reader(_in)
+		atts = f1.next()
+		for row in f1:
+			if len(row) > 0:
+				table.append(row)
+	return atts, table
+
+def print_instance(row):
+	out = "instance: "
+	for x in row:
+		out += " " + str(x)
+	print out
+
+def get_random_indexes(n, size):
+	return sorted([int(random.random()*(size-1)) for _ in range(0, n)])
+	
+def get_NHTSA_rating(x):
+	if x >= 3500:
+		return 5
+	elif x > 3000:
+		return 4
+	elif x > 2500:
+		return 3
+	elif x > 2000:
+		return 2 
+	else:
+		return 1
+
+
+def get_mpg_rating(x):
+	if x >= 45:
+		return 10
+	elif x >= 37:
+		return 9
+	elif x >= 31:
+		return 8
+	elif x >= 27:
+		return 7
+	elif x >= 24:
+		return 6 
+	elif x >= 20:
+		return 5
+	elif x >= 17:
+		return 4
+	elif x >= 15:
+		return 3 
+	elif x > 13:
+		return 2
+	elif x <= 13:
+		return 1
+
 def main():
+	atts,table = table_from_csv("auto-data-cleaned.txt")
 	step3()
 	step4()
 	step5()
