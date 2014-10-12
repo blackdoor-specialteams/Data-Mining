@@ -35,7 +35,7 @@ def nb_v1():
 
 def learning_nb_v1():
 	return None
-	
+
 #///////////////////////////////////////////////////////
 def nb_v2():
 	return None
@@ -167,8 +167,8 @@ def get_mpg_rating(x):
 
 def main():
 	atts,table = table_from_csv("auto-data-cleaned.txt")
-	step3()
-	step4()
-	step5()
+	step3(table)
+	#step4()
+	#step5()
 
 main()
