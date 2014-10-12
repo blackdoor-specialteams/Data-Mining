@@ -1,3 +1,4 @@
+# coding=utf-8
 import math
 import hw2
 import csv
@@ -33,7 +34,8 @@ def nb_v1():
 	learning_nb_v1()
 
 def learning_nb_v1():
-
+	return None
+	
 #///////////////////////////////////////////////////////
 def nb_v2():
 	return None
@@ -127,7 +129,7 @@ def print_instance(row):
 
 def get_random_indexes(n, size):
 	return sorted([int(random.random()*(size-1)) for _ in range(0, n)])
-	
+
 def get_NHTSA_rating(x):
 	if x >= 3500:
 		return 5
