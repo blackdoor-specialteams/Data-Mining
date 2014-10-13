@@ -160,6 +160,12 @@ def get_mode(xs):
 def get_euclidean_d(i, i2):
 	return float(math.sqrt(pow((i-i2),2)))
 
+'''Use Na¨ıve Bayes and k-nearest neighbor to create two different classifiers to predict survival from the
+titanic dataset (titanic.txt). Note that the first line of the dataset lists the name of each attribute (class,
+age, sex, and surivived). Your classifiers should use class, age, and sex attributes to determine the survival
+class. Be sure to write down any assumptions you make in creating the classifiers. Evaluate the performance
+of your classifier using stratified k-fold cross validation (with k = 10) and generate confusion matrices for
+the two classifiers.'''
 def step6():
 	return None
 
