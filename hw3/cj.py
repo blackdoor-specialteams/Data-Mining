@@ -25,15 +25,44 @@ corresponding mpg ranking, and then show their actual mpg ranking:
 '''
 
 
-def step3(table):
-	nb_v1(table)
+def step3(table,atts):
+	nb_v1(table,atts)
 	return None
 
-def nb_v1():
+def nb_v1(table,):
 	training,test = holdout_partition(table)
-	learning_nb_v1()
+	rules = learning_nb_v1(training)
 
-def learning_nb_v1():
+	for row in test:
+		print_instance(row)
+		out = " "
+
+def learning_nb_v1(tset):
+	checkatts = [2,3,4]
+	dict_of_classes = {}
+	for row in tset:
+		if str(get_mpg_rating(row[1])) not in 
+
+	return None
+
+def init_dict(classlist,dictlist):
+	for x in classlist:
+
+def get
+
+def get_NHTSA_rating(x):
+	if x >= 3500:
+		return 5
+	elif x > 3000:
+		return 4
+	elif x > 2500:
+		return 3
+	elif x > 2000:
+		return 2 
+	else:
+		return 1
+
+def classify(inst,rules):
 	return None
 
 #///////////////////////////////////////////////////////
@@ -127,21 +156,10 @@ def print_instance(row):
 		out += " " + str(x)
 	print out
 
-def get_random_indexes(n, size):
-	return sorted([int(random.random()*(size-1)) for _ in range(0, n)])
-
-def get_NHTSA_rating(x):
-	if x >= 3500:
-		return 5
-	elif x > 3000:
-		return 4
-	elif x > 2500:
-		return 3
-	elif x > 2000:
-		return 2 
-	else:
-		return 1
-
+def get_random_indexes(list,n, size):
+	index = sorted([int(random.random()*(size-1)) for _ in range(0, n)])
+	for x in index:
+		
 
 def get_mpg_rating(x):
 	if x >= 45:
@@ -167,7 +185,7 @@ def get_mpg_rating(x):
 
 def main():
 	atts,table = table_from_csv("auto-data-cleaned.txt")
-	step3(table)
+	step3(table,atts[2:4])
 	#step4()
 	#step5()
 
