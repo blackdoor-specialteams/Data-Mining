@@ -2,46 +2,36 @@
 import math
 import hw2
 import csv
-import re
 import random
-import os
-import heapq
 import numpy
 from operator import itemgetter
 from tabulate import tabulate
-from decimal import Decimal 
 
-#CJ: 3,4,5
-
-'''Create two versions of a Naive Bayes classifier to predict mpg based on the number of cylinders,
-weight, and model year attributes. For the first one, create a categorical version of weight using the following
-classifications (based on NHTSA vehicle sizes).
-Ranking Range
-5 >= 3500
-4 3000-3499
-3 2500-2999
-2 2000-2499
-1 <= 1999
-For the second, calculate the conditional probability for weight using the Gaussian distribution function from
-class. Similar to Step 1, test your classifier by selecting random instances from the dataset, predict their
-corresponding mpg ranking, and then show their actual mpg ranking:
-'''
-
+#CJ: 4,5
 
 def step3(table,atts):
+	print '===========================================\nSTEP 3: Naive Bayes MPG Classifiers\n==========================================='
 	keycol = 1
 	checkatts = [2,3,4]
+	print "Naive Bayes I"
 	nb_v1(table,checkatts,keycol)
+	print "Naive Bayes v2"
 	nb_v2(table,checkatts,keycol)
 	return None
 
 def nb_v1(table,attlist,keycol):
-	print "\n" + "Naive Bayes v1"
 	nbtable = temp_table_with_NHTSA_rating(table)
-	training,test = holdout_partition(nbtable)
-	rules = build_all_class_dicts(training,keycol,attlist)
-	rand_inst = get_random_indexes(test,5,len(test))
+	rules = build_all_class_dicts(nbtable,keycol,attlist)
+	rand_inst = get_random_indexes(nbtable,5,len(nbtable))
 
+	for row in rand_inst:
+		print_instance(row)
+		print_classification(row,rules,keycol,attlist)
+
+def nb_v2(table,attlist,keycol):
+	nbtable = build_table_with_gaussian(table,4)
+	rules = build_all_class_dicts(nbtable,keycol,attlist)
+	rand_inst = get_random_indexes(nbtable,5,len(nbtable))
 	for row in rand_inst:
 		print_instance(row)
 		print_classification(row,rules,keycol,attlist)
@@ -72,10 +62,6 @@ def classify(inst,attlist,rules):
 	prob.sort(key=lambda x: float(x[0]), reverse=True)
 	#print prob
 	return prob[0][1]
-
-#////////////////////////////////////////////////////////////////
-#BUILD TRAINING DATA STRUCT
-#////////////////////////////////////////////////////////////////
 
 def build_all_class_dicts(table,keycol,attlist):
 	""" builds a dict of all classes in the dataset, based on the keycol"""
@@ -126,8 +112,6 @@ def get_class_keys_and_counts(table,col):
 			cls[row[col]] = cls.get(row[col]) + 1
 	return cls, count
 
-#////////////////////////////////////////////////////////////////
-
 def rebuild_table_with_mpg_rating(table):
 	for row in table:
 		row[1] = get_mpg_rating(row[1])
@@ -150,17 +134,6 @@ def get_NHTSA_rating(y):
 		return '2' 
 	else:
 		return '1'
-
-#///////////////////////////////////////////////////////
-def nb_v2(table,attlist,keycol):
-	print "\n" + "Naive Bayes v2"
-	nbtable = build_table_with_gaussian(table,4)
-	training,test = holdout_partition(nbtable)
-	rules = build_all_class_dicts(training,keycol,attlist)
-	rand_inst = get_random_indexes(test,5,len(test))
-	for row in rand_inst:
-		print_instance(row)
-		print_classification(row,rules,keycol,attlist)
 
 def build_table_with_gaussian(table,col):
 	tmp = table
@@ -195,7 +168,9 @@ and test sets. You should use two approaches for testing. The first approach sho
 with k = 10. The second approach should use stratified k-fold cross validation with k = 10. Your output
 should look something like this (where the ??’s should be replaced by actual values):
 '''
-def step4():
+def step4(table,atts):
+	print '===========================================\nSTEP 4: Predictive Accuracy\n==========================================='
+	training,test = holdout_partition(nbtable)
 	return None
 
 '''Create confusion matrices for each classifier. You can use the tabulate package to display your
@@ -296,7 +271,7 @@ def main():
 	atts,table = table_from_csv("auto-data-cleaned.txt")
 	rebuild_table_with_mpg_rating(table)
 	step3(table,atts)
-	#step4()
+	step4(table,atts)
 	#step5()
 
 main()
