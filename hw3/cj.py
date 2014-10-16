@@ -178,6 +178,7 @@ def first_approach(table):
 		nb_v1.append(s4_NB_v1(deepcopy(training),deepcopy(test)))
 		nb_v2.append(s4_NB_v2(deepcopy(training),deepcopy(test)))
 		lnr.append(s4_LR(deepcopy(training),deepcopy(test)))
+		knn.append()
 
 	print_predAcc_format("Linear Reression",lnr)
 	print_predAcc_format("Naive Bayes I",nb_v1)
@@ -210,6 +211,14 @@ def k_folds(table,k):
 		rdm[i], rdm[j] = rdm[j],rdm[i]
 	return [rdm[i:i + k] for i in range(0, len(rdm), k)]
 
+def s4_KNN(training, test):
+	training = hw3.table_to_lick_dicts(training)
+	test = hw3.table_to_lick_dicts(test)
+	predictions = []
+	acutals = []
+	for instance in test:
+		None
+
 def s4_LR(training,test):
 	keycol = 1
 	weights = []
@@ -218,10 +227,9 @@ def s4_LR(training,test):
 		weights.append(float(row[4]))
 		mpgs.append(float(row[1]))
 	_weight, _mpg, m = hw2.calculate_best_fit_line(weights, mpgs)
-
 	clset = {}
 	for row in test:
-		k = row[keycol]
+		k = str(hw2.get_mpg_rating(row[keycol]))
 		prd = str(hw2.get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = float(row[4]))))
 		if k not in clset:
 			clset[k] = run_single_test(k,prd,0,0)
@@ -280,7 +288,10 @@ def calculate_stdE(p,t):
 def print_predAcc_format(fname,xs):
 	p, stdE = average_p_and_stdE_list(xs)
 	"""Prints name, prediction accuracy and std err"""
-	print "  " + fname +": p = " + '{:.3f}'.format(p) + " +- " + '{:.3f}'.format(stdE)
+	print fname
+	print p
+	print stdE
+	#print "  " + fname +": p = " + '{:.3f}'.format(p) + " +- " + '{:.3f}'.format(stdE)
 
 def average_p_and_stdE_list(xs):
 	p = 0.0
@@ -375,7 +386,7 @@ def s5_print_confusion_table(name,table):
 		for x in table[i]:
 			row.append(str(x))
 		row.append(str(sum(table[i])))
-		row.append("{:.5f}".format(rec))
+#		row.append("{:.5f}".format(rec))
 		tmp_table.append(row)
 	print tabulate(tmp_table,headers,tablefmt="rst")
 
@@ -464,8 +475,8 @@ def get_random_indexes(table,n, size):
 
 def main():
 	atts,table = table_from_csv("auto-data-cleaned.txt")
-	rebuild_table_with_mpg_rating(table)
-	step3(table,atts)
+	#rebuild_table_with_mpg_rating(table)
+	#step3(table,atts)
 	step4(table,atts)
 	step5(table,atts)
 	tatts,ttable = table_from_csv("titanic.txt")

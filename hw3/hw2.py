@@ -87,6 +87,7 @@ def get_list_of_mpg_ratings(xs):
 	return result
 
 def get_mpg_rating(x):
+	x = float(x)
 	if x >= 45:
 		return 10
 	elif x >= 37:
