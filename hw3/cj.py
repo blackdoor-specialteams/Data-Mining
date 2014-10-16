@@ -313,29 +313,28 @@ def step5(table,atts):
 
 	for f in kfold:
 		training,test = holdout_partition(f)
-		s5_NB1_dict(nb_v1,deepcopy(training),deepcopy(test))
-		s5_NB2_dict(nb_v2,deepcopy(training),deepcopy(test))
+		#s5_NB1_dict(nb_v1,deepcopy(training),deepcopy(test))
+		#s5_NB2_dict(nb_v2,deepcopy(training),deepcopy(test))
 		s5_LR_dict(lrn,deepcopy(training),deepcopy(test))
 
 	s5_print_confusion_table("Linear Reression",lrn)
-	s5_print_confusion_table("Naive Bayes I",nb_v1)
-	s5_print_confusion_table("Naive Bayes II",nb_v2)
+	#s5_print_confusion_table("Naive Bayes I",nb_v1)
+	#s5_print_confusion_table("Naive Bayes II",nb_v2)
 
 def s5_LR_dict(lrd,training,test):
 	weights = []
 	mpgs = []
 	for row in training:
-		weights.append(int(row[4]))
-		mpgs.append(int(row[1]))
+		weights.append(float(row[4]))
+		mpgs.append(float(row[1]))
 		_weight, _mpg, m = hw2.calculate_best_fit_line(weights, mpgs)
-	#print _weight
-	#print _mpg
-	#print m
+
 	act = []
 	prd = []
+
 	for row in test:
-		act.append(int(float(row[1])))
-		prd.append(hw2.get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = int(row[4]))))
+		act.append(hw2.get_mpg_rating(row[1]))
+		prd.append(hw2.get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = float(row[4]))))
 	update_cm(lrd,act,prd)
 
 
@@ -361,7 +360,7 @@ def s5_run_NB(nbtable,test):
 	pred = []
 	actual = []
 	for row in test:
-		actual.append(int(float(row[keycol]) ))
+		actual.append(hw2.get_mpg_rating(row[keycol]) )
 		pred.append(int(float(nb_classify(row,attlist,rules))) )
 	return actual,pred
 
@@ -374,7 +373,7 @@ def s5_print_confusion_table(name,table):
 	headers = ["MPG"] #+ ["Total","Recognition (%)"])
 	for i in range(1,11):
 		headers.append(str(i))
-	headers = headers + ["Total", "Recognition"]
+	headers = headers + ["Total", "Recognition (%)"]
 	tmp_table = []
 	for i in range(10):
 		row = [str(i+1)]
@@ -386,7 +385,7 @@ def s5_print_confusion_table(name,table):
 		for x in table[i]:
 			row.append(str(x))
 		row.append(str(sum(table[i])))
-#		row.append("{:.5f}".format(rec))
+		row.append(str(rec * 100))
 		tmp_table.append(row)
 	print tabulate(tmp_table,headers,tablefmt="rst")
 
@@ -441,9 +440,10 @@ def s6_print_confusion_table(name,table):
 
 	print tabulate(tmp_table,headers,tablefmt="rst")
 
-def build_gen_conmat(n,a,p):
+def build_conmat(a,p):
 	result = init_nxn(n)
-	outcomes = {}
+	for i in range(len(p)):
+		if a[i] == p[i] and a [i] = 
 
 
 #//////////////////////////////////////////////////////////////////////////////
@@ -477,7 +477,7 @@ def main():
 	atts,table = table_from_csv("auto-data-cleaned.txt")
 	#rebuild_table_with_mpg_rating(table)
 	#step3(table,atts)
-	step4(table,atts)
+	#step4(table,atts)
 	step5(table,atts)
 	tatts,ttable = table_from_csv("titanic.txt")
 	#step6(ttable,tatts)
