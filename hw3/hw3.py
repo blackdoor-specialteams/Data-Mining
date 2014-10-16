@@ -1,5 +1,4 @@
 # coding=utf-8
-from cj import *
 import hw2
 import csv
 import re
@@ -9,6 +8,7 @@ import os
 from operator import itemgetter
 import heapq
 from tabulate import tabulate
+import cj
 
 #n: 1,2,6
 
@@ -205,6 +205,7 @@ def step6():
 
 
 def main():
+	cj.main()
 	return None
 
 main()

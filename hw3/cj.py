@@ -178,7 +178,6 @@ def first_approach(table):
 		nb_v1.append(s4_NB_v1(deepcopy(training),deepcopy(test)))
 		nb_v2.append(s4_NB_v2(deepcopy(training),deepcopy(test)))
 		lnr.append(s4_LR(deepcopy(training),deepcopy(test)))
-		knn.append()
 
 	print_predAcc_format("Linear Reression",lnr)
 	print_predAcc_format("Naive Bayes I",nb_v1)
@@ -212,12 +211,16 @@ def k_folds(table,k):
 	return [rdm[i:i + k] for i in range(0, len(rdm), k)]
 
 def s4_KNN(training, test):
+	k = 5
 	training = hw3.table_to_lick_dicts(training)
 	test = hw3.table_to_lick_dicts(test)
 	predictions = []
 	acutals = []
 	for instance in test:
-		None
+		actuals.append(hw2.get_mpg_rating(float(test["MPG"])))
+		predictions.append(hw3.get_mpg_class_label(hw3.get_knn(instance, k, training)))
+	print actuals
+	print predictions
 
 def s4_LR(training,test):
 	keycol = 1
@@ -481,5 +484,3 @@ def main():
 	step5(table,atts)
 	tatts,ttable = table_from_csv("titanic.txt")
 	#step6(ttable,tatts)
-
-main()
