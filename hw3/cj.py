@@ -212,7 +212,7 @@ def k_folds(table,k):
 	return [rdm[i:i + k] for i in range(0, len(rdm), k)]
 
 def s4_KNN(training, test):
-	k = 5
+	nnn = 5
 	training = hw3.table_to_lick_dicts(training)
 	test = hw3.table_to_lick_dicts(test)
 	#for instance in test:
@@ -220,9 +220,9 @@ def s4_KNN(training, test):
 	#	predictions.append(hw3.get_mpg_class_label(hw3.get_knn(instance, k, training)))
 	clset = {}
 	for row in test:
-		print row["MPG"]
+		#print row["MPG"]
 		k = str(hw2.get_mpg_rating(row.get("MPG")))
-		prd = str(hw3.get_mpg_class_label(hw3.get_knn(row, k, training)))
+		prd = str(hw3.get_mpg_class_label(hw3.get_knn(row, nnn, training)))
 		if k not in clset:
 			clset[k] = run_single_test(k,prd,0,0)
 		else:
