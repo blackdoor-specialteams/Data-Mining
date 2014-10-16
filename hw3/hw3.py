@@ -115,8 +115,10 @@ def get_mpg_class_label(knn):
 		labels.append(hw2.get_mpg_rating(float(neighbor["MPG"])))
 	return get_mode(labels)
 
-
 def get_knn(instance, k, training_file = "auto-data-cleaned.txt", attribs = ["Cylinders", "Weight", "Acceleration"]):
+'''
+Returns the k nearest neighbors to instance based on training_file and attribs
+'''
 	ranges = get_ranges(training_file, attribs = attribs)
 	distances = []
 	with open(training_file, 'r') as f:
@@ -128,12 +130,23 @@ def get_knn(instance, k, training_file = "auto-data-cleaned.txt", attribs = ["Cy
 	return ret
 
 def get_neighbor_d(instance, neighbor, ranges, attribs = ["Cylinders", "Weight", "Acceleration"]):
+"""
+Returns the distance between instance and neighbor.
+The distance between two instances is the sum of the Euclidean distances between the normalized values of each attribute in attribs. Non-Ordered attributes have a distance 1 if their values are equal, else 0.
+"""
 	d = 0
 	for attrib in attribs:
-		d += get_euclidean_d(float(instance[attrib])/float(ranges[attrib]), float(neighbor[attrib])/float(ranges[attrib]))
+		try:
+			d += get_euclidean_d(float(instance[attrib])/float(ranges[attrib]), float(neighbor[attrib])/float(ranges[attrib]))
+		except ValueError:
+			if instance[attrib] == neighbor[attrib]:
+				d += 1
 	return d
 
 def get_ranges(in_file, attribs = ["Cylinders", "Weight", "Acceleration"]):
+"""
+Returns a dictionary which has attribute labels as keys and the range of the attributes under that label in in_file as keys
+"""
 	ranges = dict()
 	for attrib in attribs:
 		xs = []
@@ -145,6 +158,9 @@ def get_ranges(in_file, attribs = ["Cylinders", "Weight", "Acceleration"]):
 	return ranges
 
 def get_mode(xs):
+"""
+Returns the statistical mode of xs
+"""
 	counts = dict()
 	for x in xs:
 		if x in counts:
@@ -158,6 +174,9 @@ def get_mode(xs):
 	return ret
 
 def get_euclidean_d(i, i2):
+"""
+Returns the Euclidean distance between i and i2
+"""
 	return float(math.sqrt(pow((i-i2),2)))
 
 '''Use Na¨ıve Bayes and k-nearest neighbor to create two different classifiers to predict survival from the
