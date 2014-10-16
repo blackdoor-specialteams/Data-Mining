@@ -171,8 +171,7 @@ should look something like this (where the ??’s should be replaced by actual v
 def step4(table,atts):
 	print '===========================================\nSTEP 4: Predictive Accuracy\n==========================================='
 	first_approach(table)
-	return None
-
+	second_approach(table)
 
 def first_approach(table):
 	"""Random Subsampling"""
@@ -187,13 +186,36 @@ def first_approach(table):
 		nb_v1.append(s4_NB_v1(training,test))
 		nb_v2.append(s4_NB_v2(training,test))
 		lnr.append(s4_LR(training,test))
-	print_predAcc_format("Naive Bayes I",nb_v1)
-	print_predAcc_format("Naive Bayes I",nb_v2)
-	print_predAcc_format("Linear Reression",lnr)
 
-def second_approach():
+	print_predAcc_format("Linear Reression",lnr)
+	print_predAcc_format("Naive Bayes I",nb_v1)
+	print_predAcc_format("Naive Bayes II",nb_v2)
+
+def second_approach(table):
 	"""K-fold cross validation, k == 0"""
-	return None
+	print "Stratified 10-Fold Cross Validation"
+	nb_v1 = []
+	nb_v2 = []
+	knn = []
+	lnr = []
+	kfold = k_folds(table,10)
+	for f in kfold:
+		training,test = holdout_partition(f)
+		nb_v1.append(s4_NB_v1(training,test))
+		nb_v2.append(s4_NB_v2(training,test))
+		lnr.append(s4_LR(training,test))
+
+	print_predAcc_format("Linear Reression",lnr)
+	print_predAcc_format("Naive Bayes I",nb_v1)
+	print_predAcc_format("Naive Bayes II",nb_v2)
+
+def k_folds(table,k):
+	rdm = table [:]
+	n = len(table)
+	for i in range(n):
+		j = random.randint(0,n-1)
+		rdm[i], rdm[j] = rdm[j],rdm[i]
+	return [rdm[i:i + k] for i in range(0, len(rdm), k)]
 
 def s4_LR(training,test):
 	keycol = 1
@@ -207,7 +229,7 @@ def s4_LR(training,test):
 	clset = {}
 	for row in test:
 		k = row[keycol]
-		prd = get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = int(row[4])))
+		prd = get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = float(row[4])))
 		if k not in clset:
 			clset[k] = run_single_test(k,prd,0,0)
 		else:
@@ -265,7 +287,7 @@ def calculate_stdE(p,t):
 def print_predAcc_format(fname,xs):
 	p, stdE = average_p_and_stdE_list(xs)
 	"""Prints name, prediction accuracy and std err"""
-	print "  " + fname +": p = " + '{:.3e}'.format(p) + " +- " + '{:.3e}'.format(stdE)
+	print "  " + fname +": p = " + '{:.3f}'.format(p) + " +- " + '{:.3f}'.format(stdE)
 
 def average_p_and_stdE_list(xs):
 	p = 0.0
