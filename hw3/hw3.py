@@ -1,9 +1,10 @@
 # coding=utf-8
-from cj import *
+#from cj import *
 import hw2
 import csv
 import re
 import random
+import math
 import os
 from operator import itemgetter
 import heapq
@@ -103,9 +104,14 @@ def step2(file_in):
 	print "===========================================\nSTEP 2: k=5 Nearest Neighbor MPG Classifier\n==========================================="
 	random_indexes = get_random_indexes(5, 315)
 	random_instances = get_instances(file_in, random_indexes)
+	training_set = []
+	with open(file_in, 'r') as f:
+		reader = csv.DictReader(f)
+		for inst in reader:
+			training_set.append(inst)
 	for inst in random_instances:
 		print_instance(inst, attribs = ["MPG", "Cylinders", "Weight", "Acceleration", 'Model Year', 'Car Name']) #print "instance: " + inst['MPG'] + " " + inst['Weight'] + ' ' + inst['Model Year'] + " " + inst['Car Name']
-		print 'predicted: ' + str(get_mpg_class_label(get_knn(inst, 5))) + ' actual: ' + str(hw2.get_mpg_rating(float(inst["MPG"])))
+		print 'predicted: ' + str(get_mpg_class_label(get_knn(inst, 5, training_set))) + ' actual: ' + str(hw2.get_mpg_rating(float(inst["MPG"])))
 
 	return None
 
@@ -115,16 +121,14 @@ def get_mpg_class_label(knn):
 		labels.append(hw2.get_mpg_rating(float(neighbor["MPG"])))
 	return get_mode(labels)
 
-def get_knn(instance, k, training_file = "auto-data-cleaned.txt", attribs = ["Cylinders", "Weight", "Acceleration"]):
+def get_knn(instance, k, training_set, attribs = ["Cylinders", "Weight", "Acceleration"]):
 	'''
 	Returns the k nearest neighbors to instance based on training_file and attribs
 	'''
-	ranges = get_ranges(training_file, attribs = attribs)
+	ranges = get_ranges(training_set, attribs = attribs)
 	distances = []
-	with open(training_file, 'r') as f:
-			reader = csv.DictReader(f)
-			for inst in reader:
-				distances.append( [get_neighbor_d(instance, inst, ranges, attribs), inst] )
+	for inst in training_set:
+		distances.append( [get_neighbor_d(instance, inst, ranges, attribs), inst] )
 	distances = sorted(distances, key=itemgetter(0))
 	ret = [e[1] for e in distances[0:k]]
 	return ret
@@ -143,17 +147,15 @@ def get_neighbor_d(instance, neighbor, ranges, attribs = ["Cylinders", "Weight",
 				d += 1
 	return d
 
-def get_ranges(in_file, attribs = ["Cylinders", "Weight", "Acceleration"]):
+def get_ranges(data_set, attribs = ["Cylinders", "Weight", "Acceleration"]):
 	"""
-	Returns a dictionary which has attribute labels as keys and the range of the attributes under that label in in_file as keys
+	Returns a dictionary which has attribute labels as keys and the range of the attributes under that label in data_set as keys
 	"""
 	ranges = dict()
 	for attrib in attribs:
 		xs = []
-		with open(in_file, 'r') as f:
-			reader = csv.DictReader(f)	
-			for inst in reader:
-				xs.append(float(inst[attrib]))
+		for inst in data_set:
+			xs.append(float(inst[attrib]))
 		ranges[attrib] = max(xs) - min(xs)
 	return ranges
 
