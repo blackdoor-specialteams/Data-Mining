@@ -4,6 +4,7 @@ import hw2
 import hw3
 import csv
 import random
+from copy import deepcopy
 from operator import itemgetter
 from tabulate import tabulate
 
@@ -14,9 +15,9 @@ def step3(table,atts):
 	keycol = 1
 	checkatts = [2,3,4]
 	print "Naive Bayes I"
-	nb_v1(table,checkatts,keycol)
+	nb_v1(deepcopy(table),checkatts,keycol)
 	print "Naive Bayes v2"
-	nb_v2(table,checkatts,keycol)
+	nb_v2(deepcopy(table),checkatts,keycol)
 
 def nb_v1(table,attlist,keycol):
 	nbtable = temp_table_with_NHTSA_rating(table)
@@ -35,8 +36,8 @@ def nb_v2(table,attlist,keycol):
 		print_classification(row,rules,keycol,attlist)
 
 def print_classification(row,rules,clscol,attlist):
-	out = "prediction: " + str(nb_classify(row,attlist,rules)) + ", "
-	out += "actual: " + str(row[clscol])
+	out = "prediction: " + nb_classify(row,attlist,rules) + ", "
+	out += "actual: " + row[clscol]
 	print out
 
 def nb_classify(inst,attlist,rules):
@@ -95,7 +96,6 @@ def build_att_dict_for_class(table,keycol,clskey,col,clscount):
 	for k in att_d.keys():
 		p = (float(att_d.get(k)) / float(clscount))
 		clsp.update({k:p})
-
 	return clsp
 
 def get_class_keys_and_counts(table,col):
@@ -112,7 +112,8 @@ def get_class_keys_and_counts(table,col):
 
 def rebuild_table_with_mpg_rating(table):
 	for row in table:
-		row[1] = get_mpg_rating(row[1])
+		row[1] = str(hw2.get_mpg_rating(float(row[1])))
+		tuple(row)
 
 def temp_table_with_NHTSA_rating(table):
 	tmp = table[:]
@@ -158,15 +159,10 @@ def holdout_partition(table):
 	n0 = (n*2)/3
 	return randomized[0:n0],randomized[n0:]
 
-'''Compute the predictive accuracy (and standard error) of the four classifiers using separate training
-and test sets. You should use two approaches for testing. The first approach should use random subsampling
-with k = 10. The second approach should use stratified k-fold cross validation with k = 10. Your output
-should look something like this (where the ??’s should be replaced by actual values):
-'''
 def step4(table,atts):
 	print '===========================================\nSTEP 4: Predictive Accuracy\n==========================================='
-	first_approach(table)
-	second_approach(table)
+	first_approach(deepcopy(table))
+	second_approach(deepcopy(table))
 
 def first_approach(table):
 	"""Random Subsampling"""
@@ -179,11 +175,9 @@ def first_approach(table):
 	
 	for x in range(0,10):
 		training,test = holdout_partition(table)
-		
-		
-		nb_v1.append(s4_NB_v1(training,test))
-		nb_v2.append(s4_NB_v2(training,test))
-		lnr.append(s4_LR(training,test))
+		nb_v1.append(s4_NB_v1(deepcopy(training),deepcopy(test)))
+		nb_v2.append(s4_NB_v2(deepcopy(training),deepcopy(test)))
+		lnr.append(s4_LR(deepcopy(training),deepcopy(test)))
 
 	print_predAcc_format("Linear Reression",lnr)
 	print_predAcc_format("Naive Bayes I",nb_v1)
@@ -199,16 +193,17 @@ def second_approach(table):
 	kfold = k_folds(table,10)
 	for f in kfold:
 		training,test = holdout_partition(f)
-		nb_v1.append(s4_NB_v1(training,test))
-		nb_v2.append(s4_NB_v2(training,test))
-		lnr.append(s4_LR(training,test))
+
+		nb_v1.append(s4_NB_v1(deepcopy(training),deepcopy(test)))
+		nb_v2.append(s4_NB_v2(deepcopy(training),deepcopy(test)))
+		lnr.append(s4_LR(deepcopy(training),deepcopy(test)))
 
 	print_predAcc_format("Linear Reression",lnr)
 	print_predAcc_format("Naive Bayes I",nb_v1)
 	print_predAcc_format("Naive Bayes II",nb_v2)
 
 def k_folds(table,k):
-	rdm = table [:]
+	rdm = deepcopy(table) 
 	n = len(table)
 	for i in range(n):
 		j = random.randint(0,n-1)
@@ -216,26 +211,18 @@ def k_folds(table,k):
 	return [rdm[i:i + k] for i in range(0, len(rdm), k)]
 
 def s4_LR(training,test):
-
 	keycol = 1
 	weights = []
 	mpgs = []
 	for row in training:
 		weights.append(float(row[4]))
 		mpgs.append(float(row[1]))
-	#print str(len(weights)) + "     " + str(len(mpgs))
 	_weight, _mpg, m = hw2.calculate_best_fit_line(weights, mpgs)
-	#print str(_weight)
-	#print str(_mpg)
-	#print str(m)
 
 	clset = {}
 	for row in test:
-		#print str(row)
 		k = row[keycol]
-		#print str(row[4])
 		prd = str(hw2.get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = float(row[4]))))
-		#print str(prd)
 		if k not in clset:
 			clset[k] = run_single_test(k,prd,0,0)
 		else:
@@ -258,7 +245,6 @@ def s4_NB_v2(train,test):
 	return run_NB(nbtable,test)
 
 def run_NB(nbtable,test):
-
 	keycol = 1
 	attlist = [2,3,4]
 	rules = build_all_class_dicts(nbtable,keycol,attlist)
@@ -306,91 +292,131 @@ def average_p_and_stdE_list(xs):
 	stdE = float(stdE) / float(len(xs))
 	return p, stdE
 
-'''Create confusion matrices for each classifier. You can use the tabulate package to display your
-confusion matrices (it is also okay to format the table manually). Here is an example:
-Linear Regression (Stratified 10-Fold Cross Validation):
-===== === === === === === === === === === ==== ======= =================
-MPG 	1 	2 	3 	4 	5 	6 	7 	8 	9 	10 	Total 	Recognition (%)
-===== === === === === === === === === === ==== ======= =================
-	1 	14 	2 	5 	3 	1 	0 	0 	3 	0 	0 	25 		56
-2 5 3 6 1 1 0 0 0 0 0 16 18.75
-3 3 5 9 8 6 0 0 0 0 0 31 29.03
-4 0 2 4 18 21 2 3 0 0 0 50 36
-5 0 0 0 6 27 15 3 0 0 0 51 52.94
-6 0 0 0 1 3 12 15 0 0 0 31 38.71
-7 0 0 0 0 1 6 19 0 0 0 26 73.08
-8 0 0 0 0 0 1 18 0 1 0 20 0
-9 0 0 0 0 0 0 3 0 0 0 3 0
-10 0 0 0 0 0 0 0 0 0 0 0 0
-===== === === === === === === === === === ==== ======= =================
-Naive Bayes I (Stratified 10-Fold Cross Validation):
-===== === === === === === === === === === ==== ======= =================
-MPG 1 2 3 4 5 6 7 8 9 10 Total Recognition (%)
-===== === === === === === === === === === ==== ======= =================
-1 20 4 1 0 0 0 0 0 0 0 25 80
-2 6 8 2 0 0 0 0 0 0 0 16 50
-3 7 6 9 7 2 0 0 0 0 0 31 29.03
-4 3 1 7 27 10 2 0 0 0 0 50 54
-5 0 0 1 18 22 9 1 0 0 0 51 43.14
-6 0 0 0 2 6 17 3 3 0 0 31 54.84
-7 0 0 0 0 5 7 11 3 0 0 26 42.31
-8 0 0 0 0 1 3 3 13 0 0 20 65
-9 0 0 0 0 0 0 0 3 0 0 3 0
-10 0 0 0 0 0 0 0 0 0 0 0 0
-===== === === === === === === === === === ==== ======= =================
-...
-'''
-def step5(table):
-	kfold = k_folds(table,10)
-	
-	nb_v1 = {}
-	nb_v2 = {}
-	knn = {}
-	lrn = {}
+def step5(table,atts):
+	print '===========================================\nSTEP 5: Confusion Matricies \n==========================================='
+	nb_v1 = init_nxn(10)
+	nb_v2 = init_nxn(10)
+	knn = init_nxn(10)
+	lrn = init_nxn(10)
+	kfold = k_folds(deepcopy(table),10)
 
 	for f in kfold:
-		return None
+		training,test = holdout_partition(f)
+		s5_NB1_dict(nb_v1,deepcopy(training),deepcopy(test))
+		s5_NB2_dict(nb_v2,deepcopy(training),deepcopy(test))
+		s5_LR_dict(lrn,deepcopy(training),deepcopy(test))
 
-def print_confusion_table(table,cls_list,c_dict):
-	#table = make_table(file_name,summary_atts)
-	headers = ["MPG"] + cls_list + ["Total","Recognition (%)"]
-	table 
-	print tabulate(table,headers,tablefmt="rst")
+	s5_print_confusion_table("Linear Reression",lrn)
+	s5_print_confusion_table("Naive Bayes I",nb_v1)
+	s5_print_confusion_table("Naive Bayes II",nb_v2)
 
-def s4_NB_v1(train,test):
-	nbtable = temp_table_with_NHTSA_rating(train)
-	return run_NB(nbtable,test)
+def s5_LR_dict(lrd,training,test):
+	weights = []
+	mpgs = []
+	for row in training:
+		weights.append(int(row[4]))
+		mpgs.append(int(row[1]))
+		_weight, _mpg, m = hw2.calculate_best_fit_line(weights, mpgs)
+	#print _weight
+	#print _mpg
+	#print m
+	act = []
+	prd = []
+	for row in test:
+		act.append(int(float(row[1])))
+		prd.append(hw2.get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = int(row[4]))))
+	update_cm(lrd,act,prd)
 
-def s4_NB_v2(train,test):
-	nbtable = build_table_with_gaussian(train,4)
-	return run_NB(nbtable,test)
 
-def run_NB(nbtable,test):
+def s5_NB1_dict(mac, training,test):
+	nbtable = temp_table_with_NHTSA_rating(training)
+	ac, p = s5_run_NB(nbtable,test)
+	update_cm(mac,ac,p)
+
+def update_cm(mac,a,p):
+	for i in range(len(a)):
+		mac[a[i] -1 ][p[i] - 1] = mac[a[i] - 1][p[i] - 1] + 1
+
+def s5_NB2_dict(mac, training,test):
+	nbtable = build_table_with_gaussian(training,4)
+	ac, p = s5_run_NB(nbtable,test)
+	update_cm(mac,ac,p)
+
+def s5_run_NB(nbtable,test):
 	keycol = 1
 	attlist = [2,3,4]
 	rules = build_all_class_dicts(nbtable,keycol,attlist)
 	rand_inst = get_random_indexes(nbtable,10,len(nbtable))
-	clset = {}
+	pred = []
+	actual = []
 	for row in test:
-		k = row[keycol]
-		if k not in clset:
-			clset[k] = run_single_test(k,nb_classify(row,attlist,rules),0,0)
-		else:
-			tmp = clset.get(k)
-			clset[k] = run_single_test(row[keycol],nb_classify(row,attlist,rules),tmp[0],tmp[1])
-	p = 0.0
-	for k in clset.keys():
-		tmp = clset.get(k)
-		p += calculate_p(tmp[0],tmp[1])
-	p = float(p) / float(10)
-	se = calculate_stdE(p,len(test))
-	return p, se
+		actual.append(int(float(row[keycol]) ))
+		pred.append(int(float(nb_classify(row,attlist,rules))) )
+	return actual,pred
 
-def store_predict_in_dict(a,p,cmd):
-	if a not in cmd:
-		cmd[a] = {p:1}
-	else:
-		cmd[a] = {p:(cmd[a].get(p) + 1)}
+def s5_knn_dict(knn,training,test):
+	return None
+
+def s5_print_confusion_table(name,table):
+	#table = make_table(file_name,summary_atts)
+	print name + " - Stratified 10-Fold Cross Validation"
+	headers = ["MPG"] #+ ["Total","Recognition (%)"])
+	for i in range(1,11):
+		headers.append(str(i))
+	headers = headers + ["Total", "Recognition"]
+	tmp_table = []
+	for i in range(10):
+		row = [str(i+1)]
+		total = float(sum(table[i]))
+		if total > 0:
+			rec = float(table[i][i]) / total
+		else:
+			rec = 0
+		for x in table[i]:
+			row.append(str(x))
+		row.append(str(sum(table[i])))
+		row.append("{:.5f}".format(rec))
+		tmp_table.append(row)
+	print tabulate(tmp_table,headers,tablefmt="rst")
+
+def init_nxn(n):
+	l =[]
+	for i in range(1,n+1):
+		l.append([])
+		for j in range(1,n+1):
+			l[i - 1].append(0)
+	return l
+
+def step6(table,atts):
+	print '===========================================\nSTEP 6: My Heart Will Go On \n==========================================='
+	kfold = k_folds(deepcopy(table),10)
+	nb = init_nxn(2)
+	knn = init_nxn(2)
+
+	for f in kfold:
+		training,test = holdout_partition(f)
+		s6_NB(nb,deepcopy(training),deepcopy(test))
+
+	s6_print_confusion_table("Naive Bayes", nb)
+	return None
+
+def s6_NB(mac, training,test):
+	ac, p = s5_run_NB(training,test)
+	update_cm(mac,ac,p)
+
+def s6_KNN(mac, training,test):
+	ac, p = s5_run_NB(nbtable,test)
+	update_cm(mac,ac,p)
+
+def s6_print_confusion_table(name,table):
+	#table = make_table(file_name,summary_atts)
+	print name + " - Stratified 10-Fold Cross Validation"
+	headers = [" ","No","Yes","Total","Recognition (%)"]
+	tmp_table = []
+	tmp_table.append(["No"])
+	tmp_table.append(["Yes"])
+
+	print tabulate(tmp_table,headers,tablefmt="rst")
 
 #//////////////////////////////////////////////////////////////////////////////
 def table_from_csv(filename):
@@ -419,37 +445,13 @@ def get_random_indexes(table,n, size):
 		result.append(table[i])
 	return result
 
-def get_mpg_rating(y):
-	x = float(y)
-	print str(x)
-	if x >= 45:
-		return '10'
-	elif x >= 37:
-		return '9'
-	elif x >= 31:
-		return '8'
-	elif x >= 27:
-		return '7'
-	elif x >= 24:
-		return '6' 
-	elif x >= 20:
-		return '5'
-	elif x >= 17:
-		return '4'
-	elif x >= 15:
-		return '3' 
-	elif x > 13:
-		return '2'
-	elif x <= 13:
-		return '1'
-
 def main():
 	atts,table = table_from_csv("auto-data-cleaned.txt")
 	rebuild_table_with_mpg_rating(table)
-	print table[0]
 	step3(table,atts)
-	
 	step4(table,atts)
-	#step5()
+	step5(table,atts)
+	tatts,ttable = table_from_csv("titanic.txt")
+	#step6(ttable,tatts)
 
 main()
