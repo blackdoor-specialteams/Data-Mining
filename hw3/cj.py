@@ -305,9 +305,7 @@ def calculate_stdE(p,t):
 def print_predAcc_format(fname,xs):
 	p, stdE = average_p_and_stdE_list(xs)
 	"""Prints name, prediction accuracy and std err"""
-	print fname
-	print p
-	print stdE
+	print fname + ": p = " + str(p) + " +- " + str(stdE)
 	#print "  " + fname +": p = " + '{:.3f}'.format(p) + " +- " + '{:.3f}'.format(stdE)
 
 def average_p_and_stdE_list(xs):
@@ -333,8 +331,10 @@ def step5(table,atts):
 		#s5_NB1_dict(nb_v1,deepcopy(training),deepcopy(test))
 		#s5_NB2_dict(nb_v2,deepcopy(training),deepcopy(test))
 		s5_LR_dict(lrn,deepcopy(training),deepcopy(test))
+		s5_KNN_dict(knn, deepcopy(training), deepcopy(test))
 
 	s5_print_confusion_table("Linear Reression",lrn)
+	s5_print_confusion_table("K Nearest Neighbor", knn)
 	#s5_print_confusion_table("Naive Bayes I",nb_v1)
 	#s5_print_confusion_table("Naive Bayes II",nb_v2)
 
@@ -354,6 +354,16 @@ def s5_LR_dict(lrd,training,test):
 		prd.append(hw2.get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = float(row[4]))))
 	update_cm(lrd,act,prd)
 
+def s5_KNN_dict(thing, training, test):
+	nnn = 5
+	training = hw3.table_to_lick_dicts(training)
+	test = hw3.table_to_lick_dicts(test)
+	act = []
+	prd = []
+	for row in test:
+		act.append(hw2.get_mpg_rating(row["MPG"]))
+		prd.append(hw3.get_mpg_class_label(hw3.get_knn(row, nnn, training)))
+	update_cm(thing, act, prd)
 
 def s5_NB1_dict(mac, training,test):
 	nbtable = temp_table_with_NHTSA_rating(training)
@@ -494,8 +504,8 @@ def get_random_indexes(table,n, size):
 def main():
 	atts,table = table_from_csv("auto-data-cleaned.txt")
 	#rebuild_table_with_mpg_rating(table)
-	#step3(table,atts)
+	step3(table,atts)
 	step4(table,atts)
-	#step5(table,atts)
+	step5(table,atts)
 	tatts,ttable = table_from_csv("titanic.txt")
 	#step6(ttable,tatts)
