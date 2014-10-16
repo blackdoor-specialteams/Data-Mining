@@ -116,9 +116,9 @@ def get_mpg_class_label(knn):
 	return get_mode(labels)
 
 def get_knn(instance, k, training_file = "auto-data-cleaned.txt", attribs = ["Cylinders", "Weight", "Acceleration"]):
-'''
-Returns the k nearest neighbors to instance based on training_file and attribs
-'''
+	'''
+	Returns the k nearest neighbors to instance based on training_file and attribs
+	'''
 	ranges = get_ranges(training_file, attribs = attribs)
 	distances = []
 	with open(training_file, 'r') as f:
@@ -130,10 +130,10 @@ Returns the k nearest neighbors to instance based on training_file and attribs
 	return ret
 
 def get_neighbor_d(instance, neighbor, ranges, attribs = ["Cylinders", "Weight", "Acceleration"]):
-"""
-Returns the distance between instance and neighbor.
-The distance between two instances is the sum of the Euclidean distances between the normalized values of each attribute in attribs. Non-Ordered attributes have a distance 1 if their values are equal, else 0.
-"""
+	"""
+	Returns the distance between instance and neighbor.
+	The distance between two instances is the sum of the Euclidean distances between the normalized values of each attribute in attribs. Non-Ordered attributes have a distance 1 if their values are equal, else 0.
+	"""
 	d = 0
 	for attrib in attribs:
 		try:
@@ -144,9 +144,9 @@ The distance between two instances is the sum of the Euclidean distances between
 	return d
 
 def get_ranges(in_file, attribs = ["Cylinders", "Weight", "Acceleration"]):
-"""
-Returns a dictionary which has attribute labels as keys and the range of the attributes under that label in in_file as keys
-"""
+	"""
+	Returns a dictionary which has attribute labels as keys and the range of the attributes under that label in in_file as keys
+	"""
 	ranges = dict()
 	for attrib in attribs:
 		xs = []
@@ -158,9 +158,9 @@ Returns a dictionary which has attribute labels as keys and the range of the att
 	return ranges
 
 def get_mode(xs):
-"""
-Returns the statistical mode of xs
-"""
+	"""
+	Returns the statistical mode of xs
+	"""
 	counts = dict()
 	for x in xs:
 		if x in counts:
@@ -174,10 +174,21 @@ Returns the statistical mode of xs
 	return ret
 
 def get_euclidean_d(i, i2):
-"""
-Returns the Euclidean distance between i and i2
-"""
+	"""
+	Returns the Euclidean distance between i and i2
+	"""
 	return float(math.sqrt(pow((i-i2),2)))
+
+def table_to_lick_dicts(table, attribs = ["Acceleration","MPG","Model Year","Cylinders","Weight","Displacement","Car Name","Horsepower","Origin","MSRP"]):
+	list_dicts = []
+	for row in table:
+		entry = dict()
+		i = 0
+		for attrib in attribs:
+			entry[attrib] = row[i]
+			i += 1
+		list_dicts.append(entry)
+	return list_dicts
 
 '''Use Na¨ıve Bayes and k-nearest neighbor to create two different classifiers to predict survival from the
 titanic dataset (titanic.txt). Note that the first line of the dataset lists the name of each attribute (class,
