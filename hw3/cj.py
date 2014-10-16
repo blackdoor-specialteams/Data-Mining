@@ -5,7 +5,6 @@ import hw3
 import csv
 import random
 from copy import deepcopy
-from operator import itemgetter
 from tabulate import tabulate
 
 #CJ: 4,5
@@ -175,13 +174,15 @@ def first_approach(table):
 	
 	for x in range(0,10):
 		training,test = holdout_partition(table)
-		nb_v1.append(s4_NB_v1(deepcopy(training),deepcopy(test)))
-		nb_v2.append(s4_NB_v2(deepcopy(training),deepcopy(test)))
+		#nb_v1.append(s4_NB_v1(deepcopy(training),deepcopy(test)))
+		#nb_v2.append(s4_NB_v2(deepcopy(training),deepcopy(test)))
 		lnr.append(s4_LR(deepcopy(training),deepcopy(test)))
+		knn.append(s4_KNN(deepcopy(training),deepcopy(test)))
 
 	print_predAcc_format("Linear Reression",lnr)
-	print_predAcc_format("Naive Bayes I",nb_v1)
-	print_predAcc_format("Naive Bayes II",nb_v2)
+	print_predAcc_format("K-NN ",knn)
+	#print_predAcc_format("Naive Bayes I",nb_v1)
+	#print_predAcc_format("Naive Bayes II",nb_v2)
 
 def second_approach(table):
 	"""K-fold cross validation, k == 0"""
@@ -214,13 +215,26 @@ def s4_KNN(training, test):
 	k = 5
 	training = hw3.table_to_lick_dicts(training)
 	test = hw3.table_to_lick_dicts(test)
-	predictions = []
-	acutals = []
-	for instance in test:
-		actuals.append(hw2.get_mpg_rating(float(test["MPG"])))
-		predictions.append(hw3.get_mpg_class_label(hw3.get_knn(instance, k, training)))
-	print actuals
-	print predictions
+	#for instance in test:
+	#	actuals.append(hw2.get_mpg_rating(float(test["MPG"])))
+	#	predictions.append(hw3.get_mpg_class_label(hw3.get_knn(instance, k, training)))
+	clset = {}
+	for row in test:
+		print row["MPG"]
+		k = str(hw2.get_mpg_rating(row.get("MPG")))
+		prd = str(hw3.get_mpg_class_label(hw3.get_knn(row, k, training)))
+		if k not in clset:
+			clset[k] = run_single_test(k,prd,0,0)
+		else:
+			tmp = clset.get(k)
+			clset[k] = run_single_test(k,prd,tmp[0],tmp[1])
+	p = 0.0
+	for k in clset.keys():
+		tmp = clset.get(k)
+		p += calculate_p(tmp[0],tmp[1])
+	p = float(p) / float(10)
+	se = calculate_stdE(p,len(test))
+	return p, se
 
 def s4_LR(training,test):
 	keycol = 1
@@ -446,7 +460,8 @@ def s6_print_confusion_table(name,table):
 def build_conmat(a,p):
 	result = init_nxn(n)
 	for i in range(len(p)):
-		if a[i] == p[i] and a [i] = 
+		if a[i] == p[i] and a [i] == "YES":
+			None
 
 
 #//////////////////////////////////////////////////////////////////////////////
@@ -480,7 +495,7 @@ def main():
 	atts,table = table_from_csv("auto-data-cleaned.txt")
 	#rebuild_table_with_mpg_rating(table)
 	#step3(table,atts)
-	#step4(table,atts)
-	step5(table,atts)
+	step4(table,atts)
+	#step5(table,atts)
 	tatts,ttable = table_from_csv("titanic.txt")
 	#step6(ttable,tatts)
