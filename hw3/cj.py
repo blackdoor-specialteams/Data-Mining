@@ -401,12 +401,24 @@ def step6(table,atts):
 	return None
 
 def s6_NB(mac, training,test):
-	ac, p = s5_run_NB(training,test)
+	ac, p = s6_run_NB(training,test)
 	update_cm(mac,ac,p)
 
 def s6_KNN(mac, training,test):
-	ac, p = s5_run_NB(nbtable,test)
-	update_cm(mac,ac,p)
+	return None
+
+def s6_run_NB(nbtable,test):
+	keycol = 3
+	attlist = [0,1,2]
+	rules = build_all_class_dicts(nbtable,keycol,attlist)
+	rand_inst = get_random_indexes(nbtable,10,len(nbtable))
+	pred = []
+	actual = []
+	for row in test:
+		actual.append(row[keycol]) 
+		pred.append(nb_classify(row,attlist,rules))
+	return actual,pred
+
 
 def s6_print_confusion_table(name,table):
 	#table = make_table(file_name,summary_atts)
@@ -417,6 +429,11 @@ def s6_print_confusion_table(name,table):
 	tmp_table.append(["Yes"])
 
 	print tabulate(tmp_table,headers,tablefmt="rst")
+
+def build_gen_conmat(n,a,p):
+	result = init_nxn(n)
+	outcomes = {}
+
 
 #//////////////////////////////////////////////////////////////////////////////
 def table_from_csv(filename):
