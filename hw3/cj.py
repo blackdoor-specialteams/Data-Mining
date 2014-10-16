@@ -4,7 +4,6 @@ import hw2
 import hw3
 import csv
 import random
-import numpy
 from operator import itemgetter
 from tabulate import tabulate
 
@@ -18,7 +17,6 @@ def step3(table,atts):
 	nb_v1(table,checkatts,keycol)
 	print "Naive Bayes v2"
 	nb_v2(table,checkatts,keycol)
-	return None
 
 def nb_v1(table,attlist,keycol):
 	nbtable = temp_table_with_NHTSA_rating(table)
@@ -117,7 +115,7 @@ def rebuild_table_with_mpg_rating(table):
 		row[1] = get_mpg_rating(row[1])
 
 def temp_table_with_NHTSA_rating(table):
-	tmp = table
+	tmp = table[:]
 	for row in tmp:
 		row[4] = get_NHTSA_rating(row[4])
 	return tmp
@@ -136,13 +134,10 @@ def get_NHTSA_rating(y):
 		return '1'
 
 def build_table_with_gaussian(table,col):
-	tmp = table
-	glist = []
-	for row in tmp:
-		glist.append(float(row[col]))
-	arr = numpy.array(glist)
-	mean = numpy.mean(arr,axis=0)
-	std = numpy.std(arr,axis=0)
+	tmp = table[:]
+	glist = [float(tmp[i][4]) for i in xrange(len(tmp))]
+	mean = float(sum(glist)) / float(len(glist))
+	std = math.sqrt((float(sum(glist) ** 2) / float(len(glist))) - mean)
 	for row in tmp:
 		row[col] = str(guassian(float(row[col]),mean,std))
 	return tmp
@@ -150,8 +145,8 @@ def build_table_with_gaussian(table,col):
 def guassian(x,mean,sdev):
 	first, second = 0,0
 	if sdev > 0:
-		first = 1 / (math.sqrt(2*math.pi) * sdev)
-		second = math.e ** (-((x - mean) ** 2) / (2 *(sdev ** 2)))
+		first = float(1) / float((math.sqrt(2.0*math.pi) * sdev))
+		second = math.e ** (-((x - mean) ** 2) / (2.0 *(sdev ** 2)))
 	return first * second
 
 def holdout_partition(table):
@@ -176,13 +171,16 @@ def step4(table,atts):
 def first_approach(table):
 	"""Random Subsampling"""
 	print "Random Subsample (k=10, 2:1 Train/Test)"
+
 	nb_v1 = []
 	nb_v2 = []
 	knn = []
 	lnr = []
-
-	for x in range(10):
+	
+	for x in range(0,10):
 		training,test = holdout_partition(table)
+		
+		
 		nb_v1.append(s4_NB_v1(training,test))
 		nb_v2.append(s4_NB_v2(training,test))
 		lnr.append(s4_LR(training,test))
@@ -218,18 +216,26 @@ def k_folds(table,k):
 	return [rdm[i:i + k] for i in range(0, len(rdm), k)]
 
 def s4_LR(training,test):
+
 	keycol = 1
 	weights = []
 	mpgs = []
 	for row in training:
-		weights.append(int(row[4]))
+		weights.append(float(row[4]))
 		mpgs.append(float(row[1]))
-
+	#print str(len(weights)) + "     " + str(len(mpgs))
 	_weight, _mpg, m = hw2.calculate_best_fit_line(weights, mpgs)
+	#print str(_weight)
+	#print str(_mpg)
+	#print str(m)
+
 	clset = {}
 	for row in test:
+		#print str(row)
 		k = row[keycol]
-		prd = get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = float(row[4])))
+		#print str(row[4])
+		prd = str(hw2.get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = float(row[4]))))
+		#print str(prd)
 		if k not in clset:
 			clset[k] = run_single_test(k,prd,0,0)
 		else:
@@ -252,6 +258,7 @@ def s4_NB_v2(train,test):
 	return run_NB(nbtable,test)
 
 def run_NB(nbtable,test):
+
 	keycol = 1
 	attlist = [2,3,4]
 	rules = build_all_class_dicts(nbtable,keycol,attlist)
@@ -333,8 +340,57 @@ MPG 1 2 3 4 5 6 7 8 9 10 Total Recognition (%)
 ===== === === === === === === === === === ==== ======= =================
 ...
 '''
-def step5():
-	return None
+def step5(table):
+	kfold = k_folds(table,10)
+	
+	nb_v1 = {}
+	nb_v2 = {}
+	knn = {}
+	lrn = {}
+
+	for f in kfold:
+		return None
+
+def print_confusion_table(table,cls_list,c_dict):
+	#table = make_table(file_name,summary_atts)
+	headers = ["MPG"] + cls_list + ["Total","Recognition (%)"]
+	table 
+	print tabulate(table,headers,tablefmt="rst")
+
+def s4_NB_v1(train,test):
+	nbtable = temp_table_with_NHTSA_rating(train)
+	return run_NB(nbtable,test)
+
+def s4_NB_v2(train,test):
+	nbtable = build_table_with_gaussian(train,4)
+	return run_NB(nbtable,test)
+
+def run_NB(nbtable,test):
+	keycol = 1
+	attlist = [2,3,4]
+	rules = build_all_class_dicts(nbtable,keycol,attlist)
+	rand_inst = get_random_indexes(nbtable,10,len(nbtable))
+	clset = {}
+	for row in test:
+		k = row[keycol]
+		if k not in clset:
+			clset[k] = run_single_test(k,nb_classify(row,attlist,rules),0,0)
+		else:
+			tmp = clset.get(k)
+			clset[k] = run_single_test(row[keycol],nb_classify(row,attlist,rules),tmp[0],tmp[1])
+	p = 0.0
+	for k in clset.keys():
+		tmp = clset.get(k)
+		p += calculate_p(tmp[0],tmp[1])
+	p = float(p) / float(10)
+	se = calculate_stdE(p,len(test))
+	return p, se
+
+def store_predict_in_dict(a,p,cmd):
+	if a not in cmd:
+		cmd[a] = {p:1}
+	else:
+		cmd[a] = {p:(cmd[a].get(p) + 1)}
 
 #//////////////////////////////////////////////////////////////////////////////
 def table_from_csv(filename):
@@ -365,6 +421,7 @@ def get_random_indexes(table,n, size):
 
 def get_mpg_rating(y):
 	x = float(y)
+	print str(x)
 	if x >= 45:
 		return '10'
 	elif x >= 37:
@@ -389,7 +446,9 @@ def get_mpg_rating(y):
 def main():
 	atts,table = table_from_csv("auto-data-cleaned.txt")
 	rebuild_table_with_mpg_rating(table)
+	print table[0]
 	step3(table,atts)
+	
 	step4(table,atts)
 	#step5()
 
