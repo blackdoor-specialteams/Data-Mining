@@ -1,6 +1,7 @@
 # coding=utf-8
 import math
 import hw2
+import hw3
 import csv
 import random
 import numpy
@@ -23,7 +24,6 @@ def nb_v1(table,attlist,keycol):
 	nbtable = temp_table_with_NHTSA_rating(table)
 	rules = build_all_class_dicts(nbtable,keycol,attlist)
 	rand_inst = get_random_indexes(nbtable,5,len(nbtable))
-
 	for row in rand_inst:
 		print_instance(row)
 		print_classification(row,rules,keycol,attlist)
@@ -37,11 +37,11 @@ def nb_v2(table,attlist,keycol):
 		print_classification(row,rules,keycol,attlist)
 
 def print_classification(row,rules,clscol,attlist):
-	out = "prediction: " + str(classify(row,attlist,rules)) + ", "
+	out = "prediction: " + str(nb_classify(row,attlist,rules)) + ", "
 	out += "actual: " + str(row[clscol])
 	print out
 
-def classify(inst,attlist,rules):
+def nb_classify(inst,attlist,rules):
 	prob = []
 	for k in rules.keys():
 		p = rules[k].get(-1)
@@ -170,8 +170,112 @@ should look something like this (where the ??’s should be replaced by actual v
 '''
 def step4(table,atts):
 	print '===========================================\nSTEP 4: Predictive Accuracy\n==========================================='
-	training,test = holdout_partition(nbtable)
+	first_approach(table)
 	return None
+
+
+def first_approach(table):
+	"""Random Subsampling"""
+	print "Random Subsample (k=10, 2:1 Train/Test)"
+	nb_v1 = []
+	nb_v2 = []
+	knn = []
+	lnr = []
+
+	for x in range(10):
+		training,test = holdout_partition(table)
+		nb_v1.append(s4_NB_v1(training,test))
+		nb_v2.append(s4_NB_v2(training,test))
+		lnr.append(s4_LR(training,test))
+	print_predAcc_format("Naive Bayes I",nb_v1)
+	print_predAcc_format("Naive Bayes I",nb_v2)
+	print_predAcc_format("Linear Reression",lnr)
+
+def second_approach():
+	"""K-fold cross validation, k == 0"""
+	return None
+
+def s4_LR(training,test):
+	keycol = 1
+	weights = []
+	mpgs = []
+	for row in training:
+		weights.append(int(row[4]))
+		mpgs.append(float(row[1]))
+
+	_weight, _mpg, m = hw2.calculate_best_fit_line(weights, mpgs)
+	clset = {}
+	for row in test:
+		k = row[keycol]
+		prd = get_mpg_rating(hw3.get_linear_prediction(_weight, _mpg, m, x = int(row[4])))
+		if k not in clset:
+			clset[k] = run_single_test(k,prd,0,0)
+		else:
+			tmp = clset.get(k)
+			clset[k] = run_single_test(k,prd,tmp[0],tmp[1])
+	p = 0.0
+	for k in clset.keys():
+		tmp = clset.get(k)
+		p += calculate_p(tmp[0],tmp[1])
+	p = float(p) / float(10)
+	se = calculate_stdE(p,len(test))
+	return p, se
+
+def s4_NB_v1(train,test):
+	nbtable = temp_table_with_NHTSA_rating(train)
+	return run_NB(nbtable,test)
+
+def s4_NB_v2(train,test):
+	nbtable = build_table_with_gaussian(train,4)
+	return run_NB(nbtable,test)
+
+def run_NB(nbtable,test):
+	keycol = 1
+	attlist = [2,3,4]
+	rules = build_all_class_dicts(nbtable,keycol,attlist)
+	rand_inst = get_random_indexes(nbtable,10,len(nbtable))
+	clset = {}
+	for row in test:
+		k = row[keycol]
+		if k not in clset:
+			clset[k] = run_single_test(k,nb_classify(row,attlist,rules),0,0)
+		else:
+			tmp = clset.get(k)
+			clset[k] = run_single_test(row[keycol],nb_classify(row,attlist,rules),tmp[0],tmp[1])
+	p = 0.0
+	for k in clset.keys():
+		tmp = clset.get(k)
+		p += calculate_p(tmp[0],tmp[1])
+	p = float(p) / float(10)
+	se = calculate_stdE(p,len(test))
+	return p, se
+
+def run_single_test(act,pred,tp,t):
+	t += 1
+	if(act == pred):
+		tp  += 1
+	return tp,t
+
+def calculate_p(tp,t):
+	return float(tp) / float(t)
+
+def calculate_stdE(p,t):
+	return math.sqrt(float(p*(1-p)) / float(t))
+
+def print_predAcc_format(fname,xs):
+	p, stdE = average_p_and_stdE_list(xs)
+	"""Prints name, prediction accuracy and std err"""
+	print "  " + fname +": p = " + '{:.3e}'.format(p) + " +- " + '{:.3e}'.format(stdE)
+
+def average_p_and_stdE_list(xs):
+	p = 0.0
+	stdE = 0.0
+	for x in xs:
+		p += float(x[0])
+		stdE += float(x[1])
+	p = float(p) / float(len(xs))
+	stdE = float(stdE) / float(len(xs))
+	return p, stdE
 
 '''Create confusion matrices for each classifier. You can use the tabulate package to display your
 confusion matrices (it is also okay to format the table manually). Here is an example:
@@ -209,13 +313,6 @@ MPG 1 2 3 4 5 6 7 8 9 10 Total Recognition (%)
 '''
 def step5():
 	return None
-
-''' Use Na¨ıve Bayes and k-nearest neighbor to create two different classifiers to predict survival from the
-titanic dataset (titanic.txt). Note that the first line of the dataset lists the name of each attribute (class,
-age, sex, and surivived). Your classifiers should use class, age, and sex attributes to determine the survival
-class. Be sure to write down any assumptions you make in creating the classifiers. Evaluate the performance
-of your classifier using stratified k-fold cross validation (with k = 10) and generate confusion matrices for
-the two classifiers.'''
 
 #//////////////////////////////////////////////////////////////////////////////
 def table_from_csv(filename):
