@@ -9,27 +9,6 @@ from operator import itemgetter
 import heapq
 from tabulate import tabulate
 
-#n: 1,2,6
-
-''' Create a classifier that predicts mpg values using a (least squares) linear regression based on vehicle
-weight. Your classifier should take one or more instances, compute the predicted MPG values, and then
-map these to the DOE classification/ranking (given in HW 2) for each corresponding instance. Test your
-classifier by selecting 5 random instances (via your script) from the dataset, predict their corresponding mpg
-ranking, and then show their actual mpg ranking as follows:
-===========================================
-STEP 1: Linear Regression MPG Classifier
-===========================================
-instance: 15.0, 8, 400.0, 150.0, 3761, 9.5, 70, 1, chevrolet monte carlo, 3123
-class: 4, actual: 3
-instance: 17.0, 8, 302.0, 140.0, 3449, 10.5, 70, 1, ford torino, 2778
-class: 5, actual: 4
-instance: 28.4, 4, 151.0, 90.00, 2670, 16.0, 79, 1, buick skylark limited, 4462
-class: 6, actual: 7
-instance: 20.0, 6, 232.0, 100.0, 2914, 16.0, 75, 1, amc gremlin, 2798
-class: 5, actual: 5
-instance: 16.2, 6, 163.0, 133.0, 3410, 15.8, 78, 2, peugeot 604sl, 10990
-class: 5, actual: 4
-Note you should run your program enough times to check that the approach is working correctly'''
 def step1(file_in):
 # get lists of weights and mpgs
 	weights = []
@@ -80,25 +59,6 @@ def print_instance(inst, attribs = ["MPG", 'Weight', 'Model Year', 'Car Name']):
 		out += ' ' + inst[attrib]
 	print out
 
-
-'''Create a k = 5 nearest neighbor classifier for mpg that uses the number of cylinders, weight, and
-acceleration attributes to predict mpg. Be sure to normalize the MPG values and also use the Euclidean
-distance metric. Similar to Step 1, test your classifier by selecting random instances from the dataset, predict
-their corresponding mpg ranking, and then show their actual mpg ranking:
-===========================================
-STEP 2: k=5 Nearest Neighbor MPG Classifier
-===========================================
-instance: 15.0, 8, 400.0, 150.0, 3761, 9.5, 70, 1, chevrolet monte carlo, 3123
-class: 7, actual: 3
-instance: 17.0, 8, 302.0, 140.0, 3449, 10.5, 70, 1, ford torino, 2778
-class: 7, actual: 4
-instance: 28.4, 4, 151.0, 90.00, 2670, 16.0, 79, 1, buick skylark limited, 4462
-class: 1, actual: 7
-1instance: 20.0, 6, 232.0, 100.0, 2914, 16.0, 75, 1, amc gremlin, 2798
-class: 1, actual: 5
-instance: 16.2, 6, 163.0, 133.0, 3410, 15.8, 78, 2, peugeot 604sl, 10990
-class: 7, actual: 4
-'''
 def step2(file_in):
 	print "===========================================\nSTEP 2: k=5 Nearest Neighbor MPG Classifier\n==========================================="
 	random_indexes = get_random_indexes(5, 315)
@@ -141,7 +101,8 @@ def get_neighbor_d(instance, neighbor, ranges, attribs = ["Cylinders", "Weight",
 	d = 0
 	for attrib in attribs:
 		if float(ranges[attrib]) == 0:
-			print ranges
+			#print ranges
+			None
 		else:
 			try:
 				d += get_euclidean_d(float(instance[attrib])/float(ranges[attrib]), float(neighbor[attrib])/float(ranges[attrib]))
@@ -158,10 +119,14 @@ def get_ranges(data_set, attribs = ["Cylinders", "Weight", "Acceleration"]):
 	ranges = dict()
 	for attrib in attribs:
 		xs = []
-		for inst in data_set:
-			xs.append(float(inst[attrib]))
-		ranges[attrib] = max(xs) - min(xs)
+		try:
+			for inst in data_set:
+					xs.append(float(inst[attrib]))
+			ranges[attrib] = max(xs) - min(xs)
+		except ValueError:
+			ranges[attrib] = 1.0
 	return ranges
+
 
 def get_mode(xs):
 	"""
@@ -196,16 +161,6 @@ def table_to_lick_dicts(table, attribs = ["Acceleration","MPG","Model Year","Cyl
 		list_dicts.append(entry)
 	return list_dicts
 
-'''Use Na¨ıve Bayes and k-nearest neighbor to create two different classifiers to predict survival from the
-titanic dataset (titanic.txt). Note that the first line of the dataset lists the name of each attribute (class,
-age, sex, and surivived). Your classifiers should use class, age, and sex attributes to determine the survival
-class. Be sure to write down any assumptions you make in creating the classifiers. Evaluate the performance
-of your classifier using stratified k-fold cross validation (with k = 10) and generate confusion matrices for
-the two classifiers.'''
-def step6():
-	return None
-
-
 '''
 ################################################################################
 ################################################################################
@@ -214,7 +169,7 @@ def step6():
 ################################################################################
 People's Republic of North Lead By Glorious Party Leader Nate
 DMZ 214
-CJ'z code
+Southern Provience of Code, True Heir to the Throne: CJ
 ################################################################################
 ################################################################################
 ################################################################################
@@ -254,8 +209,8 @@ def nb_v2(table,attlist,keycol):
 		print_classification(row,rules,keycol,attlist)
 
 def print_classification(row,rules,clscol,attlist):
-	out = "prediction: " + nb_classify(row,attlist,rules) + ", "
-	out += "actual: " + row[clscol]
+	out = "prediction: " + str(hw2.get_mpg_rating(nb_classify(row,attlist,rules))) + ", "
+	out += "actual: " +  str(hw2.get_mpg_rating(row[clscol]))
 	print out
 
 def nb_classify(inst,attlist,rules):
@@ -265,19 +220,16 @@ def nb_classify(inst,attlist,rules):
 		attkeys = rules[k].copy()
 		#print attkeys
 		attkeys.pop(-1,None) 
-		#f
-		for j in attkeys.keys():
-		#for every attribute in this class's dict
+		for j in attlist:
+		#for every attribute to be compared
 			if inst[j] in rules[k][j].keys():
 			#if the value is in the key set
 				p = float(p) * float(rules[k][j].get(inst[j]))
 			else:
 				p = float(0.0)
-				break
 		prob.append((p,k))
 	#sort by prob, then return the first elem, which is the key
 	prob.sort(key=lambda x: float(x[0]), reverse=True)
-	#print prob
 	return prob[0][1]
 
 def build_all_class_dicts(table,keycol,attlist):
@@ -327,11 +279,6 @@ def get_class_keys_and_counts(table,col):
 		else:
 			cls[row[col]] = cls.get(row[col]) + 1
 	return cls, count
-
-def rebuild_table_with_mpg_rating(table):
-	for row in table:
-		row[1] = str(hw2.get_mpg_rating(float(row[1])))
-		tuple(row)
 
 def temp_table_with_NHTSA_rating(table):
 	tmp = table[:]
@@ -393,15 +340,15 @@ def first_approach(table):
 	
 	for x in range(0,10):
 		training,test = holdout_partition(table)
-		#nb_v1.append(s4_NB_v1(deepcopy(training),deepcopy(test)))
-		#nb_v2.append(s4_NB_v2(deepcopy(training),deepcopy(test)))
+		nb_v1.append(s4_NB_v1(deepcopy(training),deepcopy(test)))
+		nb_v2.append(s4_NB_v2(deepcopy(training),deepcopy(test)))
 		lnr.append(s4_LR(deepcopy(training),deepcopy(test)))
 		knn.append(s4_KNN(deepcopy(training),deepcopy(test)))
 
-	print_predAcc_format("Linear Reression",lnr)
+	print_predAcc_format("Linear Regression",lnr)
 	print_predAcc_format("K-NN ",knn)
-	#print_predAcc_format("Naive Bayes I",nb_v1)
-	#print_predAcc_format("Naive Bayes II",nb_v2)
+	print_predAcc_format("Naive Bayes I",nb_v1)
+	print_predAcc_format("Naive Bayes II",nb_v2)
 
 def second_approach(table):
 	"""K-fold cross validation, k == 0"""
@@ -419,7 +366,7 @@ def second_approach(table):
 		lnr.append(s4_LR(deepcopy(training),deepcopy(test)))
 		knn.append(s4_KNN(deepcopy(training),deepcopy(test)))
 
-	print_predAcc_format("Linear Reression",lnr)
+	print_predAcc_format("Linear Regression",lnr)
 	print_predAcc_format("K-NN ",knn)
 	print_predAcc_format("Naive Bayes I",nb_v1)
 	print_predAcc_format("Naive Bayes II",nb_v2)
@@ -497,12 +444,12 @@ def run_NB(nbtable,test):
 	rand_inst = get_random_table_indexes(nbtable,10,len(nbtable))
 	clset = {}
 	for row in test:
-		k = row[keycol]
+		k = hw2.get_mpg_rating(row[keycol])
 		if k not in clset:
-			clset[k] = run_single_test(k,nb_classify(row,attlist,rules),0,0)
+			clset[k] = run_single_test(k,hw2.get_mpg_rating(nb_classify(row,attlist,rules)),0,0)
 		else:
 			tmp = clset.get(k)
-			clset[k] = run_single_test(row[keycol],nb_classify(row,attlist,rules),tmp[0],tmp[1])
+			clset[k] = run_single_test(k,hw2.get_mpg_rating(nb_classify(row,attlist,rules)),tmp[0],tmp[1])
 	p = 0.0
 	for k in clset.keys():
 		tmp = clset.get(k)
@@ -540,7 +487,7 @@ def average_p_and_stdE_list(xs):
 	return p, stdE
 
 def step5(table,atts):
-	print '===========================================\nSTEP 5: Confusion Matricies \n==========================================='
+	print '===========================================\nSTEP 5: Confusion Matrices \n==========================================='
 	nb_v1 = init_nxn(10)
 	nb_v2 = init_nxn(10)
 	knn = init_nxn(10)
@@ -549,15 +496,15 @@ def step5(table,atts):
 
 	for f in kfold:
 		training,test = holdout_partition(f)
-		#s5_NB1_dict(nb_v1,deepcopy(training),deepcopy(test))
-		#s5_NB2_dict(nb_v2,deepcopy(training),deepcopy(test))
+		s5_NB1_dict(nb_v1,deepcopy(training),deepcopy(test))
+		s5_NB2_dict(nb_v2,deepcopy(training),deepcopy(test))
 		s5_LR_dict(lrn,deepcopy(training),deepcopy(test))
 		s5_KNN_dict(knn, deepcopy(training), deepcopy(test))
 
 	s5_print_confusion_table("Linear Reression",lrn)
 	s5_print_confusion_table("K Nearest Neighbor", knn)
-	#s5_print_confusion_table("Naive Bayes I",nb_v1)
-	#s5_print_confusion_table("Naive Bayes II",nb_v2)
+	s5_print_confusion_table("Naive Bayes I",nb_v1)
+	s5_print_confusion_table("Naive Bayes II",nb_v2)
 
 def s5_LR_dict(lrd,training,test):
 	weights = []
@@ -609,11 +556,8 @@ def s5_run_NB(nbtable,test):
 	actual = []
 	for row in test:
 		actual.append(hw2.get_mpg_rating(row[keycol]) )
-		pred.append(int(float(nb_classify(row,attlist,rules))) )
+		pred.append(hw2.get_mpg_rating(nb_classify(row,attlist,rules)))
 	return actual,pred
-
-def s5_knn_dict(knn,training,test):
-	return None
 
 def s5_print_confusion_table(name,table):
 	#table = make_table(file_name,summary_atts)
@@ -650,52 +594,107 @@ def step6(table,atts):
 	kfold = k_folds(deepcopy(table),10)
 	nb = init_nxn(2)
 	knn = init_nxn(2)
-
+	#print kfold
 	for f in kfold:
 		training,test = holdout_partition(f)
-		s6_NB(nb,deepcopy(training),deepcopy(test))
-
+		s6_run_NB(nb,deepcopy(training),deepcopy(test))
+		s6_KNN_dict(knn,deepcopy(training),deepcopy(test))
+	#print nb
 	s6_print_confusion_table("Naive Bayes", nb)
+	s6_print_confusion_table("KNN", knn)
+
 	return None
 
-def s6_NB(mac, training,test):
-	ac, p = s6_run_NB(training,test)
-	update_cm(mac,ac,p)
-
-def s6_KNN(mac, training,test):
-	return None
-
-def s6_run_NB(nbtable,test):
+def s6_run_NB(nb,training,test):
 	keycol = 3
 	attlist = [0,1,2]
-	rules = build_all_class_dicts(nbtable,keycol,attlist)
-	rand_inst = get_random_table_indexes(nbtable,10,len(nbtable))
+	rules = build_all_class_dicts(training,keycol,attlist)
 	pred = []
 	actual = []
 	for row in test:
 		actual.append(row[keycol]) 
 		pred.append(nb_classify(row,attlist,rules))
-	return actual,pred
+	s6_update_cm(nb,actual,pred)
 
+def s6_KNN_dict(thing, training, test):
+	nnn = 5
+	training = table_to_lick_dicts(training,attribs = ["class","age","sex","survived"])
+	test = table_to_lick_dicts(test,attribs = ["class","age","sex","survived"])
+	act = []
+	prd = []
+	for row in test:
+		act.append(row["survived"])
+		prd.append(get_mode(get_list_of_att("survived",get_knn(row, nnn, training,attribs = ["class","age","sex","survived"]))))
+	s6_update_cm(thing, act, prd)
 
-def s6_print_confusion_table(name,table):
+def get_list_of_att(att,ls):
+	result = []
+	for x in ls:
+		result.append(x.get(att))
+	return result
+
+def s6_update_cm(mac,a,p):
+	for i in range(len(a)):
+		mac[YN_to_int(a[i])][YN_to_int(p[i])] += 1
+
+def s6_print_confusion_table(name,cm):
 	#table = make_table(file_name,summary_atts)
 	print name + " - Stratified 10-Fold Cross Validation"
-	headers = [" ","No","Yes","Total","Recognition (%)"]
+	headers = ["Survived","No","Yes","Total","Recognition (%)"]
 	tmp_table = []
-	tmp_table.append(["No"])
-	tmp_table.append(["Yes"])
-
+	for i in range(0,2): 
+		row = [int_to_YN(i)]
+		total = float(sum(cm[i]))
+		if total > 0:
+			rec = float(cm[i][i]) / total
+		else:
+			rec = 0
+		for x in cm[i]:
+			row.append(str(x))
+		row.append(str(sum(cm[i])))
+		row.append(str(rec * 100))
+		tmp_table.append(row)
 	print tabulate(tmp_table,headers,tablefmt="rst")
 
+def get_counts_for_con(tb):
+	a = []
+	p = []
+	for x in tb:
+		a.append(x[0])
+		p.append(x[1])
+	return a,p
+
+def discret_data_for_knn(data):
+	count = 1 
+	cls = ["first","second","third","crew"]
+	age = ["adult","child"]
+	gen = ["male","female"]
+	s = ["no","yes"]
+	for row in data:
+		row[0] = cls.index(row[0])
+		row[1] = age.index(row[1])
+		row[2] = gen.index(row[2])
+		row[3] = s.index(row[3])
+
 def build_conmat(a,p):
-	result = init_nxn(n)
+	result = init_nxn(2)
 	for i in range(len(p)):
-		if a[i] == p[i] and a [i] == "YES":
-			None
+		x = YN_to_int(a[i])
+		y = YN_to_int(p[i])
+		result[x][y] += 1
+	return result
 
+def YN_to_int(i):
+	if i == "yes":
+		return 1
+	else:
+		return 0
+def int_to_YN(i):
+	if i == 1:
+		return "yes"
+	else:
+		return "no"
 
-#//////////////////////////////////////////////////////////////////////////////
 def table_from_csv(filename):
 	"""Returns a table of strings from a CSV file"""
 	table =[]
@@ -722,7 +721,6 @@ def get_random_table_indexes(table,n, size):
 		result.append(table[i])
 	return result
 
-
 def main():
 	step1("auto-data-cleaned.txt")
 	step2("auto-data-cleaned.txt")
@@ -732,7 +730,7 @@ def main():
 	step4(table,atts)
 	step5(table,atts)
 	tatts,ttable = table_from_csv("titanic.txt")
-	#step6(ttable,tatts)
+	step6(ttable,tatts)
 	return None
 
 main()
