@@ -36,8 +36,39 @@ class TDIDT:
                         s.node_value["count"] += 1
             self.update_class_leafs()
     
-    def condense(self):
-        return None
+    def condense(self, node):
+        if node.name == target:
+            return node
+        all_leaves = True
+        for key in node.children.keys():
+            node.children[key] = condense(node.children[key])
+            if node.children[key].name != target:
+                all_leaves = False
+        if all_leaves:
+            leaves_all_same = True
+            classifier = None
+            for child in node.children:
+                if classifier == None:
+                    classifier = get_most_pop_classifer(child)
+                elif classifier != get_most_pop_classifer(child):
+                    leaves_all_same = False
+                    break
+            if leaves_all_same:
+                outcomes = None
+                for child in node.children:
+                    if outcomes == None:
+                            outcomes = child.children
+                    else:
+                        for outcome in child.children.keys():
+                            outcomes[outcome] += child.children[outcome]
+                return TDIDT(target, outcomes)
+        return node
+    def get_most_pop_classifer(c):
+        classifier = None
+        for key in c.keys():
+            if classifier == None or c[key] > c[classifier]:
+                classifier = key
+        return classifier
 
     def classify(self,inst):
         return None
