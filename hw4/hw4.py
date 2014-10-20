@@ -22,6 +22,8 @@ Southern Provience of Code, True Heir to the Throne: CJ
 def step1(filename):
 	print '===========================================\nSTEP 1: TDIDT -- Titanic \n==========================================='
 	ddict = dataset_from_file(filename)
+	attlist = ["class","age","sex","survived"]
+	tree = build_tree_from_dataset(ddict,attlist,"survived")
 	kfold = lib.k_folds(ddict,10)
 	tdidt_cm = lib.init_nxn(2)
 
@@ -34,7 +36,7 @@ def step1(filename):
 def s1_tree_run(cm,traning,test):
 	key = "survived"
 	attlist = ["class","age","sex","survived"]
-	tree = build_tree_from_dataset(traning,attlist)
+	tree = build_tree_from_dataset(traning,attlist,"survived")
 	pred = []
 	actual = []
 	for row in test:
@@ -68,10 +70,11 @@ def step4(filename):
 
 #//////////////////////////////////////////////////
 
-def build_tree_from_dataset(dset,attributes):
-	t = TDIDT.TDIDT('ATT', attributes[0])
+def build_tree_from_dataset(dset,attributes,target):
+	t = TDIDT.TDIDT(attributes[0],target)
 	for row in dset:
 		t.put_row(row,attributes)
+	print t
 	return t
 
 def dataset_from_file(filename):
