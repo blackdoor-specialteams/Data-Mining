@@ -54,6 +54,7 @@ class TDIDT:
                             outcomes[outcome] += child.children[outcome]
                 return TDIDT(target, outcomes)
         return node
+
     def get_most_pop_classifer(c):
         classifier = None
         for key in c.keys():
@@ -65,9 +66,9 @@ class TDIDT:
         return None
 
     def __str__(self): 
-        result = '(Att: '
-        result += '<' + str(self.name) + '>'
+        result = ' <Att: '
+        result += '' + str(self.name) + '>'
         result += ' ('
         for k in self.children.keys():
-            result += str(self.children[k])
-        return result + '))'
+            result += " " + str(k)+ "." +  str(self.children[k]) + "\n"
+        return result + ')'
