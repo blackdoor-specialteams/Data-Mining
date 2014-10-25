@@ -28,12 +28,12 @@ class TDIDT:
                 self.children[data[attributes[0]]] += 1
     
     def condense(self, node):
-        if node.name == target:
+        if node.name == self.target:
             return node
         all_leaves = True
         for key in node.children.keys():
             node.children[key] = condense(node.children[key])
-            if node.children[key].name != target:
+            if node.children[key].name != self.target:
                 all_leaves = False
         if all_leaves:
             leaves_all_same = True
@@ -52,7 +52,9 @@ class TDIDT:
                     else:
                         for outcome in child.children.keys():
                             outcomes[outcome] += child.children[outcome]
-                return TDIDT(target, outcomes)
+                out = TDIDT.TDIDT(self.target, self.target)
+                out.children = outcomes
+                return out
         return node
 
     def get_most_pop_classifer(c):
@@ -64,6 +66,22 @@ class TDIDT:
 
     def classify(self,inst):
         return None
+
+    def view_tree(self):
+        return self.prt(0)
+
+    def prt(self, depth):
+        out = ''
+        indent = ""
+        for i in range(0, depth):
+            indent += '  '
+        if self.target == self.name:
+            out += indent + str(self.children) + '\n'
+        else: 
+            for child in self.children.keys():
+                out += indent + self.name + ':' + child + '\n'
+                out += self.children[child].prt(depth+1)
+        return out
 
     def __str__(self): 
         result = ' <Att: '

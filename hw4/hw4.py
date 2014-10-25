@@ -75,6 +75,7 @@ def build_tree_from_dataset(dset,attributes,target):
 	for row in dset:
 		t.put_row(row,attributes)
 	print t
+	print t.view_tree()
 	return t
 
 def dataset_from_file(filename):
