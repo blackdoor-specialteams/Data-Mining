@@ -60,6 +60,17 @@ class TDIDT:
                 return out
         return node
 
+    def get_best_condensable_tree(self, trees):
+        """
+        Given a list of trees, returns the tree that condenses the best
+        """
+        condensed_tree_sizes = []
+        for tree in trees:
+            condensed_tree_sizes.append(len(tree.condense(tree).view_tree()))
+        i = condensed_tree_sizes.index(min(condensed_tree_sizes))
+        return trees[i]
+
+
     def get_most_pop_classifer(self, c):
         classifier = None
         for key in c.keys():
