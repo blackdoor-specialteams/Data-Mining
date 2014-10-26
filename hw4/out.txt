@@ -1,0 +1,112 @@
+===========================================
+STEP 1: TDIDT -- Titanic 
+===========================================
+class:second
+  age:adult
+    sex:male
+      {'yes': 89, 'no': 76}
+    sex:female
+      {'yes': 387, 'no': 75}
+  age:child
+    sex:male
+      {'yes': 17, 'no': 14}
+    sex:female
+      {'yes': 35, 'no': 13}
+class:first
+  age:adult
+    sex:male
+      {'yes': 13, 'no': 79}
+    sex:female
+      {'yes': 154, 'no': 14}
+  age:child
+    sex:male
+      {'no': 13}
+    sex:female
+      {'no': 11}
+class:third
+  age:adult
+    sex:male
+      {'yes': 3, 'no': 20}
+    sex:female
+      {'yes': 670, 'no': 192}
+class:crew
+  age:adult
+    sex:male
+      {'yes': 4, 'no': 140}
+    sex:female
+      {'yes': 118, 'no': 57}
+  age:child
+    sex:male
+      {'no': 1}
+    sex:female
+      {'no': 5}
+
+ <Att: survived> ( yes.89
+ no.76
+)
+ <Att: survived> ( yes.387
+ no.75
+)
+ <Att: survived> ( yes.17
+ no.14
+)
+ <Att: survived> ( yes.35
+ no.13
+)
+ <Att: survived> ( yes.476
+ no.151
+)
+ <Att: survived> ( yes.52
+ no.27
+)
+ <Att: survived> ( yes.13
+ no.79
+)
+ <Att: survived> ( yes.154
+ no.14
+)
+ <Att: survived> ( no.13
+)
+ <Att: survived> ( no.11
+)
+ <Att: survived> ( yes.3
+ no.20
+)
+ <Att: survived> ( yes.670
+ no.192
+)
+ <Att: survived> ( yes.4
+ no.140
+)
+ <Att: survived> ( yes.118
+ no.57
+)
+ <Att: survived> ( no.1
+)
+ <Att: survived> ( no.5
+)
+class:second
+  {'yes': 528, 'no': 178}
+class:first
+  age:adult
+    sex:male
+      {'yes': 13, 'no': 79}
+    sex:female
+      {'yes': 154, 'no': 14}
+  age:child
+    {'no': 24}
+class:third
+  age:adult
+    sex:male
+      {'yes': 3, 'no': 20}
+    sex:female
+      {'yes': 670, 'no': 192}
+class:crew
+  age:adult
+    sex:male
+      {'yes': 4, 'no': 140}
+    sex:female
+      {'yes': 118, 'no': 57}
+  age:child
+    {'no': 6}
+

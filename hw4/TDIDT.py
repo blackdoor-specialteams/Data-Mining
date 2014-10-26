@@ -32,32 +32,33 @@ class TDIDT:
             return node
         all_leaves = True
         for key in node.children.keys():
-            node.children[key] = condense(node.children[key])
+            node.children[key] = self.condense(node.children[key])
             if node.children[key].name != self.target:
                 all_leaves = False
         if all_leaves:
             leaves_all_same = True
             classifier = None
-            for child in node.children:
+            for child in node.children.values():
+                print child
                 if classifier == None:
-                    classifier = get_most_pop_classifer(child)
-                elif classifier != get_most_pop_classifer(child):
+                    classifier = self.get_most_pop_classifer(child.children)
+                elif classifier != self.get_most_pop_classifer(child.children):
                     leaves_all_same = False
                     break
             if leaves_all_same:
                 outcomes = None
-                for child in node.children:
+                for child in node.children.values():
                     if outcomes == None:
                             outcomes = child.children
                     else:
                         for outcome in child.children.keys():
                             outcomes[outcome] += child.children[outcome]
-                out = TDIDT.TDIDT(self.target, self.target)
+                out = TDIDT(self.target, self.target)
                 out.children = outcomes
                 return out
         return node
 
-    def get_most_pop_classifer(c):
+    def get_most_pop_classifer(self, c):
         classifier = None
         for key in c.keys():
             if classifier == None or c[key] > c[classifier]:

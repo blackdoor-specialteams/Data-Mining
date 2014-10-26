@@ -74,7 +74,9 @@ def build_tree_from_dataset(dset,attributes,target):
 	t = TDIDT.TDIDT(attributes[0],target)
 	for row in dset:
 		t.put_row(row,attributes)
-	print t
+	print t.view_tree()
+	t = t.condense(t)
+	#print t
 	print t.view_tree()
 	return t
 
