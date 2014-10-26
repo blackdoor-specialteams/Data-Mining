@@ -9,6 +9,9 @@ class TDIDT:
         self.children.update({val:TDIDT(att,self.target)})
     
     def put_row(self,data,attributes):
+        """
+        last element in attributes MUST be target
+        """
         #if no more attributes to insert, return
         if not attributes:
             print "Attribute list is NULL"
@@ -39,7 +42,6 @@ class TDIDT:
             leaves_all_same = True
             classifier = None
             for child in node.children.values():
-                print child
                 if classifier == None:
                     classifier = self.get_most_pop_classifer(child.children)
                 elif classifier != self.get_most_pop_classifer(child.children):

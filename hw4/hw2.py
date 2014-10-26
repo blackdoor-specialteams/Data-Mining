@@ -108,6 +108,7 @@ def get_mpg_rating(x):
 		return 2
 	elif x <= 13:
 		return 1
+	return None
 
 
 def populate_range_label_list(xs):

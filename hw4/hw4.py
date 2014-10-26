@@ -4,8 +4,38 @@ import re
 #import random
 #import math
 import TDIDT
+import hw3
+import hw2
 import lib
 from tabulate import tabulate
+
+def cool_step2(filename):
+	print '===========================================\nSTEP 2: TDIDT -- Auto Data \n========================================='
+	ddict = auto_dataset_from_file(filename)
+	attlist = ["Cylinders","Weight","Model Year", "MPG"]
+	tree = build_tree_from_dataset(ddict,attlist,"MPG")
+	print tree.view_tree()
+	tree = tree.condense(tree)
+	print tree.view_tree()
+	kfold = lib.k_folds(ddict,10)
+	tdidt_cm = lib.init_nxn(2)
+
+	for f in kfold:
+		training,test = lib.holdout_partition(f)
+		#s1_tree_run(tdidt_cm,training,test)
+
+	#s6_print_confusion_table("TDIDT", nb)
+
+def auto_dataset_from_file(filename):
+	"""Returns a  list of dictionaries from the file"""
+	result = []
+	with open(filename, 'r') as f:
+		reader = csv.DictReader(f)
+		for inst in reader:
+			inst["Weight"] = str(hw3.get_NHTSA_rating_as_int(inst["Weight"]))
+			inst['MPG'] = str(hw2.get_mpg_rating(inst['MPG']))
+			result.append(inst)
+	return result
 
 
 '''
@@ -74,10 +104,9 @@ def build_tree_from_dataset(dset,attributes,target):
 	t = TDIDT.TDIDT(attributes[0],target)
 	for row in dset:
 		t.put_row(row,attributes)
-	print t.view_tree()
-	t = t.condense(t)
+	#print t.view_tree()
+	#t = t.condense(t)
 	#print t
-	print t.view_tree()
 	return t
 
 def dataset_from_file(filename):
@@ -92,6 +121,7 @@ def dataset_from_file(filename):
 def main():
 	dataset = "titanic.txt"
 	step1(dataset)
+	cool_step2("auto-data-cleaned.txt")
 	
 if __name__ == '__main__':
     main()

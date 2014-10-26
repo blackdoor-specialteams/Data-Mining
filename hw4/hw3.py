@@ -161,6 +161,20 @@ def table_to_lick_dicts(table, attribs = ["Acceleration","MPG","Model Year","Cyl
 		list_dicts.append(entry)
 	return list_dicts
 
+def get_NHTSA_rating_as_int(y):
+	x = int(y)
+	if x >= 3500:
+		return 5
+	elif x > 3000:
+		return 4
+	elif x > 2500:
+		return 3
+	elif x > 2000:
+		return 2 
+	else:
+		return 1
+	return None
+
 '''
 ################################################################################
 ################################################################################
@@ -737,5 +751,3 @@ def main():
 	tatts,ttable = table_from_csv("titanic.txt")
 	step6(ttable,tatts)
 	return None
-
-main()
