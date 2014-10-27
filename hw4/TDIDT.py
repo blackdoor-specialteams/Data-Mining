@@ -1,4 +1,4 @@
-
+import operator 
 class TDIDT:
     def __init__(self,n,t):
         self.name = n
@@ -29,7 +29,7 @@ class TDIDT:
                 self.children.update(stats)
             else:
                 self.children[data[attributes[0]]] += 1
-    
+                
     def condense(self, node):
         if node.name == self.target:
             return node
@@ -54,7 +54,10 @@ class TDIDT:
                             outcomes = child.children
                     else:
                         for outcome in child.children.keys():
-                            outcomes[outcome] += child.children[outcome]
+                            try:
+                                outcomes[outcome] += child.children[outcome]
+                            except KeyError:
+                                outcomes[outcome] = child.children[outcome]
                 out = TDIDT(self.target, self.target)
                 out.children = outcomes
                 return out
@@ -79,11 +82,17 @@ class TDIDT:
         return classifier
 
     def classify(self,inst):
-        return None
-
-    def view_tree(self):
-        return self.prt(0)
-
+        if self.name == self.target:
+            #handle empty children!
+            classification = max(self.children.iteritems(), key=operator.itemgetter(1))[0]
+            return classification
+        else:
+            if inst[self.name] in self.children:
+                return self.children[inst[self.name]].classify(inst)
+            else:
+                #handle the case that it is not in children!!
+                return None
+        
     def prt(self, depth):
         out = ''
         indent = ""
@@ -93,14 +102,26 @@ class TDIDT:
             out += indent + str(self.children) + '\n'
         else: 
             for child in self.children.keys():
-                out += indent + self.name + ':' + child + '\n'
+                out += indent + str(self.name) + ':' + str(child) + '\n'
                 out += self.children[child].prt(depth+1)
         return out
 
+    def print_rules(self):
+        return self.string_rules(0,'')
+
+    def string_rules(self,depth,out):
+        tmp_out = out
+        if self.target == self.name:
+            print out + " THEN class == " + str(max(self.children.iteritems(), key=operator.itemgetter(1))[0])
+        else: 
+            for child in self.children:
+                tmp_out += "if " + str(self.name) + ' == ' + str(child)
+                if self.target not in self.children[child].name:
+                    tmp_out += " AND "
+                    self.children[child].string_rules(depth+1,tmp_out)
+                else:
+                    self.children[child].string_rules(depth+1,tmp_out)
+                tmp_out = out
+
     def __str__(self): 
-        result = ' <Att: '
-        result += '' + str(self.name) + '>'
-        result += ' ('
-        for k in self.children.keys():
-            result += " " + str(k)+ "." +  str(self.children[k]) + "\n"
-        return result + ')'
+        return self.prt(0)

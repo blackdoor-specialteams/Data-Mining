@@ -1,6 +1,7 @@
 import copy
 import random
 import heapq
+from tabulate import tabulate
 from operator import itemgetter
 
 """
@@ -24,10 +25,11 @@ def holdout_partition(dataset):
 def k_folds(dataset,k):
 	rdm = copy.deepcopy(dataset) 
 	n = len(dataset)
+	step = n / k
 	for i in range(n):
 		j = random.randint(0,n-1)
 		rdm[i], rdm[j] = rdm[j],rdm[i]
-	return [rdm[i:i + k] for i in range(0, len(rdm), k)]
+	return [rdm[i:i + step] for i in range(0, len(rdm), step)]
 
 def get_mode(xs):
 	"""
@@ -105,6 +107,36 @@ def init_nxn(n):
 		for j in range(1,n+1):
 			l[i - 1].append(0)
 	return l
+
+
+
+def print_confusion_table(name,table):
+	"""prints a labeled confusion matrix using tabulate"""
+	#table = make_table(file_name,summary_atts)
+	print name + " - Stratified 10-Fold Cross Validation"
+	headers = ["MPG"] #+ ["Total","Recognition (%)"])
+	for i in range(1,11):
+		headers.append(str(i))
+	headers = headers + ["Total", "Recognition (%)"]
+	tmp_table = []
+	for i in range(10):
+		row = [str(i+1)]
+		total = float(sum(table[i]))
+		if total > 0:
+			rec = float(table[i][i]) / total
+		else:
+			rec = 0
+		for x in table[i]:
+			row.append(str(x))
+		row.append(str(sum(table[i])))
+		row.append(str(rec * 100))
+		tmp_table.append(row)
+	print tabulate(tmp_table,headers,tablefmt="rst")
+
+def update_cm(cm,a,p):
+	for i in range(len(a)):
+		if p[i]:
+			cm[a[i] -1 ][p[i] - 1] = cm[a[i] -1 ][p[i] - 1] + 1
 
 """
 ###################################################################################################

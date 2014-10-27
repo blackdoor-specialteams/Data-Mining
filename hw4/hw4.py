@@ -2,29 +2,11 @@
 import csv
 import re
 #import random
-#import math
+import math
 import TDIDT
-import hw3
-import hw2
 import lib
+import operator
 from tabulate import tabulate
-
-def cool_step2(filename):
-	print '===========================================\nSTEP 2: TDIDT -- Auto Data \n========================================='
-	ddict = auto_dataset_from_file(filename)
-	attlist = ["Cylinders","Weight","Model Year", "MPG"]
-	tree = build_tree_from_dataset(ddict,attlist,"MPG")
-	print tree.view_tree()
-	tree = tree.condense(tree)
-	print tree.view_tree()
-	kfold = lib.k_folds(ddict,10)
-	tdidt_cm = lib.init_nxn(2)
-
-	for f in kfold:
-		training,test = lib.holdout_partition(f)
-		#s1_tree_run(tdidt_cm,training,test)
-
-	#s6_print_confusion_table("TDIDT", nb)
 
 def auto_dataset_from_file(filename):
 	"""Returns a  list of dictionaries from the file"""
@@ -32,11 +14,10 @@ def auto_dataset_from_file(filename):
 	with open(filename, 'r') as f:
 		reader = csv.DictReader(f)
 		for inst in reader:
-			inst["Weight"] = str(hw3.get_NHTSA_rating_as_int(inst["Weight"]))
-			inst['MPG'] = str(hw2.get_mpg_rating(inst['MPG']))
+			inst["Weight"] = lib.get_NHTSA_rating(inst["Weight"])
+			inst['MPG'] = lib.get_mpg_rating(inst['MPG'])
 			result.append(inst)
 	return result
-
 
 '''
 ################################################################################
@@ -57,26 +38,51 @@ def step1(filename):
 	kfold = lib.k_folds(ddict,10)
 	tdidt_cm = lib.init_nxn(2)
 
-	for f in kfold:
-		training,test = lib.holdout_partition(f)
-		#s1_tree_run(tdidt_cm,training,test)
+	for i in range(10):
+		training =[]
+		for f in range(10):
+			if f != i:
+				training = training + kfold[f]
+		test = kfold[i]
+		s1_tree_run(tdidt_cm,training,test)
 
-	#s6_print_confusion_table("TDIDT", nb)
+	s1_print_confusion_table("TDIDT", tdidt_cm)
 
 def s1_tree_run(cm,traning,test):
 	key = "survived"
 	attlist = ["class","age","sex","survived"]
 	tree = build_tree_from_dataset(traning,attlist,"survived")
+	tree = tree.condense(tree)
 	pred = []
 	actual = []
 	for row in test:
 		actual.append(row[key]) 
-		#pred.append(tree.classify(row,attlist,rules))
+		pred.append(tree.classify(row))
 	s1_update_cm(cm,actual,pred)
 
 def s1_update_cm(cm,a,p):
 	for i in range(len(a)):
 		cm[YN_to_int(a[i])][YN_to_int(p[i])] += 1
+
+def s1_print_confusion_table(name,cm):
+	"""prints a confusion matrix for titanic using tabulate"""
+	#table = make_table(file_name,summary_atts)
+	print name + " - Stratified 10-Fold Cross Validation"
+	headers = ["Survived","No","Yes","Total","Recognition (%)"]
+	tmp_table = []
+	for i in range(0,2): 
+		row = [int_to_YN(i)]
+		total = float(sum(cm[i]))
+		if total > 0:
+			rec = float(cm[i][i]) / total
+		else:
+			rec = 0
+		for x in cm[i]:
+			row.append(str(x))
+		row.append(str(sum(cm[i])))
+		row.append(str(rec * 100))
+		tmp_table.append(row)
+	print tabulate(tmp_table,headers,tablefmt="rst")
 
 def YN_to_int(i):
 	if i == "yes":
@@ -90,13 +96,138 @@ def int_to_YN(i):
 		return "no"
 
 def step2(filename):
-	return None
+	print '===========================================\nSTEP 2: TDIDT -- Auto Data \n========================================='
+	ds = auto_dataset_from_file(filename)
+	attlist = ["Cylinders","Weight","Model Year", "MPG"]
+	kfold = lib.k_folds(ds,10)
+	tdidt_cm = lib.init_nxn(10)
+
+	for i in range(10):
+		training =[]
+		for f in range(10):
+			if f != i:
+				training = training + kfold[f]
+		test = kfold[i]
+		s2_tree_run(tdidt_cm,training,test)
+
+	lib.print_confusion_table("TDIDT", tdidt_cm)
+
+def s2_tree_run(cm,training,test):
+	key = "MPG"
+	attlist =  ["Cylinders","Weight","Model Year", "MPG"]
+	tree = build_tree_from_dataset(training,attlist,"MPG")
+	tree = tree.condense(tree)
+	pred = []
+	actual = []
+	for row in test:
+		actual.append(row[key])
+		pred.append(tree.classify(row))
+	lib.update_cm(cm,actual,pred)
 
 def step3(filename):
+	print '===========================================\nSTEP 3: TDIDT -- Split Point \n========================================='
+	ds = dataset_from_file(filename)
+	adjust_ds_with_mpg(ds)
+	kfold = lib.k_folds(ds,10)
+	tdidt_cm = lib.init_nxn(10)
+
+	for i in range(10):
+		training =[]
+		for f in range(10):
+			if f != i:
+				training = training + kfold[f]
+		test = kfold[i]
+		s3_tree_run(tdidt_cm,training,test)
+	lib.print_confusion_table("TDIDT", tdidt_cm)
+
+def s3_tree_run(cm,training,test):
+	key = "MPG"
+	attlist =  ["Cylinders","Model Year","Weight", "MPG"]
+	split = calulate_Split(training)
+	adjust_dataset_with_split(training,split)
+	tree = build_tree_from_dataset(training,attlist,"MPG")
+	tree = tree.condense(tree)
+	pred = []
+	actual = []
+	adjust_dataset_with_split(test,split)
+	for row in test:
+		actual.append(row[key])
+		pred.append(tree.classify(row))
+	lib.update_cm(cm,actual,pred)
+
+
+def adjust_dataset_with_split(ds,split):
+	for x in ds:
+		if x["Weight"] > split:
+			x["Weight"] = 1
+		else:
+			x["Weight"] = 0
+
+def adjust_ds_with_mpg(ds):
+	for x in ds:
+		x["MPG"] = lib.get_mpg_rating(x["MPG"])
+
+def calulate_Split(ds):
+	vs = []
+	En = {}
+	for x in ds:
+		#print x
+		vs.append(x["Weight"])
+	sorted(vs)
+	for v in vs:
+		En[calculate_En(ds,v)] = v
+	return min(En.iteritems(), key=operator.itemgetter(0))[1]
+
+def calculate_En(ds,v):
+	high = []
+	low = []
+	for x in ds:
+		if x["Weight"] > v:
+			high.append(x)
+		else:
+			low.append(x)
+	return  (.1 * calculate_E(high)) + (.1 * calculate_E(low))
+
+def calculate_E(ds):
+	xs = {}
+	E = 0.0
+	count = 0
+	for inst in ds:
+			if inst["MPG"] not in xs.keys():
+				xs[inst["MPG"] ] = 1
+			else:
+				xs[inst["MPG"]] += 1
+			count+= 1
+	for x in xs:
+		p = float(xs[x])/float(count)
+		E -= (p * math.log(p,2))
+	return E
+
 	return None
 
-def step4(filename):
-	return None
+def step4(filename1,filename2):
+	print '===========================================\nSTEP 4: TDIDT -- Printed Rules\n========================================='
+	attlist = ["class","age","sex","survived"]
+	ds = dataset_from_file(filename1)
+	print "--------------------------------------------\nSTEP 1 -- Pruned"
+	t = build_tree_from_dataset(ds,attlist,"survived")
+	t = t.condense(t)
+	t.print_rules()
+
+	print "--------------------------------------------\nSTEP 2 -- Pruned"
+	ds = auto_dataset_from_file(filename2)
+	attlist =  ["Cylinders","Weight","Model Year", "MPG"]
+	t = build_tree_from_dataset(ds,attlist,"MPG")
+	t = t.condense(t)
+	t.print_rules()
+	print "--------------------------------------------\nSTEP 3 -- Pruned"
+	ds = dataset_from_file(filename2)
+	adjust_ds_with_mpg(ds)
+	split = calulate_Split(ds)
+	adjust_dataset_with_split(ds,split)
+	t = build_tree_from_dataset(ds,attlist,"MPG")
+	t = t.condense(t)
+	t.print_rules()
 
 #//////////////////////////////////////////////////
 
@@ -119,9 +250,12 @@ def dataset_from_file(filename):
 	return result
 
 def main():
-	dataset = "titanic.txt"
-	step1(dataset)
-	cool_step2("auto-data-cleaned.txt")
+	dataset1 = "titanic.txt"
+	dataset2 = "auto-data-cleaned.txt"
+	step1(dataset1)
+	step2(dataset2)
+	step3(dataset2)
+	step4(dataset1,dataset2)
 	
 if __name__ == '__main__':
     main()
