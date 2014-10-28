@@ -1,0 +1,13 @@
+graph g{
+// define a graph (also: digraph)
+rankdir=TB; // top-to-bottom layout (alt: LR)
+N1; // a node labeled N1 (id N1)
+N2 [label="Node 2"] // a node labeled N2
+N1 -- N2; // N1 and N2 are connected by an edge
+// use -> for digraphs
+N3 [label="Node 3" shape=box]; // box shape
+N1 -- N3;
+N4 [style=filled fillcolor=Tomato]; // use color!
+N1 -- N4 [label="connected"]; // an edge label
+N4 -- N5; // nodes implied in edges
+}

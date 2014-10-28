@@ -123,5 +123,15 @@ class TDIDT:
                     self.children[child].string_rules(depth+1,tmp_out)
                 tmp_out = out
 
+    def generate_dot_file(self,filename):
+        with open(fileout, "wb") as out:
+            out.write("graph g{ \n")
+            out.write(self.dot_helper(0))
+            out.write("}\n")
+
+    def dot_helper(self,count):
+        count = 0
+        
+
     def __str__(self): 
         return self.prt(0)
