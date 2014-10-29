@@ -1,13 +1,56 @@
 import operator 
 class TDIDT:
-    def __init__(self,n,t):
-        self.name = n
+    def __init__(self,t):
+        self.name = "NAN"
         self.target = t
         self.children = {}
         
     def append(self,val,att):
         self.children.update({val:TDIDT(att,self.target)})
     
+    def get_Att_En(ds):
+        keys = ds[0].keys()
+        result = {}
+        for a in keys:
+            result[a] = calculate_En(ds,a)
+        return result
+
+    def calculate_En(ds,a):
+        val = {}
+        result = 0
+        for x in ds:
+            if x[a] not in val:
+                val[a] = 1
+            else:
+                val[a] += 1
+        total = sum(val.values())
+        for v in val.keys():
+            result += (float(val[v])/float(total)) * calculate_E(ds,a,v)
+        return result
+
+    def calculate_E(ds,a,v):
+        cls = {}
+        result = 0
+        for x in ds:
+            if (x[self.target] not in cls) and (x[a] == v):
+                cls[x[self.target]] = 1
+            elif x[a] == v:
+                cls[x[self.target]] += 1
+        total = sum(cls.values())
+        for v in cls.keys():
+            result -= (float(cls[v])/float(total)) * math.log((float(cls[v])/float(total)),2)
+        return result
+
+    def put_dataset(ds):
+        return None
+
+    def parition_on_Att(ds,a):
+        result = {}
+        return None
+
+    def partition_on_Att_Val(ds,a,v):
+        return None
+
     def put_row(self,data,attributes):
         """
         last element in attributes MUST be target
@@ -29,7 +72,7 @@ class TDIDT:
                 self.children.update(stats)
             else:
                 self.children[data[attributes[0]]] += 1
-                
+
     def condense(self, node):
         if node.name == self.target:
             return node

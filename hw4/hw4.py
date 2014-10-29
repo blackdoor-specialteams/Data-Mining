@@ -203,8 +203,6 @@ def calculate_E(ds):
 		E -= (p * math.log(p,2))
 	return E
 
-	return None
-
 def step4(filename1,filename2):
 	print '===========================================\nSTEP 4: TDIDT -- Printed Rules\n========================================='
 	attlist = ["class","age","sex","survived"]
@@ -231,14 +229,44 @@ def step4(filename1,filename2):
 
 #//////////////////////////////////////////////////
 
-def build_tree_from_dataset(dset,attributes,target):
-	t = TDIDT.TDIDT(attributes[0],target)
-	for row in dset:
+def build_tree_from_dataset(ds,target):
+	t = TDIDT.TDIDT(target)
+	for row in ds:
 		t.put_row(row,attributes)
-	#print t.view_tree()
-	#t = t.condense(t)
-	#print t
 	return t
+
+def get_Att_En(ds,target):
+	keys = ds[0].keys()
+	result = {}
+	for a in keys:
+		result[a] = calculate_En(ds,a)
+	return result
+
+def calculate_En(ds,a,target):
+	val = {}
+	result = 0
+	for x in ds:
+		if x[a] not in val:
+			val[a] = 1
+		else:
+			val[a] += 1
+	total = sum(val.values())
+	for v in val.keys():
+		result += (float(val[v])/float(total)) * calculate_E(ds,a,v,target)
+	return result
+
+def calculate_E(ds,a,v,target):
+	cls = {}
+	result = 0
+	for x in ds:
+		if (x[target] not in cls) and (x[a] == v):
+			cls[x[target]] = 1
+		elif x[a] == v:
+			cls[x[target]] += 1
+	total = sum(cls.values())
+	for v in cls.keys():
+		result -= (float(cls[v])/float(total)) * math.log((float(cls[v])/float(total)),2)
+	return result
 
 def dataset_from_file(filename):
 	"""Returns a  list of dictionaries from the file"""
