@@ -1,7 +1,6 @@
 # coding=utf-8
 import csv
 import re
-#import random
 import math
 import TDIDT
 import lib
@@ -22,7 +21,6 @@ def step1():
 	return None
 def step2():
 	return None
-
 
 def main():
 	dataset1 = "titanic.txt"
