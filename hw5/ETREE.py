@@ -1,3 +1,4 @@
+import TDIDT
 
 """
 ###################################################################################################
@@ -6,22 +7,18 @@
 How to Use:
 
 """
-class ENSEMBLE:
+class ETREE:
 	target = ""
-	forest = []
-	M = 0
-	N = 0
-	F = 0
-    def __init__(self,t,M,N,F):
+	accuracy = 0.0
+	atts = []
+	tree = None
+    def __init__(self,t,wrap):
         target = t
-	
-	def grow_forest(self,M,N,ds):
-		return None
+        atts = wrap
 
 	def train(self,ds):
-		#make the wrap loop here to generate random attributes and junk
+		
 		return None
 
 	def classifiy(self,inst):
 		return None
-
