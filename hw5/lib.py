@@ -1,16 +1,69 @@
 import copy
 import random
 import heapq
+import csv
+import math
 from tabulate import tabulate
 from operator import itemgetter
 
 """
 ###################################################################################################
 ###################################################################################################
-			General Helper Functions
+			General Tool Functions
 ###################################################################################################
 ###################################################################################################
+	Functions Avaliable:
+	-K Fold (dataset, number of folds)
+	-Dataset From File (filename)
+	-Holdout Partition (dataset)
+	-Get Mode (List)
+	-Get N random Instances(dataset,N)
+	-Get MPG Rating (X)
+
 """
+
+def k_folds(dataset,k):
+	"""
+	Returns the statistical mode of xs
+	"""
+	rdm = copy.deepcopy(dataset) 
+	n = len(dataset)
+	step = n / k
+	for i in range(n):
+		j = random.randint(0,n-1)
+		rdm[i], rdm[j] = rdm[j],rdm[i]
+	return [rdm[i:i + step] for i in range(0, len(rdm), step)]
+
+def get_accuracy_and_stdE(a,p):
+	"""
+	"""
+	count = 0
+	for i in range(len(a)):
+		if a[i] == p[i]:
+			count += 1
+	acc = float(count) / float(len(a))
+	stdE = math.sqrt((acc * (1 - acc)) / len(a))
+	return acc ,stdE
+
+def average_acc_and_stdE(xs):
+	"""Takes a list of tuples, that average the probablity and standard error of the probablity"""
+	p = 0.0
+	stdE = 0.0
+	for x in xs:
+		p += float(x[0])
+		stdE += float(x[1])
+	p = float(p) / float(len(xs))
+	stdE = float(stdE) / float(len(xs))
+	return p, stdE
+
+def dataset_from_file(filename):
+	"""Returns a  list of dictionaries from the file"""
+	result = []
+	with open(filename, 'r') as f:
+		reader = csv.DictReader(f)
+		for row in reader:
+			result.append(row)
+	return result
 
 def holdout_partition(dataset):
 	"""Divides a table into two parts in a 2:1 ratio for length"""

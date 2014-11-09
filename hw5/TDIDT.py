@@ -18,8 +18,8 @@ class TDIDT:
         """
         selected = self.get_Att_Selection(ds,wrap)
         self.name = selected
+        wrap.remove(selected)
         if self.name != self.target:
-            self.name = selected
             self.children = self.parition_on_Att(ds,selected,wrap)
         else:
             for x in ds:
