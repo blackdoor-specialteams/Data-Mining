@@ -34,6 +34,15 @@ def k_folds(dataset,k):
 		rdm[i], rdm[j] = rdm[j],rdm[i]
 	return [rdm[i:i + step] for i in range(0, len(rdm), step)]
 
+def get_accuracy(a,p):
+	"""
+	"""
+	count = 0
+	for i in range(len(a)):
+		if a[i] == p[i]:
+			count += 1
+	return float(count) / float(len(a))
+	
 def get_accuracy_and_stdE(a,p):
 	"""
 	"""
