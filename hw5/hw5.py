@@ -85,7 +85,7 @@ def s1_ensemble(training,test,filename):
 	pred = []
 	for x in test:
 		actual.append(x[target])
-		pred.append(Eclass.trackrecord_classify(x))
+		pred.append(Eclass.classify(x))
 	return lib.get_accuracy_and_stdE(actual,pred)
 
 def s1_standard(training,test):
@@ -143,7 +143,7 @@ def s2_ensemble(training,test,para):
 	pred = []
 	for x in test:
 		actual.append(x[target])
-		pred.append(Eclass.trackrecord_classify(x))
+		pred.append(Eclass.classify(x))
 	return lib.get_accuracy_and_stdE(actual,pred)
 
 def s2_print_results(ens,para):
